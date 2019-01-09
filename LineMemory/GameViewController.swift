@@ -1,9 +1,9 @@
 //
 //  GameViewController.swift
-//  LineMemory
+//  Concord
 //
-//  Created by Nathan Lane on 1/8/19.
-//  Copyright © 2019 Nathan Lane. All rights reserved.
+//  Created by Nathan Lane on 1/27/18.
+//  Copyright © 2018 Nathan Lane. All rights reserved.
 //
 
 import UIKit
@@ -12,8 +12,27 @@ import GameplayKit
 
 class GameViewController: UIViewController {
 
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(applicationDidBecomeActive(notification:)),
+            name: NSNotification.Name.UIApplicationDidBecomeActive,
+            object: nil)
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(applicationDidEnterBackground(notification:)),
+            name: NSNotification.Name.UIApplicationDidEnterBackground,
+            object: nil)
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(applicationWillResignActive(notification:)),
+            name: NSNotification.Name.UIApplicationWillResignActive,
+            object: nil)
         
         // Load 'GameScene.sks' as a GKScene. This provides gameplay related content
         // including entities and graphs.
@@ -23,8 +42,6 @@ class GameViewController: UIViewController {
             if let sceneNode = scene.rootNode as! GameScene? {
                 
                 // Copy gameplay related content over to the scene
-                sceneNode.entities = scene.entities
-                sceneNode.graphs = scene.graphs
                 
                 // Set the scale mode to scale to fit the window
                 sceneNode.scaleMode = .aspectFill
@@ -61,5 +78,17 @@ class GameViewController: UIViewController {
 
     override var prefersStatusBarHidden: Bool {
         return true
+    }
+    
+    @objc func applicationDidBecomeActive(notification: NSNotification) {
+        
+    }
+    
+    @objc func applicationDidEnterBackground(notification: NSNotification) {
+        
+    }
+    
+    @objc func applicationWillResignActive(notification: NSNotification) {
+        
     }
 }

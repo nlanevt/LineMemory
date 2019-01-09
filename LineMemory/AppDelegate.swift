@@ -1,9 +1,8 @@
 //
 //  AppDelegate.swift
-//  LineMemory
 //
-//  Created by Nathan Lane on 1/8/19.
-//  Copyright © 2019 Nathan Lane. All rights reserved.
+//  Created by Nathan Lane on 1/27/18.
+//  Copyright © 2018 Nathan Lane. All rights reserved.
 //
 
 import UIKit
