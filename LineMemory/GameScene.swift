@@ -10,8 +10,8 @@ import SpriteKit
 import GameplayKit
 
 var tiles = [[Tile]]();
-var grid_height = 6;
-var grid_width = 5;
+var grid_height = 8;
+var grid_width = 8;
 var column_coordinates = [CGFloat]();
 var boundaries:CGRect = CGRect();
 
@@ -54,12 +54,17 @@ class GameScene: SKScene {
     private var boundaries:CGRect = CGRect();
     private var grid_center:CGFloat = -64.0;
     
+    private var x_grid_pivot:CGFloat = -133;
+    private var y_grid_pivot:CGFloat = 128;
+    private var tile_size = CGSize(width: 38.0, height: 38.0);
+    private var tile_zPosition:CGFloat = 0.0;
+    
     override func sceneDidLoad() {
         self.backgroundColor = SKColor.black;
         
         tiles.removeAll();
         
-        for r in 0 ..< grid_height {
+        /*for r in 0 ..< grid_height {
             tiles.append([Tile]())
             blocks.append([SKShapeNode]())
             for c in 0 ..< grid_width {
@@ -76,10 +81,32 @@ class GameScene: SKScene {
                     column_coordinates.append(tiles[r][c].node.position.x)
                 }
             }
-        }
+            
+            
+        }*/
         
-        start_tiles.insert(Tile(startTileNode: self.childNode(withName: "StartTile0") as! SKSpriteNode, tag: 0), at: 0);
-        start_tiles.insert(Tile(startTileNode: self.childNode(withName: "StartTile1") as! SKSpriteNode, tag: 1), at: 1);
+        for r in 0 ..< grid_height {
+            tiles.append([Tile]());
+            blocks.append([SKShapeNode]());
+            for c in 0 ..< grid_width {
+                
+                let new_tile_node = SKSpriteNode(imageNamed: "Tile");
+                new_tile_node.position = CGPoint(x: x_grid_pivot + (CGFloat(c)*tile_size.width), y: y_grid_pivot + (CGFloat(r)*tile_size.height));
+                new_tile_node.zPosition = tile_zPosition;
+                tiles[r].append(Tile(tileNode: new_tile_node, game_scene: self, row: r, column: c));
+                let block:SKShapeNode = SKShapeNode(rectOf: CGSize(width: tiles[r][c].node.size.width, height: tiles[r][c].node.size.height));
+                block.fillColor = .black;
+                block.zPosition = -1;
+                block.position = tiles[r][c].node.position;
+                self.addChild(block);
+                blocks[r].append(block);
+                // Add and save the coordinates to the columns so that you can properly adjust the starting tiles, which need to know those coordinates.
+                // Should only do this first time running through this inner loop.
+                if (column_coordinates.count < grid_width) {
+                    column_coordinates.append(tiles[r][c].node.position.x)
+                }
+            }
+        }
         
         
         for r in 0 ..< grid_height {
@@ -87,10 +114,6 @@ class GameScene: SKScene {
                 tiles[r][c].setNeighbors();
             }
         }
-        
-        
-        start_tiles[0].setNeighbors(); //MARK
-        start_tiles[1].setNeighbors();
         
         boundaries = CGRect(x: 0, y: grid_center, width: CGFloat(grid_width)*blocks[0][0].frame.size.width, height: CGFloat(grid_height)*blocks[0][0].frame.size.height);
         
