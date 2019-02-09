@@ -10,7 +10,7 @@ import SpriteKit
 import GameplayKit
 
 
-var grid_height = 8;
+var grid_height = 10;
 var grid_width = 8;
 
 enum direction {
@@ -28,6 +28,7 @@ class GameScene: SKScene {
     private var highest_score_label = SKLabelNode();
     private var player_line_list = [Tile]();
     private var round_started = false;
+    private var player_go = false;
     private var score = 0;
     
     private var grid_center:CGFloat = -64.0;
@@ -44,32 +45,11 @@ class GameScene: SKScene {
         
         grid.removeAll();
         
-        /*for r in 0 ..< grid_height {
-            tiles.append([Tile]())
-            blocks.append([SKShapeNode]())
-            for c in 0 ..< grid_width {
-                tiles[r].append(Tile(tileNode: self.childNode(withName: "Tile\(r)\(c)") as! SKSpriteNode, game_scene: self, row: r, column: c));
-                let block:SKShapeNode = SKShapeNode(rectOf: CGSize(width: tiles[r][c].node.size.width, height: tiles[r][c].node.size.height));
-                block.fillColor = .black;
-                block.zPosition = -1;
-                block.position = tiles[r][c].node.position;
-                self.addChild(block);
-                blocks[r].append(block);
-                // Add and save the coordinates to the columns so that you can properly adjust the starting tiles, which need to know those coordinates.
-                // Should only do this first time running through this inner loop.
-                if (column_coordinates.count < grid_width) {
-                    column_coordinates.append(tiles[r][c].node.position.x)
-                }
-            }
-            
-            
-        }*/
-        
         for r in 0 ..< grid_height {
             grid.append([Tile]());
             for c in 0 ..< grid_width {
                 let new_tile_node = Tile(row: r, column: c, size: tile_size);
-                new_tile_node.position = CGPoint(x: x_grid_pivot + (CGFloat(c)*tile_size.width), y: y_grid_pivot + (CGFloat(r)*tile_size.height));
+                new_tile_node.position = CGPoint(x: x_grid_pivot + (CGFloat(c)*tile_size.width), y: y_grid_pivot - (CGFloat(r)*tile_size.height));
                 new_tile_node.zPosition = tile_zPosition;
                 self.addChild(new_tile_node)
                 grid[r].append(new_tile_node);
@@ -94,17 +74,33 @@ class GameScene: SKScene {
        
         for touch in touches {
             let location = touch.location(in: self);
+            if (player_go) {
+                let tile = findTile(location: location);
+                if (tile != nil) {
+                    tile?.cover();
+                }
+            }
         }
 
         
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-
+        if (player_go) {
+            for touch in touches {
+                let location = touch.location(in: self);
+                
+            }
+        }
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
+        if (player_go) {
+            for touch in touches {
+                let location = touch.location(in: self);
+                
+            }
+        }
     }
     
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -119,7 +115,7 @@ class GameScene: SKScene {
     
     private func startRound() {
         round_started = true;
-        
+        player_go = true; //temporary for testing purposes.
         print("starting round: \(score)");
     }
     
@@ -196,5 +192,40 @@ class GameScene: SKScene {
         }
         print("");
     }
-
+    
+    private func findTile(location: CGPoint) -> Tile? {
+        
+        var c_lowerbound = 0;
+        var c_upperbound = grid_width-1;
+        var r_lowerbound = 0;
+        var r_upperbound = grid_height-1;
+        //print("Search Grid:")
+        while (true) {
+            let mid_c = (c_lowerbound + c_upperbound) / 2;
+            let mid_r = (r_lowerbound + r_upperbound) / 2;
+            //print("check at: \(mid_r), \(mid_c) with [\(r_lowerbound), \(r_upperbound)] and [\(c_lowerbound), \(c_upperbound)]")
+            if (grid[mid_r][mid_c].contains(location)) {
+                return grid[mid_r][mid_c];
+            }
+            else if (c_lowerbound > c_upperbound || r_lowerbound > r_upperbound) {
+                return nil;
+            }
+            else {
+                if (location.x < grid[mid_r][mid_c].frame.minX) {
+                    c_upperbound = mid_c-1;
+                }
+                else if (location.x > grid[mid_r][mid_c].frame.maxX) {
+                    c_lowerbound = mid_c+1;
+                }
+                
+                if (location.y < grid[mid_r][mid_c].frame.minY) {
+                    
+                    r_lowerbound = mid_r+1;
+                }
+                else if (location.y > grid[mid_r][mid_c].frame.maxY) {
+                    r_upperbound = mid_r-1;
+                }
+            }
+        }
+    }
 }
