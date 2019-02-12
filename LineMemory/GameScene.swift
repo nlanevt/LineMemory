@@ -18,6 +18,14 @@ enum direction {
     case right;
     case up;
     case down;
+    case left_up;
+    case left_down;
+    case right_up;
+    case right_down;
+    case up_left;
+    case up_right;
+    case down_left;
+    case down_right;
     case none;
 }
 
@@ -26,7 +34,7 @@ class GameScene: SKScene {
     private var level_controller:LevelController!;
     private var player_score_label = SKLabelNode();
     private var highest_score_label = SKLabelNode();
-    private var player_line_list = [Tile]();
+    private var player_line_list = [Link]();
     private var round_started = false;
     private var player_go = false;
     private var score = 0;
@@ -71,25 +79,39 @@ class GameScene: SKScene {
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-       
-        for touch in touches {
-            let location = touch.location(in: self);
-            if (player_go) {
+       if (player_go && player_line_list.isEmpty) {
+            for touch in touches {
+                let location = touch.location(in: self);
                 let tile = findTile(location: location);
                 if (tile != nil) {
-                    tile?.cover();
+                    player_line_list.append((tile?.addLink(direction: .none))!);
                 }
             }
         }
-
-        
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if (player_go) {
+        if (player_go && !player_line_list.isEmpty) {
             for touch in touches {
                 let location = touch.location(in: self);
-                
+                let previous_tile = player_line_list.last?.parent as! Tile;
+                let new_tile = previous_tile.checkNeighbors(location: location)
+                if (new_tile != nil) {
+                    if (player_line_list.count >= 2 && player_line_list[player_line_list.count - 2].parent as? Tile == new_tile) {
+                        // erase the current tile
+                        let last_link = player_line_list.popLast();
+                        let current_link = player_line_list.last;
+                        current_link?.setDirection(direction: resetDirection(current_link_dir: (current_link?.getDirection())!));
+                        last_link?.remove();
+                    }
+                    else  {
+                        let dir = new_tile?.getDirectionFrom(tile: previous_tile);
+                        let previous_link_dir = player_line_list.last!.getDirection();
+                        let new_dir_for_previous_link = compareDirections(dirA: previous_link_dir, dirB: dir!);
+                        player_line_list.last?.setDirection(direction: new_dir_for_previous_link);
+                        player_line_list.append((new_tile?.addLink(direction: dir!))!);
+                    }
+                }
             }
         }
     }
@@ -142,7 +164,7 @@ class GameScene: SKScene {
     }
     
     private func dissipateLine(forward: Bool, completion: @escaping ()->Void) {
-        if (player_line_list.isEmpty) {
+        /*if (player_line_list.isEmpty) {
             completion();
             return;
         }
@@ -156,7 +178,7 @@ class GameScene: SKScene {
         cover_node.run(SKAction.fadeOut(withDuration: 0.05), completion: {
             cover_node.removeFromParent();
             self.dissipateLine(forward: forward, completion: completion)
-        })
+        })*/
 
     }
     
@@ -227,5 +249,84 @@ class GameScene: SKScene {
                 }
             }
         }
+    }
+    
+    private func compareDirections(dirA: direction, dirB: direction) -> direction {
+        if (dirA == .none && dirA != dirB) {return dirB}
+        
+        if (dirA == dirB) {return dirB}
+        
+        if (dirA == .up) {
+            if (dirB == .right) {
+                return .up_right;
+            }
+            else if (dirB == .left) {
+                return .up_left;
+            }
+            else if (dirB == .down) {
+                return .up;
+            }
+            else {
+                return .none;
+            }
+        }
+        
+        if (dirA == .down) {
+            if (dirB == .right) {
+                return .down_right;
+            }
+            else if (dirB == .left) {
+                return .down_left;
+            }
+            else if (dirB == .up) {
+                return .down;
+            }
+            else {
+                return .none;
+            }
+        }
+        
+        if (dirA == .left) {
+            if (dirB == .up) {
+                return .left_up;
+            }
+            else if (dirB == .down) {
+                return .left_down;
+            }
+            else if (dirB == .right) {
+                return .left;
+            }
+            else {
+                return .none;
+            }
+        }
+        
+        if (dirA == .right) {
+            if (dirB == .up) {
+                return .right_up;
+            }
+            else if (dirB == .down) {
+                return .right_down;
+            }
+            else if (dirB == .left) {
+                return .right;
+            }
+            else {
+                return .none;
+            }
+        }
+        
+        return .none;
+    }
+    
+    private func resetDirection(current_link_dir: direction) -> direction {
+        if (current_link_dir == .up_left || current_link_dir == .up_right) {return .up};
+        
+        if (current_link_dir == .down_left || current_link_dir == .down_right) {return .down};
+        
+        if (current_link_dir == .left_down || current_link_dir == .left_up) {return .left};
+        
+        if (current_link_dir == .right_down || current_link_dir == .right_up) {return .right};
+        return current_link_dir;
     }
 }
