@@ -32,34 +32,51 @@ class Link: SKSpriteNode {
         return direction;
     }
     
+    private func setDirection() {
+        setDirection(direction: self.direction);
+    }
+    
     public func setDirection(direction: direction) {
         self.direction = direction;
         switch self.direction {
         case .left:
+            self.texture = SKTexture.init(imageNamed: "LinkCoverLeft");
             break;
         case .right:
+            self.texture = SKTexture.init(imageNamed: "LinkCoverRight");
             break;
         case .up:
+            self.texture = SKTexture.init(imageNamed: "LinkCoverUp");
             break;
         case .down:
+            self.texture = SKTexture.init(imageNamed: "LinkCoverDown");
             break;
         case .left_up:
+            self.texture = SKTexture.init(imageNamed: "LinkCoverLeftUp");
             break;
         case .left_down:
+            self.texture = SKTexture.init(imageNamed: "LinkCoverLeftDown");
             break;
         case .right_up:
+            self.texture = SKTexture.init(imageNamed: "LinkCoverRightUp");
             break;
         case .right_down:
+            self.texture = SKTexture.init(imageNamed: "LinkCoverRightDown");
             break;
         case .up_left:
+            self.texture = SKTexture.init(imageNamed: "LinkCoverUpLeft");
             break;
         case .up_right:
+            self.texture = SKTexture.init(imageNamed: "LinkCoverUpRight");
             break;
         case .down_left:
+            self.texture = SKTexture.init(imageNamed: "LinkCoverDownLeft");
             break;
         case .down_right:
+            self.texture = SKTexture.init(imageNamed: "LinkCoverDownRight");
             break;
         case .none:
+            self.texture = SKTexture.init(imageNamed: "LinkCoverHead");
             break;
         default:
             break;
@@ -69,5 +86,9 @@ class Link: SKSpriteNode {
     public func remove() {
         // run dissolving animations based off of direction.
         self.removeFromParent();
+    }
+    
+    public func setAsHead() {
+        self.texture = SKTexture.init(imageNamed: "LinkCoverHead");
     }
 }

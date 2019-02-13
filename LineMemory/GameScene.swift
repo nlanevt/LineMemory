@@ -10,8 +10,7 @@ import SpriteKit
 import GameplayKit
 
 
-var grid_height = 10;
-var grid_width = 8;
+
 
 enum direction {
     case left;
@@ -39,14 +38,17 @@ class GameScene: SKScene {
     private var player_go = false;
     private var score = 0;
     
+    public var grid = [[Tile]]();
+    private var grid_height = 10;
+    private var grid_width = 8;
     private var grid_center:CGFloat = -64.0;
     
     private var x_grid_pivot:CGFloat = -133;
     private var y_grid_pivot:CGFloat = 128;
     private var tile_size = CGSize(width: 38.0, height: 38.0);
     private var tile_zPosition:CGFloat = 0.0;
-    
-    public var grid = [[Tile]]();
+
+    private var line_controller:LineController!;
     
     override func sceneDidLoad() {
         self.backgroundColor = SKColor.black;
@@ -67,14 +69,15 @@ class GameScene: SKScene {
         
         for r in 0 ..< grid_height {
             for c in 0 ..< grid_width {
-                grid[r][c].setNeighbors();
+                grid[r][c].setNeighbors(grid_width: grid_width, grid_height: grid_height);
             }
         }
         
         player_score_label = self.childNode(withName: "Score") as! SKLabelNode;
         highest_score_label = self.childNode(withName: "HighestScore") as! SKLabelNode;
         // need to set score variable according to CORE Data database
-        level_controller = LevelController.init(game_scene: self);
+        line_controller = LineController(grid_width: grid_width, grid_height: grid_height)
+        level_controller = LevelController(game_scene: self);
         startRound();
     }
     
@@ -102,9 +105,11 @@ class GameScene: SKScene {
                         let last_link = player_line_list.popLast();
                         let current_link = player_line_list.last;
                         current_link?.setDirection(direction: resetDirection(current_link_dir: (current_link?.getDirection())!));
+                        current_link?.setAsHead();
                         last_link?.remove();
                     }
                     else  {
+                        // Add new tiles
                         let dir = new_tile?.getDirectionFrom(tile: previous_tile);
                         let previous_link_dir = player_line_list.last!.getDirection();
                         let new_dir_for_previous_link = compareDirections(dirA: previous_link_dir, dirB: dir!);
@@ -137,12 +142,17 @@ class GameScene: SKScene {
     
     private func startRound() {
         round_started = true;
+        
+        // Create AI Line
+        line_controller.generateLine(turn_count: 3);
+        
         player_go = true; //temporary for testing purposes.
         print("starting round: \(score)");
     }
     
     private func endRound() {
         round_started = false;
+        player_go = false;
         /*var amount = 0
         let starting_score = score;
         
