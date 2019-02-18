@@ -34,6 +34,7 @@ class GameScene: SKScene {
     private var player_score_label = SKLabelNode();
     private var highest_score_label = SKLabelNode();
     private var player_line_list = [Link]();
+    private var ai_line_list = [Link]();
     private var round_started = false;
     private var player_go = false;
     private var score = 0;
@@ -144,7 +145,41 @@ class GameScene: SKScene {
         round_started = true;
         
         // Create AI Line
-        line_controller.generateLine(turn_count: 3);
+        ai_line_list.removeAll();
+        let line_list = line_controller.generateLine(turn_count: 8);
+        
+        for i in 0 ..< line_list.count {
+            let cur_point = line_list[i]
+            let r = Int(cur_point.y);
+            let c = Int(cur_point.x);
+            let new_tile = grid[r][c];
+            
+            if (i == 0) {
+                ai_line_list.append(new_tile.addLink(direction: .none));
+            }
+            else {
+                let prev_point = line_list[i-1];
+                let previous_tile = grid[Int(prev_point.y)][Int(prev_point.x)];
+                let dir = new_tile.getDirectionFrom(tile: previous_tile);
+                
+                let previous_link_dir = ai_line_list.last!.getDirection();
+                let new_dir_for_previous_link = compareDirections(dirA: previous_link_dir, dirB: dir);
+                
+                ai_line_list.last?.setDirection(direction: new_dir_for_previous_link);
+                ai_line_list.append(new_tile.addLink(direction: dir));
+            }
+            
+            /*
+            let previous_tile = player_line_list.last?.parent as! Tile;
+            let new_tile = previous_tile.checkNeighbors(location: location)
+            let dir = new_tile?.getDirectionFrom(tile: previous_tile);
+            let previous_link_dir = player_line_list.last!.getDirection();
+            let new_dir_for_previous_link = compareDirections(dirA: previous_link_dir, dirB: dir!);
+            player_line_list.last?.setDirection(direction: new_dir_for_previous_link);
+            player_line_list.append((new_tile?.addLink(direction: dir!))!);
+             */
+            
+        }
         
         player_go = true; //temporary for testing purposes.
         print("starting round: \(score)");

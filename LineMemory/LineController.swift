@@ -13,20 +13,24 @@ import GameplayKit
 class LineController {
     private var grid_width = 8;
     private var grid_height = 8;
-    private var turn_list = [direction]();
     
     init(grid_width: Int, grid_height: Int) {
         self.grid_width = grid_width;
         self.grid_height = grid_height;
     }
     
-    public func generateLine(turn_count: Int) {
-        let list = createLine(turn_count: turn_count);
+    public func generateLine(turn_count: Int) -> [CGPoint] {
+        var list = createLine(turn_count: turn_count);
+        
+        while (list == nil) {list = createLine(turn_count: turn_count)}
+        
         if (list != nil) {
             for i in 0..<list!.count {
                 print("\(list![i])")
             }
         }
+        
+        return list!;
     }
     
     private func createLine(turn_count: Int) -> [CGPoint]? {
@@ -36,6 +40,7 @@ class LineController {
         if (start_point == start_edge) {return nil};
         
         var line_list = [start_edge];
+        var turn_list = [direction]();
         
         print("start_edge: \(start_edge), start_point: \(start_point)");
         if (start_edge.x == start_point.x) {
@@ -49,6 +54,8 @@ class LineController {
             
             for i in 0..<length-1 {
                 line_list.append(CGPoint(x: Int(start_edge.x), y: Int(start_edge.y)+incrementer))
+                turn_list.append(getDirectionBetween(pointA: line_list[line_list.count-2
+                    ], pointB: line_list.last!))
             }
             
         }
@@ -69,15 +76,99 @@ class LineController {
         }
         
         line_list.append(start_point);
+        turn_list.append(getDirectionBetween(pointA: line_list[line_list.count-2
+            ], pointB: line_list.last!))
         
         var end_point = getRandomPoint();
         while (end_point == start_point) {end_point = getRandomPoint()};
         let end_edge = getClosestEdgeTo(point: end_point);
+        let end_dir = getDirectionBetween(pointA: end_point, pointB: end_edge)
         
         //TO DO
         //(1) Create turn list (containing random turns) from turn_count
-        //(2) Create line with turn list, adding the points to line_list
-        //(3) Add the end_point and end_edge points to line_list
+        
+        // Note: Below will end up being looped based off turn_count;
+        for turn_counter in 0..<turn_count {
+            let prev_dir = turn_list.last;
+            var new_dir = direction.none;
+            if (prev_dir == .left || prev_dir == .right) {
+                new_dir = Int(arc4random_uniform(UInt32(2))) > 0 ? .up : .down;
+            }
+            else {
+                new_dir = Int(arc4random_uniform(UInt32(2))) > 0 ? .left : .right;
+            }
+            
+            let line_segment_length = (new_dir == .left || new_dir == .right) ? Int(arc4random_uniform(UInt32(grid_width-1)))+1 : Int(arc4random_uniform(UInt32(grid_height-1)))+1;
+            
+            for i in 0..<line_segment_length {
+                var new_point = line_list.last;
+                if (new_dir == .left) {
+                    new_point = CGPoint(x: Int(new_point!.x-1), y: Int(new_point!.y))
+                }
+                else if (new_dir == .right) {
+                    new_point = CGPoint(x: Int(new_point!.x+1), y: Int(new_point!.y))
+                }
+                else if (new_dir == .up) {
+                    new_point = CGPoint(x: Int(new_point!.x), y: Int(new_point!.y-1))
+                }
+                else {
+                    new_point = CGPoint(x: Int(new_point!.x), y: Int(new_point!.y+1))
+                }
+                
+                if (new_point!.x < 0 || Int(new_point!.x) >= grid_width || new_point!.y < 0 || Int(new_point!.y) >= grid_height) {break}
+                
+                line_list.append(new_point!);
+                turn_list.append(new_dir);
+            }
+        }
+        
+        //(3) Connect line_list with border
+        
+        var error_counter = 0;
+        while (true) {
+            let prev_point = line_list.last;
+            let wall_point = getClosestEdgeTo(point: prev_point!);
+            let prev_dir = turn_list.last;
+            var new_dir = getDirectionBetween(pointA: prev_point!, pointB: wall_point);
+            if (isOppositeDirection(dirA: prev_dir!, dirB: new_dir)) {
+                if (prev_dir == .left || prev_dir == .right)
+                {
+                    new_dir = Int(arc4random_uniform(UInt32(2))) > 0 ? .up : .down;
+                    if (new_dir == .up && Int(prev_point!.y) == 0) {
+                        new_dir = .down;
+                    }
+                    else if (new_dir == .down && Int(prev_point!.y) == grid_height-1) {
+                        new_dir = .up;
+                    }
+                }
+                else if (prev_dir == .up || prev_dir == .down) {
+                    new_dir = Int(arc4random_uniform(UInt32(2))) > 0 ? .left : .right;
+                    if (new_dir == .left && Int(prev_point!.x) == 0) {
+                        new_dir = .right;
+                    }
+                    else if (new_dir == .right && Int(prev_point!.x) == grid_width-1) {
+                        new_dir = .left;
+                    }
+                }
+                else {
+                    return nil; // something fucked up.
+                }
+            }
+            
+            let new_point = (new_dir == .up) ? CGPoint(x: prev_point!.x, y: prev_point!.y-1) : (new_dir == .down) ? CGPoint(x: prev_point!.x, y: prev_point!.y+1) : (new_dir == .left) ? CGPoint(x: prev_point!.x-1, y: prev_point!.y) : (new_dir == .right) ? CGPoint(x: prev_point!.x+1, y: prev_point!.y) : prev_point;
+            
+            if (new_point == prev_point) {return nil; /*something fucked up*/}
+            
+            turn_list.append(new_dir);
+            
+            if (prev_point == wall_point || error_counter >= 1000) {break}
+            
+            line_list.append(new_point!);
+            
+            error_counter = error_counter + 1;
+        }
+        
+        if (error_counter >= 1000) {return nil; /*somethign fucked up*/}
         
         return line_list;
     }
@@ -132,6 +223,76 @@ class LineController {
         default:
             return CGPoint(x: Int(point.x), y: 0);
         }
+    }
+    
+    private func getDirectionBetween(pointA: CGPoint, pointB: CGPoint) -> direction {
+        if ((pointA.x == pointB.x && pointA.y == pointB.y) ||
+            (pointA.x != pointB.x && pointA.y != pointB.y)) {
+            
+            /*if (isWallPoint(point: pointA) && isWallPoint(point: pointB)) {
+                return .none;
+            }
+            else */if (Int(pointB.x) == 0) {
+                return .left;
+            }
+            else if (Int(pointB.x) == grid_width-1) {
+                return .right;
+            }
+            else if (Int(pointB.y) == 0) {
+                return .up;
+            }
+            else if (Int(pointB.y) == grid_height-1) {
+                return .down;
+            }
+            else {
+                return .none;
+            }
+        }
+        
+        if (pointA.x == pointB.x) {
+            if (pointA.y < pointB.y) {
+                return .down;
+            }
+            else {
+                return .up;
+            }
+        }
+        
+        if (pointA.y == pointB.y) {
+            if (pointA.x < pointB.x) {
+                return .right;
+            }
+            else {
+                return .left;
+            }
+        }
+        
+        return .none;
+    }
+    
+    private func isOppositeDirection(dirA: direction, dirB: direction) -> Bool {
+        if (dirA == .up && dirB == .down ||
+            dirA == .down && dirB == .up) {
+            return true;
+        }
+        
+        if (dirA == .left && dirB == .right ||
+            dirA == .right && dirB == .left) {
+            return true;
+        }
+        
+        return false;
+    }
+    
+    private func isWallPoint(point: CGPoint) -> Bool {
+        if (Int(point.x) == 0 ||
+            Int(point.x) == grid_width-1 ||
+            Int(point.y) == 0 ||
+            Int(point.y) == grid_height-1) {
+            return true;
+        }
+        
+        return false;
     }
     
 }
