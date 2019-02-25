@@ -13,33 +13,51 @@ import GameplayKit
 class LineController {
     private var grid_width = 8;
     private var grid_height = 8;
+    private var ai_link_list = [Link]();
+    private var turns = [direction]();
+    private var grid = [[Tile]]();
+    private var run_time:TimeInterval!;
     
-    init(grid_width: Int, grid_height: Int) {
+    
+    init(grid_width: Int, grid_height: Int, grid: [[Tile]]) {
         self.grid_width = grid_width;
         self.grid_height = grid_height;
+        self.grid = grid;
     }
     
-    public func generateLine(turn_count: Int) -> [CGPoint] {
-        var list = createLine(turn_count: turn_count);
+    public func generateLine(turn_count: Int, completion: @escaping ()->Void) -> [CGPoint] {
+        var line_list = createLine(turn_count: turn_count);
+        while (line_list == nil) {line_list = createLine(turn_count: turn_count)}
         
-        while (list == nil) {list = createLine(turn_count: turn_count)}
-        
-        if (list != nil) {
-            for i in 0..<list!.count {
-                print("\(list![i])")
+        if (line_list != nil) {
+            for i in 0..<line_list!.count {
+                print("\(line_list![i])")
             }
         }
         
-        return list!;
+        cleanLine();
+        run_time = 0.0;
+        
+        animateLineCreation(line_list: line_list!, iterator: 0, completion: {
+            completion();
+        });
+        
+        return line_list!;
+    }
+    
+    public func getRunTime() -> TimeInterval {
+        return run_time;
     }
     
     private func createLine(turn_count: Int) -> [CGPoint]? {
         
+        // (1) Create line between starting edge and starting point
+        turns.removeAll();
         let start_point = getRandomPoint();
         let start_edge = getClosestEdgeTo(point: start_point);
         if (start_point == start_edge) {return nil};
         
-        var line_list = [start_edge];
+        var line_list = [CGPoint]();
         var turn_list = [direction]();
         
         print("start_edge: \(start_edge), start_point: \(start_point)");
@@ -51,13 +69,14 @@ class LineController {
                 length = -1 * length;
             }
             
-            
-            for i in 0..<length-1 {
-                line_list.append(CGPoint(x: Int(start_edge.x), y: Int(start_edge.y)+incrementer))
-                turn_list.append(getDirectionBetween(pointA: line_list[line_list.count-2
-                    ], pointB: line_list.last!))
+            for i in 0 ..< length {
+                line_list.append(CGPoint(x: Int(start_edge.x), y: Int(start_edge.y)+(incrementer*i)));
+                
+                if (line_list.count >= 2) {
+                    turn_list.append(getDirectionBetween(pointA: line_list[line_list.count-2
+                        ], pointB: line_list.last!))
+                }
             }
-            
         }
         else if (start_edge.y == start_point.y) {
             var incrementer = 1;
@@ -67,8 +86,12 @@ class LineController {
                 length = -1 * length;
             }
             
-            for i in 0..<length-1 {
-                line_list.append(CGPoint(x: Int(start_edge.x)+incrementer, y: Int(start_edge.y)))
+            for i in 0 ..< length {
+                line_list.append(CGPoint(x: Int(start_edge.x)+(incrementer*i), y: Int(start_edge.y)))
+                if (line_list.count >= 2) {
+                    turn_list.append(getDirectionBetween(pointA: line_list[line_list.count-2
+                        ], pointB: line_list.last!))
+                }
             }
         }
         else {
@@ -79,15 +102,7 @@ class LineController {
         turn_list.append(getDirectionBetween(pointA: line_list[line_list.count-2
             ], pointB: line_list.last!))
         
-        var end_point = getRandomPoint();
-        while (end_point == start_point) {end_point = getRandomPoint()};
-        let end_edge = getClosestEdgeTo(point: end_point);
-        let end_dir = getDirectionBetween(pointA: end_point, pointB: end_edge)
-        
-        //TO DO
-        //(1) Create turn list (containing random turns) from turn_count
-        
-        // Note: Below will end up being looped based off turn_count;
+        //(2) Create turn list (containing random turns) from turn_count
         for turn_counter in 0..<turn_count {
             let prev_dir = turn_list.last;
             var new_dir = direction.none;
@@ -123,7 +138,6 @@ class LineController {
         }
         
         //(3) Connect line_list with border
-        
         var error_counter = 0;
         while (true) {
             let prev_point = line_list.last;
@@ -170,7 +184,85 @@ class LineController {
         
         if (error_counter >= 1000) {return nil; /*somethign fucked up*/}
         
+        turns = turn_list;
+        
         return line_list;
+    }
+    
+    public func getTurnsOfLastLine() -> [direction] {
+        return turns;
+    }
+    
+    public func getLinkListOfLastLine() -> [Link] {
+        return ai_link_list;
+    }
+    
+    /*
+     * Does a for-loop through the line_list to generated above and gradually adds the links
+     * to the grid.
+     * This method must be tweaked to ensure proper creation and dissapation of the line
+     */
+    private func animateLineCreation(line_list: [CGPoint], iterator: Int, completion: @escaping ()->Void) {
+        if (iterator >= line_list.count) {
+            animateLineDissipation(iterator: 0, completion: completion);
+            return;
+        }
+        
+        // This action will be replaced with an animation action, which will be of the tile getting filled in gradually by the line
+        let creation_action = SKAction.wait(forDuration: 0.1);
+        run_time = run_time + 0.1;
+        
+        let cur_point = line_list[iterator]
+        let r = Int(cur_point.y);
+        let c = Int(cur_point.x);
+        let new_tile = grid[r][c];
+        
+        if (iterator == 0) {
+            ai_link_list.append(new_tile.addLink(direction: .none));
+        }
+        else {
+            let prev_point = line_list[iterator-1];
+            let previous_tile = grid[Int(prev_point.y)][Int(prev_point.x)];
+            let dir = new_tile.getDirectionFrom(tile: previous_tile);
+            
+            let previous_link_dir = ai_link_list.last!.getDirection();
+            let new_dir_for_previous_link = compareDirections(dirA: previous_link_dir, dirB: dir);
+            
+            ai_link_list.last?.setDirection(direction: new_dir_for_previous_link);
+            
+            let new_link = new_tile.addLink(direction: dir)
+            ai_link_list.append(new_link);
+            
+            if (iterator == line_list.count-1) {
+                let last_turn = turns.last;
+                let final_dir = compareDirections(dirA: dir, dirB: last_turn!);
+                ai_link_list.last?.setDirection(direction: final_dir);
+                //print("\(last_turn), \(final_dir)");
+            }
+        }
+        let iteration_increase = iterator + 1;
+        
+        new_tile.run(creation_action, completion:{
+            self.animateLineCreation(line_list: line_list, iterator: iteration_increase, completion: completion);
+        })
+    }
+    
+    // line_list not really used here. Should be removed.
+    private func animateLineDissipation(iterator: Int, completion: @escaping ()->Void) {
+        if (iterator >= ai_link_list.count) {
+            completion();
+            return;
+        }
+        
+        let dissipation_action = SKAction.fadeOut(withDuration: 0.1);
+        run_time = run_time + 0.1;
+        
+        let iteration_increase = iterator + 1;
+        
+        ai_link_list[iterator].run(dissipation_action, completion:{
+            self.animateLineDissipation(iterator: iteration_increase, completion: completion)
+        });
+        
     }
     
     private func getRandomPoint() -> CGPoint {
@@ -230,21 +322,21 @@ class LineController {
             (pointA.x != pointB.x && pointA.y != pointB.y)) {
             
             /*if (isWallPoint(point: pointA) && isWallPoint(point: pointB)) {
-                return .none;
-            }
-            else */if (Int(pointB.x) == 0) {
+             return .none;
+             }
+             else */if (Int(pointB.x) == 0) {
                 return .left;
-            }
-            else if (Int(pointB.x) == grid_width-1) {
+             }
+             else if (Int(pointB.x) == grid_width-1) {
                 return .right;
-            }
-            else if (Int(pointB.y) == 0) {
+             }
+             else if (Int(pointB.y) == 0) {
                 return .up;
-            }
-            else if (Int(pointB.y) == grid_height-1) {
+             }
+             else if (Int(pointB.y) == grid_height-1) {
                 return .down;
-            }
-            else {
+             }
+             else {
                 return .none;
             }
         }
@@ -295,5 +387,94 @@ class LineController {
         return false;
     }
     
+    // Duplicate
+    private func compareDirections(dirA: direction, dirB: direction) -> direction {
+        if (dirA == .none && dirA != dirB) {return dirB}
+        
+        if (dirA == dirB) {return dirB}
+        
+        if (dirA == .up) {
+            if (dirB == .right) {
+                return .up_right;
+            }
+            else if (dirB == .left) {
+                return .up_left;
+            }
+            else if (dirB == .down) {
+                return .up;
+            }
+            else {
+                return .none;
+            }
+        }
+        
+        if (dirA == .down) {
+            if (dirB == .right) {
+                return .down_right;
+            }
+            else if (dirB == .left) {
+                return .down_left;
+            }
+            else if (dirB == .up) {
+                return .down;
+            }
+            else {
+                return .none;
+            }
+        }
+        
+        if (dirA == .left) {
+            if (dirB == .up) {
+                return .left_up;
+            }
+            else if (dirB == .down) {
+                return .left_down;
+            }
+            else if (dirB == .right) {
+                return .left;
+            }
+            else {
+                return .none;
+            }
+        }
+        
+        if (dirA == .right) {
+            if (dirB == .up) {
+                return .right_up;
+            }
+            else if (dirB == .down) {
+                return .right_down;
+            }
+            else if (dirB == .left) {
+                return .right;
+            }
+            else {
+                return .none;
+            }
+        }
+        
+        return .none;
+    }
+    
+    // Duplicate
+    private func resetDirection(current_link_dir: direction) -> direction {
+        if (current_link_dir == .up_left || current_link_dir == .up_right) {return .up};
+        
+        if (current_link_dir == .down_left || current_link_dir == .down_right) {return .down};
+        
+        if (current_link_dir == .left_down || current_link_dir == .left_up) {return .left};
+        
+        if (current_link_dir == .right_down || current_link_dir == .right_up) {return .right};
+        return current_link_dir;
+    }
+    
+    private func cleanLine() {
+        for link in ai_link_list {
+            link.removeFromParent();
+        }
+        
+        ai_link_list.removeAll();
+        //turns.removeAll();
+    }
 }
 

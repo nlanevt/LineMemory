@@ -31,13 +31,20 @@ enum direction {
 class GameScene: SKScene {
     
     private var level_controller:LevelController!;
+    private var line_controller:LineController!;
+    
     private var player_score_label = SKLabelNode();
     private var highest_score_label = SKLabelNode();
+    private var level_label = SKLabelNode();
+    private var rounds_label = SKLabelNode(); // temporary label. will be replaced by sprite images.
+    private var lives_label = SKLabelNode(); // temporary label. will be replaced by sprite images.
+    
     private var player_line_list = [Link]();
-    private var ai_line_list = [Link]();
+    private var ai_line_points = [CGPoint]();
     private var round_started = false;
     private var player_go = false;
-    private var score = 0;
+    private var score = Int64(0);
+    private var player_lives = 5;
     
     public var grid = [[Tile]]();
     private var grid_height = 10;
@@ -48,11 +55,25 @@ class GameScene: SKScene {
     private var y_grid_pivot:CGFloat = 128;
     private var tile_size = CGSize(width: 38.0, height: 38.0);
     private var tile_zPosition:CGFloat = 0.0;
-
-    private var line_controller:LineController!;
+    
+    private var timer_node = SKSpriteNode();
+    private var timer_blocker_left = SKSpriteNode();
+    private var timer_blocker_right = SKSpriteNode();
+    
+    private var max_line_limit = 1000;
     
     override func sceneDidLoad() {
         self.backgroundColor = SKColor.black;
+        
+        timer_node = self.childNode(withName: "TimerNode") as! SKSpriteNode;
+        timer_blocker_left = self.childNode(withName: "TimerBlockerLeft") as! SKSpriteNode;
+        timer_blocker_right = self.childNode(withName: "TimerBlockerRight") as! SKSpriteNode;
+        
+        player_score_label = self.childNode(withName: "Score") as! SKLabelNode;
+        highest_score_label = self.childNode(withName: "HighestScore") as! SKLabelNode;
+        level_label = self.childNode(withName: "Level") as! SKLabelNode;
+        rounds_label = self.childNode(withName: "RoundsLeft") as! SKLabelNode; // temporary
+        lives_label = self.childNode(withName: "Lives") as! SKLabelNode;
         
         grid.removeAll();
         
@@ -77,8 +98,11 @@ class GameScene: SKScene {
         player_score_label = self.childNode(withName: "Score") as! SKLabelNode;
         highest_score_label = self.childNode(withName: "HighestScore") as! SKLabelNode;
         // need to set score variable according to CORE Data database
-        line_controller = LineController(grid_width: grid_width, grid_height: grid_height)
-        level_controller = LevelController(game_scene: self);
+        line_controller = LineController(grid_width: grid_width, grid_height: grid_height, grid: grid);
+        level_controller = LevelController(game_scene: self, level: 1);
+        setLevelDisplay();
+        setRoundsLeftDisplay()
+        setLivesDisplay();
         startRound();
     }
     
@@ -96,6 +120,8 @@ class GameScene: SKScene {
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         if (player_go && !player_line_list.isEmpty) {
+            if (player_line_list.count >= max_line_limit) {endRound(round_won: false)}
+            
             for touch in touches {
                 let location = touch.location(in: self);
                 let previous_tile = player_line_list.last?.parent as! Tile;
@@ -124,16 +150,24 @@ class GameScene: SKScene {
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         if (player_go) {
-            for touch in touches {
-                let location = touch.location(in: self);
-                
+            if (player_line_list.count != ai_line_points.count) {
+                endRound(round_won: false);
+                return;
             }
+            
+            for i in 0 ..< player_line_list.count {
+                if (player_line_list[i].parent != grid[Int(ai_line_points[i].y)][Int(ai_line_points[i].x)]) {
+                    endRound(round_won: false);
+                    return;
+                }
+            }
+            
+            endRound(round_won: true);
         }
     }
     
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
         print("touchesCancelled");
-
     }
     
     
@@ -144,50 +178,20 @@ class GameScene: SKScene {
     private func startRound() {
         round_started = true;
         
+        cleanPlayerLine(); // Removes nodes from the scene. clears up memory.
+        
+        ai_line_points.removeAll();
         // Create AI Line
-        ai_line_list.removeAll();
-        let line_list = line_controller.generateLine(turn_count: 8);
-        
-        for i in 0 ..< line_list.count {
-            let cur_point = line_list[i]
-            let r = Int(cur_point.y);
-            let c = Int(cur_point.x);
-            let new_tile = grid[r][c];
-            
-            if (i == 0) {
-                ai_line_list.append(new_tile.addLink(direction: .none));
-            }
-            else {
-                let prev_point = line_list[i-1];
-                let previous_tile = grid[Int(prev_point.y)][Int(prev_point.x)];
-                let dir = new_tile.getDirectionFrom(tile: previous_tile);
-                
-                let previous_link_dir = ai_line_list.last!.getDirection();
-                let new_dir_for_previous_link = compareDirections(dirA: previous_link_dir, dirB: dir);
-                
-                ai_line_list.last?.setDirection(direction: new_dir_for_previous_link);
-                ai_line_list.append(new_tile.addLink(direction: dir));
-            }
-            
-            /*
-            let previous_tile = player_line_list.last?.parent as! Tile;
-            let new_tile = previous_tile.checkNeighbors(location: location)
-            let dir = new_tile?.getDirectionFrom(tile: previous_tile);
-            let previous_link_dir = player_line_list.last!.getDirection();
-            let new_dir_for_previous_link = compareDirections(dirA: previous_link_dir, dirB: dir!);
-            player_line_list.last?.setDirection(direction: new_dir_for_previous_link);
-            player_line_list.append((new_tile?.addLink(direction: dir!))!);
-             */
-            
-        }
-        
-        player_go = true; //temporary for testing purposes.
+        ai_line_points = line_controller.generateLine(turn_count: level_controller.getTurns(), completion: {
+            self.startTimer();
+            self.player_go = true;
+        });
+
         print("starting round: \(score)");
     }
     
-    private func endRound() {
-        round_started = false;
-        player_go = false;
+    private func endRound(round_won: Bool) {
+        
         /*var amount = 0
         let starting_score = score;
         
@@ -205,26 +209,87 @@ class GameScene: SKScene {
         self.dissipateLine(forward: true, completion: {
             self.startRound();
         })*/
+        if (player_go == false || round_started == false) {return}
         
-    }
-    
-    private func dissipateLine(forward: Bool, completion: @escaping ()->Void) {
-        /*if (player_line_list.isEmpty) {
-            completion();
+        round_started = false;
+        player_go = false;
+        resetTimer();
+        
+        // If you lose the round due to the timer running out or due to incorrect line...
+        if (!round_won) {
+            self.animatePlayerLineDestruction(iterator: player_line_list.count-1, completion: {
+                self.startRound();
+            });
+            
+            // lower player lives
+            let level_decreases = level_controller.roundLost();
+            
+            setLivesDisplay();
+            
+            if (level_decreases) {
+                setRoundsLeftDisplay();
+                setLevelDisplay();
+            }
+            
             return;
         }
         
-        let cover_node = SKSpriteNode(imageNamed: "CoveredTile");
-        cover_node.zPosition = 1.0;
-        let removed_node = forward ? player_line_list.removeFirst() : player_line_list.popLast();
         
-        removed_node?.uncover();
-        removed_node?.addChild(cover_node); ///WTF???
-        cover_node.run(SKAction.fadeOut(withDuration: 0.05), completion: {
-            cover_node.removeFromParent();
-            self.dissipateLine(forward: forward, completion: completion)
-        })*/
-
+        
+        self.animatePlayerLineDissipation(iterator: 0, completion: {
+            self.startRound();
+        })
+        
+        // Set and animate the score.
+        let amount = Int64(player_line_list.count);
+        let starting_score = score;
+        score = score + amount;
+        self.animateSum(starting_value: starting_score, amount: amount, label: player_score_label, completion: {});
+        
+        // Increase the level if enough rounds have been won.
+        let level_increases = level_controller.roundWon();
+        setRoundsLeftDisplay();
+        if (level_increases) {
+            // Do things to congratulate player
+            // Do animations to increase level (such as a flash for example)
+            setLivesDisplay();
+            setLevelDisplay();
+        }
+        
+        
+        
+        
+    }
+    
+    private func setLivesDisplay() {
+        lives_label.text = "\(level_controller.getLivesLeft())";
+    }
+    
+    // The overall aesthetic of this label will change.
+    private func setLevelDisplay() {
+        level_label.text = "\(level_controller.getCurrentLevel())";
+    }
+    
+    // Will update this to use animations
+    private func setRoundsLeftDisplay() {
+        rounds_label.text = "\(level_controller.getRoundsLeft())";
+    }
+    
+    // Animate the timer nodes.
+    // This animation is subject to change
+    private func startTimer() {
+        timer_blocker_left.run(SKAction.moveTo(x: -80.0, duration: self.line_controller.getRunTime()));
+        timer_blocker_right.run(SKAction.moveTo(x: 80.0, duration: self.line_controller.getRunTime()), completion: {
+            self.endRound(round_won: false);
+        })
+    }
+    
+    
+    private func resetTimer() {
+        timer_blocker_left.removeAllActions();
+        timer_blocker_right.removeAllActions();
+        timer_blocker_left.run(SKAction.moveTo(x: -240.0, duration: 0.25));
+        timer_blocker_right.run(SKAction.moveTo(x: 240.0, duration: 0.25));
     }
     
     private func animateSum(starting_value: Int64, amount: Int64, label: SKLabelNode, completion: @escaping ()->Void) {
@@ -246,8 +311,38 @@ class GameScene: SKScene {
         });
     }
     
-    // Make sure to do this before releasing the tiles attached tile nodes, that way all of its attached tiles will snap to their own positions on the grid accordingly.
+    private func animatePlayerLineDissipation(iterator: Int, completion: @escaping ()->Void) {
+        if (iterator >= player_line_list.count) {
+            completion();
+            return;
+        }
+        
+        let dissipation_action = SKAction.fadeOut(withDuration: 0.1);
+        
+        let iteration_increase = iterator + 1;
+        
+        player_line_list[iterator].run(dissipation_action, completion:{
+            self.animatePlayerLineDissipation(iterator: iteration_increase, completion: completion)
+        });
+    }
     
+    private func animatePlayerLineDestruction(iterator: Int, completion: @escaping ()->Void) {
+
+        if (iterator < 0) {
+            completion();
+            return;
+        }
+        
+        let dissipation_action = SKAction.fadeOut(withDuration: 0.1);
+        
+        let iteration_increase = iterator - 1;
+        
+        player_line_list[iterator].run(dissipation_action, completion:{
+            self.animatePlayerLineDestruction(iterator: iteration_increase, completion: completion)
+        });
+    }
+    
+    // Make sure to do this before releasing the tiles attached tile nodes, that way all of its attached tiles will snap to their own positions on the grid accordingly.
     private func printTiles() {
         print("");
         print("Tile Grid Contents:");
@@ -373,5 +468,13 @@ class GameScene: SKScene {
         
         if (current_link_dir == .right_down || current_link_dir == .right_up) {return .right};
         return current_link_dir;
+    }
+    
+    private func cleanPlayerLine() {
+        for link in player_line_list {
+            link.removeFromParent();
+        }
+        
+        player_line_list.removeAll();
     }
 }
