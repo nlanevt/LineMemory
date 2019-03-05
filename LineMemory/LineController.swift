@@ -13,11 +13,11 @@ import GameplayKit
 class LineController {
     private var grid_width = 8;
     private var grid_height = 8;
-    private var ai_link_list = [Link]();
+    private var ai_link_list = [Link?]();
     private var turns = [direction]();
     private var grid = [[Tile]]();
     private var run_time:TimeInterval!;
-    
+    private var line_code:Int64 = 0; // Manages accidental overlapping of a new line and previous line animations.
     
     init(grid_width: Int, grid_height: Int, grid: [[Tile]]) {
         self.grid_width = grid_width;
@@ -26,21 +26,26 @@ class LineController {
     }
     
     public func generateLine(turn_count: Int, completion: @escaping ()->Void) -> [CGPoint] {
+        cleanLine();
         var line_list = createLine(turn_count: turn_count);
         while (line_list == nil) {line_list = createLine(turn_count: turn_count)}
         
         if (line_list != nil) {
             for i in 0..<line_list!.count {
-                print("\(line_list![i])")
+                //print("\(line_list![i])")
             }
         }
         
-        cleanLine();
         run_time = 0.0;
+        line_code = line_code + 1;
         
-        animateLineCreation(line_list: line_list!, iterator: 0, completion: {
+        print("Generate Line: \(line_list?.count)");
+        
+        animateLineCreation(line_list: line_list!, iterator: 0, code: line_code, completion: {
             completion();
         });
+        
+        
         
         return line_list!;
     }
@@ -193,7 +198,7 @@ class LineController {
         return turns;
     }
     
-    public func getLinkListOfLastLine() -> [Link] {
+    public func getLinkListOfLastLine() -> [Link?] {
         return ai_link_list;
     }
     
@@ -202,9 +207,13 @@ class LineController {
      * to the grid.
      * This method must be tweaked to ensure proper creation and dissapation of the line
      */
-    private func animateLineCreation(line_list: [CGPoint], iterator: Int, completion: @escaping ()->Void) {
+    private func animateLineCreation(line_list: [CGPoint], iterator: Int, code: Int64, completion: @escaping ()->Void) {
+        // This occurs when you pause the game and the previous line hasn't created new animations yet, but then starts to, which causes those animations to run on the new line, rather than the old one which got deleted. This phenomenon occurs for example when you pause the game while a line is still creating on the screen; once you unpause the game, that old line's dissipation method will still be called, but it will be called on the new line that was just made.
+        if (code != line_code) {return};
+        
         if (iterator >= line_list.count) {
-            animateLineDissipation(iterator: 0, completion: completion);
+            
+            animateLineDissipation(iterator: 0, code: code, completion: completion);
             return;
         }
         
@@ -225,10 +234,10 @@ class LineController {
             let previous_tile = grid[Int(prev_point.y)][Int(prev_point.x)];
             let dir = new_tile.getDirectionFrom(tile: previous_tile);
             
-            let previous_link_dir = ai_link_list.last!.getDirection();
-            let new_dir_for_previous_link = compareDirections(dirA: previous_link_dir, dirB: dir);
+            let previous_link_dir = ai_link_list.last!?.getDirection();
+            let new_dir_for_previous_link = compareDirections(dirA: previous_link_dir!, dirB: dir);
             
-            ai_link_list.last?.setDirection(direction: new_dir_for_previous_link);
+            ai_link_list.last?!.setDirection(direction: new_dir_for_previous_link);
             
             let new_link = new_tile.addLink(direction: dir)
             ai_link_list.append(new_link);
@@ -236,19 +245,19 @@ class LineController {
             if (iterator == line_list.count-1) {
                 let last_turn = turns.last;
                 let final_dir = compareDirections(dirA: dir, dirB: last_turn!);
-                ai_link_list.last?.setDirection(direction: final_dir);
+                ai_link_list.last?!.setDirection(direction: final_dir);
                 //print("\(last_turn), \(final_dir)");
             }
         }
         let iteration_increase = iterator + 1;
         
         new_tile.run(creation_action, completion:{
-            self.animateLineCreation(line_list: line_list, iterator: iteration_increase, completion: completion);
+            self.animateLineCreation(line_list: line_list, iterator: iteration_increase, code: code, completion: completion);
         })
     }
     
-    // line_list not really used here. Should be removed.
-    private func animateLineDissipation(iterator: Int, completion: @escaping ()->Void) {
+    private func animateLineDissipation(iterator: Int, code: Int64, completion: @escaping ()->Void) {
+        if (code != line_code) {return};
         if (iterator >= ai_link_list.count) {
             completion();
             return;
@@ -259,10 +268,9 @@ class LineController {
         
         let iteration_increase = iterator + 1;
         
-        ai_link_list[iterator].run(dissipation_action, completion:{
-            self.animateLineDissipation(iterator: iteration_increase, completion: completion)
+        ai_link_list[iterator]?.run(dissipation_action, completion:{
+            self.animateLineDissipation(iterator: iteration_increase, code: code, completion: completion)
         });
-        
     }
     
     private func getRandomPoint() -> CGPoint {
@@ -468,13 +476,17 @@ class LineController {
         return current_link_dir;
     }
     
-    private func cleanLine() {
-        for link in ai_link_list {
-            link.removeFromParent();
+    public func cleanLine() {
+        for i in 0 ..< ai_link_list.count {
+            ai_link_list[i]?.removeFromParent()
+            ai_link_list[i]?.removeAllActions();
+            ai_link_list[i] = nil;
+            
         }
         
         ai_link_list.removeAll();
-        //turns.removeAll();
+        
+        turns.removeAll();
     }
 }
 

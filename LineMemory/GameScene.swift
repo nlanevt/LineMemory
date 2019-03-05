@@ -40,11 +40,13 @@ class GameScene: SKScene {
     private var lives_label = SKLabelNode(); // temporary label. will be replaced by sprite images.
     
     private var player_line_list = [Link]();
+    private var max_line_limit = 1000;
     private var ai_line_points = [CGPoint]();
     private var round_started = false;
     private var player_go = false;
-    private var score = Int64(0);
+    private var score:Int64 = 0;
     private var player_lives = 5;
+    private var is_destroying_line = false;
     
     public var grid = [[Tile]]();
     private var grid_height = 10;
@@ -60,7 +62,12 @@ class GameScene: SKScene {
     private var timer_blocker_left = SKSpriteNode();
     private var timer_blocker_right = SKSpriteNode();
     
-    private var max_line_limit = 1000;
+    private var pause_button = SKSpriteNode();
+    private var pause_button_grid = SKSpriteNode();
+    private var pauseButtonTexture:SKTexture = SKTexture.init(imageNamed: "pauseButton");
+    private var pauseButtonAnimationTexture:SKTexture = SKTexture.init(imageNamed: "pauseButtonAnimation");
+    
+    public var view_controller:GameViewController!;
     
     override func sceneDidLoad() {
         self.backgroundColor = SKColor.black;
@@ -74,6 +81,8 @@ class GameScene: SKScene {
         level_label = self.childNode(withName: "Level") as! SKLabelNode;
         rounds_label = self.childNode(withName: "RoundsLeft") as! SKLabelNode; // temporary
         lives_label = self.childNode(withName: "Lives") as! SKLabelNode;
+        pause_button = self.childNode(withName: "PauseButton") as! SKSpriteNode;
+        pause_button_grid = self.childNode(withName: "PauseButtonGrid") as! SKSpriteNode;
         
         grid.removeAll();
         
@@ -107,7 +116,26 @@ class GameScene: SKScene {
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-       if (player_go && player_line_list.isEmpty) {
+        print("touches began");
+        if (isPaused) {return}
+        
+        for touch in touches {
+            let location = touch.location(in: self);
+            if (player_go && player_line_list.isEmpty) {
+                let tile = findTile(location: location);
+                if (tile != nil) {
+                    player_line_list.append((tile?.addLink(direction: .none))!);
+                }
+            }
+            
+            if (!isPaused && pause_button_grid.contains(location))
+            {
+                pauseGame()
+            }
+            
+        }
+        
+      /* if (player_go && player_line_list.isEmpty) {
             for touch in touches {
                 let location = touch.location(in: self);
                 let tile = findTile(location: location);
@@ -115,10 +143,15 @@ class GameScene: SKScene {
                     player_line_list.append((tile?.addLink(direction: .none))!);
                 }
             }
-        }
+        }*/
+        
+        // pause the game
+        
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if (isPaused) {return}
+        
         if (player_go && !player_line_list.isEmpty) {
             if (player_line_list.count >= max_line_limit) {endRound(round_won: false)}
             
@@ -149,12 +182,20 @@ class GameScene: SKScene {
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if (player_go) {
+        // Compares the player and AI line if the line list is not empty.
+        // No comparison will occur if no line has been made.
+        print("touches ended");
+        if (isPaused) {return}
+        
+        if (player_go && !player_line_list.isEmpty) {
+            
+            // Compare their list sizes.
             if (player_line_list.count != ai_line_points.count) {
                 endRound(round_won: false);
                 return;
             }
             
+            // Compare each point individually.
             for i in 0 ..< player_line_list.count {
                 if (player_line_list[i].parent != grid[Int(ai_line_points[i].y)][Int(ai_line_points[i].x)]) {
                     endRound(round_won: false);
@@ -162,6 +203,7 @@ class GameScene: SKScene {
                 }
             }
             
+            // If none of the above happen, then you won the round.
             endRound(round_won: true);
         }
     }
@@ -181,6 +223,7 @@ class GameScene: SKScene {
         cleanPlayerLine(); // Removes nodes from the scene. clears up memory.
         
         ai_line_points.removeAll();
+        
         // Create AI Line
         ai_line_points = line_controller.generateLine(turn_count: level_controller.getTurns(), completion: {
             self.startTimer();
@@ -191,25 +234,8 @@ class GameScene: SKScene {
     }
     
     private func endRound(round_won: Bool) {
-        
-        /*var amount = 0
-        let starting_score = score;
-        
-        for tile in list {
-            if (!tile.isStartTile()) {
-                amount = amount + tile.getValue();
-            }
-        }
-        
-        score = score + amount;
-        //print("score: \(score)");
-        
-        self.animateSum(starting_value: Int64(starting_score), amount: Int64(amount), label: player_score_label, completion: {})
-
-        self.dissipateLine(forward: true, completion: {
-            self.startRound();
-        })*/
-        if (player_go == false || round_started == false) {return}
+        print("end round");
+        if (!player_go || !round_started) {return}
         
         round_started = false;
         player_go = false;
@@ -229,25 +255,27 @@ class GameScene: SKScene {
             if (level_decreases) {
                 setRoundsLeftDisplay();
                 setLevelDisplay();
+                let reduction_amount = level_controller.getScoreReduction();
+                let starting_score = score;
+                score = score - reduction_amount;
+                self.animateSum(starting_value: starting_score, amount: -reduction_amount, label: player_score_label, completion: {})
             }
             
             return;
         }
-        
-        
         
         self.animatePlayerLineDissipation(iterator: 0, completion: {
             self.startRound();
         })
         
         // Set and animate the score.
-        let amount = Int64(player_line_list.count);
+        let amount = Int64(player_line_list.count)*5;
         let starting_score = score;
         score = score + amount;
         self.animateSum(starting_value: starting_score, amount: amount, label: player_score_label, completion: {});
         
         // Increase the level if enough rounds have been won.
-        let level_increases = level_controller.roundWon();
+        let level_increases = level_controller.roundWon(by_amount: amount);
         setRoundsLeftDisplay();
         if (level_increases) {
             // Do things to congratulate player
@@ -255,10 +283,6 @@ class GameScene: SKScene {
             setLivesDisplay();
             setLevelDisplay();
         }
-        
-        
-        
-        
     }
     
     private func setLivesDisplay() {
@@ -278,8 +302,10 @@ class GameScene: SKScene {
     // Animate the timer nodes.
     // This animation is subject to change
     private func startTimer() {
-        timer_blocker_left.run(SKAction.moveTo(x: -80.0, duration: self.line_controller.getRunTime()));
-        timer_blocker_right.run(SKAction.moveTo(x: 80.0, duration: self.line_controller.getRunTime()), completion: {
+        // For earlier levels, the timer is not as intense; as the levels increase, the timer intensifies.
+        let run_time = self.line_controller.getRunTime() * self.level_controller.getTimerMultiplier();
+        timer_blocker_left.run(SKAction.moveTo(x: -80.0, duration: run_time));
+        timer_blocker_right.run(SKAction.moveTo(x: 80.0, duration: run_time), completion: {
             self.endRound(round_won: false);
         })
     }
@@ -294,14 +320,20 @@ class GameScene: SKScene {
     
     private func animateSum(starting_value: Int64, amount: Int64, label: SKLabelNode, completion: @escaping ()->Void) {
         print("amount: \(amount), \(Int(amount))");
+        
         var score_counter = starting_value;
-        let iterator:Int64 = amount > 0 ? 1 : -1;
+        var iterator:Int64 = 0;
+        
+        if (amount > 0) {iterator = 1}
+        else if (amount < 0) {iterator = -1}
+        else {iterator = 0}
+        
         let waitAction = SKAction.wait(forDuration: 0.005);
         let increaseScoreAction = SKAction.run({
             label.fontColor = UIColor.yellow;
             score_counter = score_counter + iterator;
             label.text = "\(score_counter)";
-        })
+        });
         
         let repeatScoreIncreaseAction = SKAction.repeat(SKAction.sequence([increaseScoreAction, waitAction]), count: abs(Int(amount)));
         
@@ -327,19 +359,31 @@ class GameScene: SKScene {
     }
     
     private func animatePlayerLineDestruction(iterator: Int, completion: @escaping ()->Void) {
-
-        if (iterator < 0) {
+        print("destroy player line: \(player_line_list.count)");
+        if (player_line_list.isEmpty) {
             completion();
             return;
         }
         
-        let dissipation_action = SKAction.fadeOut(withDuration: 0.1);
+        is_destroying_line = true;
         
-        let iteration_increase = iterator - 1;
-        
-        player_line_list[iterator].run(dissipation_action, completion:{
-            self.animatePlayerLineDestruction(iterator: iteration_increase, completion: completion)
-        });
+        var wait_duration = 0.0;
+        while (!player_line_list.isEmpty) {
+            let index = Int(arc4random_uniform(UInt32(player_line_list.count)));
+            let link = player_line_list.remove(at: index);
+            let wait_action = SKAction.wait(forDuration: wait_duration);
+            
+            if (player_line_list.isEmpty) {
+                link.run(SKAction.sequence([wait_action, SKAction.fadeOut(withDuration: 0.25)]), completion: {
+                    self.is_destroying_line = false;
+                    completion();
+                });
+            }
+            else {
+               link.run(SKAction.sequence([wait_action, SKAction.fadeOut(withDuration: 0.25)]));
+            }
+            wait_duration = wait_duration + 0.05;
+        }
     }
     
     // Make sure to do this before releasing the tiles attached tile nodes, that way all of its attached tiles will snap to their own positions on the grid accordingly.
@@ -473,8 +517,29 @@ class GameScene: SKScene {
     private func cleanPlayerLine() {
         for link in player_line_list {
             link.removeFromParent();
+            link.removeAllActions();
         }
         
         player_line_list.removeAll();
+    }
+    
+    private func pauseGame()
+    {
+        if (self.isPaused == false && !is_destroying_line && player_line_list.isEmpty) {
+            print("Pause Game");
+            pause_button.run(SKAction.sequence([SKAction.setTexture(SKTexture(imageNamed: "PauseButtonPressed")), SKAction.wait(forDuration: 0.25)]), completion: {
+                //self.isPaused = true;
+                self.view_controller.showPauseView();
+                self.pause_button.texture = SKTexture(imageNamed: "PauseButton");
+            });
+        }
+    }
+    
+    public func refreshRound() {
+        print("refresh");
+        if (isPaused) {return};
+        cleanPlayerLine();
+        resetTimer();
+        startRound();
     }
 }
