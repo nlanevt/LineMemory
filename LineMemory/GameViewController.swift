@@ -42,6 +42,8 @@ class GameViewController: UIViewController {
         PauseView.isHidden = true;
         PauseView.alpha = 0.0;
         
+        print("highest Score: \(menu_view_controller.getHighestScore()), highest level: \(menu_view_controller.getHighestLevel())");
+        
         // Load 'GameScene.sks' as a GKScene. This provides gameplay related content
         // including entities and graphs.
         if let scene = GKScene(fileNamed: "GameScene") {

@@ -50,12 +50,12 @@ class GameScene: SKScene {
     
     public var grid = [[Tile]]();
     private var grid_height = 10;
-    private var grid_width = 8;
+    private var grid_width = 7;
     private var grid_center:CGFloat = -64.0;
     
-    private var x_grid_pivot:CGFloat = -133;
-    private var y_grid_pivot:CGFloat = 128;
-    private var tile_size = CGSize(width: 38.0, height: 38.0);
+    private var x_grid_pivot:CGFloat = -135;
+    private var y_grid_pivot:CGFloat = 195;
+    private var tile_size = CGSize(width: 45.0, height: 45.0);
     private var tile_zPosition:CGFloat = 0.0;
     
     private var timer_node = SKSpriteNode();
@@ -283,6 +283,28 @@ class GameScene: SKScene {
             setLivesDisplay();
             setLevelDisplay();
         }
+        
+        setScoreData();
+    }
+    
+    private func setScoreData() {
+        if (score > menu_view_controller.getHighestScore()) {
+            menu_view_controller.setNewHighScore(new_high_score: score);
+        }
+        
+        if (level_controller.getCurrentLevel() > menu_view_controller.getHighestLevel()) {
+            menu_view_controller.setNewHighestLevel(new_highest_level: Int(level_controller.getCurrentLevel()));
+        }
+        
+        if (level_controller.getCurrentLevel() == level_controller.getMaximumLevel()) {
+            // Game Won!!!
+            // Do stuff to show game was won.
+            menu_view_controller.playerBeatGame(did_player_beat_game: true);
+        }
+        
+        menu_view_controller.deleteCoreData();
+        menu_view_controller.save_data();
+        menu_view_controller.loadScores();
     }
     
     private func setLivesDisplay() {

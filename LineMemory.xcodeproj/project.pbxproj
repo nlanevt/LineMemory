@@ -22,6 +22,8 @@
 		97E58D3E21E5919F003C95E2 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E58D3A21E5919E003C95E2 /* MenuViewController.swift */; };
 		97E58D4021E5919F003C95E2 /* Tile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E58D3C21E5919F003C95E2 /* Tile.swift */; };
 		97E58D4121E5919F003C95E2 /* LevelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E58D3D21E5919F003C95E2 /* LevelController.swift */; };
+		97FA2E5C222F64C10093CDE6 /* RixVideoGame-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 97FA2E5B222F64C10093CDE6 /* RixVideoGame-Bold.ttf */; };
+		97FA2E5E222F65B00093CDE6 /* manaspc.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 97FA2E5D222F65B00093CDE6 /* manaspc.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,6 +65,8 @@
 		97E58D3A21E5919E003C95E2 /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		97E58D3C21E5919F003C95E2 /* Tile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tile.swift; sourceTree = "<group>"; };
 		97E58D3D21E5919F003C95E2 /* LevelController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelController.swift; sourceTree = "<group>"; };
+		97FA2E5B222F64C10093CDE6 /* RixVideoGame-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "RixVideoGame-Bold.ttf"; sourceTree = "<group>"; };
+		97FA2E5D222F65B00093CDE6 /* manaspc.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = manaspc.ttf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,6 +117,7 @@
 		97E58D0521E59068003C95E2 /* LineMemory */ = {
 			isa = PBXGroup;
 			children = (
+				97FA2E5A222F647F0093CDE6 /* Font */,
 				97E58D3D21E5919F003C95E2 /* LevelController.swift */,
 				97E58D3A21E5919E003C95E2 /* MenuViewController.swift */,
 				97E58D3C21E5919F003C95E2 /* Tile.swift */,
@@ -147,6 +152,15 @@
 				97E58D2E21E5906D003C95E2 /* Info.plist */,
 			);
 			path = LineMemoryUITests;
+			sourceTree = "<group>";
+		};
+		97FA2E5A222F647F0093CDE6 /* Font */ = {
+			isa = PBXGroup;
+			children = (
+				97FA2E5D222F65B00093CDE6 /* manaspc.ttf */,
+				97FA2E5B222F64C10093CDE6 /* RixVideoGame-Bold.ttf */,
+			);
+			path = Font;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -256,8 +270,10 @@
 				97E58D1221E59069003C95E2 /* Main.storyboard in Resources */,
 				97E58D0921E59069003C95E2 /* GameScene.sks in Resources */,
 				97E58D1421E5906C003C95E2 /* Assets.xcassets in Resources */,
+				97FA2E5C222F64C10093CDE6 /* RixVideoGame-Bold.ttf in Resources */,
 				97E58D1721E5906C003C95E2 /* LaunchScreen.storyboard in Resources */,
 				97E58D0B21E59069003C95E2 /* Actions.sks in Resources */,
+				97FA2E5E222F65B00093CDE6 /* manaspc.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
