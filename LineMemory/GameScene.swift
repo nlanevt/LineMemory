@@ -225,7 +225,9 @@ class GameScene: SKScene {
         ai_line_points.removeAll();
         
         // Create AI Line
-        ai_line_points = line_controller.generateLine(turn_count: level_controller.getTurns(), completion: {
+        let turns = level_controller.getTurns();
+        print("start round turns: \(turns)");
+        ai_line_points = line_controller.generateLine(turn_count: turns, completion: {
             self.startTimer();
             self.player_go = true;
         });
@@ -275,6 +277,7 @@ class GameScene: SKScene {
         self.animateSum(starting_value: starting_score, amount: amount, label: player_score_label, completion: {});
         
         // Increase the level if enough rounds have been won.
+        // Calling RoundWon() also increases the difficulty within the level.
         let level_increases = level_controller.roundWon(by_amount: amount);
         setRoundsLeftDisplay();
         if (level_increases) {
