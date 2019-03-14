@@ -225,8 +225,9 @@ class GameScene: SKScene {
         ai_line_points.removeAll();
         
         // Create AI Line
-        let turns = level_controller.getTurns();
-        print("start round turns: \(turns)");
+        var turns = level_controller.getTurns();
+        //turns = ;
+        print("level \(level_controller.getCurrentLevel()), round \(level_controller.getRoundsLeft()), turns: \(turns)");
         ai_line_points = line_controller.generateLine(turn_count: turns, completion: {
             self.startTimer();
             self.player_go = true;
@@ -434,7 +435,7 @@ class GameScene: SKScene {
         while (true) {
             let mid_c = (c_lowerbound + c_upperbound) / 2;
             let mid_r = (r_lowerbound + r_upperbound) / 2;
-            //print("check at: \(mid_r), \(mid_c) with [\(r_lowerbound), \(r_upperbound)] and [\(c_lowerbound), \(c_upperbound)]")
+
             if (grid[mid_r][mid_c].contains(location)) {
                 return grid[mid_r][mid_c];
             }
@@ -548,17 +549,16 @@ class GameScene: SKScene {
         player_line_list.removeAll();
     }
     
-    private func pauseGame()
-    {
-        if (self.isPaused == false && !is_destroying_line && player_line_list.isEmpty) {
-            print("Pause Game");
-            pause_button.run(SKAction.sequence([SKAction.setTexture(SKTexture(imageNamed: "PauseButtonPressed")), SKAction.wait(forDuration: 0.25)]), completion: {
-                //self.isPaused = true;
-                self.view_controller.showPauseView();
-                self.pause_button.texture = SKTexture(imageNamed: "PauseButton");
-            });
-        }
+    private func pauseGame() {
+    if (self.isPaused == false && !is_destroying_line && player_line_list.isEmpty) {
+        print("Pause Game");
+        pause_button.run(SKAction.sequence([SKAction.setTexture(SKTexture(imageNamed: "PauseButtonPressed")), SKAction.wait(forDuration: 0.25)]), completion: {
+            //self.isPaused = true;
+            self.view_controller.showPauseView();
+            self.pause_button.texture = SKTexture(imageNamed: "PauseButton");
+        });
     }
+}
     
     public func refreshRound() {
         print("refresh");
