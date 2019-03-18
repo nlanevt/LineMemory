@@ -134,19 +134,6 @@ class GameScene: SKScene {
             }
             
         }
-        
-      /* if (player_go && player_line_list.isEmpty) {
-            for touch in touches {
-                let location = touch.location(in: self);
-                let tile = findTile(location: location);
-                if (tile != nil) {
-                    player_line_list.append((tile?.addLink(direction: .none))!);
-                }
-            }
-        }*/
-        
-        // pause the game
-        
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {

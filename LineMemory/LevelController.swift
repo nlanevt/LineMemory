@@ -21,6 +21,7 @@ class LevelController {
     private var score_reduction:Int64 = 0;
     private var level_score:Int64 = 0;
     private var max_level = 256;
+    private var RoundShrinkFrames:[SKTexture] = [];
     
     init(game_scene: GameScene, level: Int64) {
         self.game_scene = game_scene;
@@ -28,6 +29,7 @@ class LevelController {
         rounds_won_counter = 0;
         level_score = 0;
         lives_counter = lives_default;
+        RoundShrinkFrames = buildAnimation(textureAtlasName: "RoundShrink");
     }
     
     public func getCurrentLevel() -> Int64 {
@@ -701,5 +703,22 @@ class LevelController {
         }
         rounds_won_counter = 0;
         level_score = 0;
+    }
+    
+    public func createRoundSprites() {
+        
+    }
+    
+    private func buildAnimation(textureAtlasName: String) -> [SKTexture]
+    {
+        let atlas = SKTextureAtlas(named: textureAtlasName);
+        var frames: [SKTexture] = [];
+        let numImages = atlas.textureNames.count
+        for i in 1...numImages {
+            let name = "\(textureAtlasName)\(i)"
+            frames.append(atlas.textureNamed(name))
+        }
+        
+        return frames;
     }
 }
