@@ -10,6 +10,8 @@
 		9738CF9E2212579200AC9696 /* Link.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9738CF9D2212579200AC9696 /* Link.swift */; };
 		9738CFA022139F9B00AC9696 /* LineController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9738CF9F22139F9B00AC9696 /* LineController.swift */; };
 		97E140F1223F20D000B17098 /* Data.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 97E140EF223F20D000B17098 /* Data.xcdatamodeld */; };
+		97E140F32241D5AD00B17098 /* MenuScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 97E140F22241D5AD00B17098 /* MenuScene.sks */; };
+		97E140F72241D61600B17098 /* MenuScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E140F62241D61600B17098 /* MenuScene.swift */; };
 		97E58D0721E59069003C95E2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E58D0621E59068003C95E2 /* AppDelegate.swift */; };
 		97E58D0921E59069003C95E2 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 97E58D0821E59069003C95E2 /* GameScene.sks */; };
 		97E58D0B21E59069003C95E2 /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 97E58D0A21E59069003C95E2 /* Actions.sks */; };
@@ -48,6 +50,8 @@
 		9738CF9D2212579200AC9696 /* Link.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Link.swift; sourceTree = "<group>"; };
 		9738CF9F22139F9B00AC9696 /* LineController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineController.swift; sourceTree = "<group>"; };
 		97E140F0223F20D000B17098 /* Data.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Data.xcdatamodel; sourceTree = "<group>"; };
+		97E140F22241D5AD00B17098 /* MenuScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MenuScene.sks; sourceTree = "<group>"; };
+		97E140F62241D61600B17098 /* MenuScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuScene.swift; sourceTree = "<group>"; };
 		97E58D0321E59068003C95E2 /* LineMemory.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LineMemory.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		97E58D0621E59068003C95E2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		97E58D0821E59069003C95E2 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -135,6 +139,8 @@
 				9738CF9D2212579200AC9696 /* Link.swift */,
 				9738CF9F22139F9B00AC9696 /* LineController.swift */,
 				97E140EF223F20D000B17098 /* Data.xcdatamodeld */,
+				97E140F22241D5AD00B17098 /* MenuScene.sks */,
+				97E140F62241D61600B17098 /* MenuScene.swift */,
 			);
 			path = LineMemory;
 			sourceTree = "<group>";
@@ -277,6 +283,7 @@
 				97E58D1721E5906C003C95E2 /* LaunchScreen.storyboard in Resources */,
 				97E58D0B21E59069003C95E2 /* Actions.sks in Resources */,
 				97FA2E5E222F65B00093CDE6 /* manaspc.ttf in Resources */,
+				97E140F32241D5AD00B17098 /* MenuScene.sks in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -308,6 +315,7 @@
 				97E140F1223F20D000B17098 /* Data.xcdatamodeld in Sources */,
 				97E58D4021E5919F003C95E2 /* Tile.swift in Sources */,
 				97E58D0721E59069003C95E2 /* AppDelegate.swift in Sources */,
+				97E140F72241D61600B17098 /* MenuScene.swift in Sources */,
 				97E58D4121E5919F003C95E2 /* LevelController.swift in Sources */,
 				97E58D3E21E5919F003C95E2 /* MenuViewController.swift in Sources */,
 			);

@@ -35,6 +35,7 @@ class GameScene: SKScene {
     
     private var player_score_label = SKLabelNode();
     private var highest_score_label = SKLabelNode();
+    private var highest_level_label = SKLabelNode();
     private var level_label = SKLabelNode();
     private var rounds_label = SKLabelNode(); // temporary label. will be replaced by sprite images.
     private var lives_label = SKLabelNode(); // temporary label. will be replaced by sprite images.
@@ -78,6 +79,7 @@ class GameScene: SKScene {
         
         player_score_label = self.childNode(withName: "Score") as! SKLabelNode;
         highest_score_label = self.childNode(withName: "HighestScore") as! SKLabelNode;
+        highest_level_label = self.childNode(withName: "HighestLevel") as! SKLabelNode;
         level_label = self.childNode(withName: "Level") as! SKLabelNode;
         rounds_label = self.childNode(withName: "RoundsLeft") as! SKLabelNode; // temporary
         lives_label = self.childNode(withName: "Lives") as! SKLabelNode;
@@ -103,15 +105,14 @@ class GameScene: SKScene {
                 grid[r][c].setNeighbors(grid_width: grid_width, grid_height: grid_height);
             }
         }
-        
-        player_score_label = self.childNode(withName: "Score") as! SKLabelNode;
-        highest_score_label = self.childNode(withName: "HighestScore") as! SKLabelNode;
+
         // need to set score variable according to CORE Data database
         line_controller = LineController(grid_width: grid_width, grid_height: grid_height, grid: grid);
         level_controller = LevelController(game_scene: self, level: 1);
         setLevelDisplay();
         setRoundsLeftDisplay()
         setLivesDisplay();
+        setHighScoreLabels();
         startRound();
     }
     
@@ -279,15 +280,24 @@ class GameScene: SKScene {
     }
     
     private func setScoreData() {
-        if (score > menu_view_controller.getHighestScore()) {
+        let highest_score = menu_view_controller.getHighestScore();
+        let highest_level = menu_view_controller.getHighestLevel();
+        let current_level = level_controller.getCurrentLevel();
+        let maximum_level = level_controller.getMaximumLevel();
+        
+        if (score <= highest_score && current_level <= highest_level && current_level != maximum_level) {
+            return;
+        }
+        
+        if (score > highest_score) {
             menu_view_controller.setNewHighScore(new_high_score: score);
         }
         
-        if (level_controller.getCurrentLevel() > menu_view_controller.getHighestLevel()) {
-            menu_view_controller.setNewHighestLevel(new_highest_level: Int(level_controller.getCurrentLevel()));
+        if (current_level > highest_level) {
+            menu_view_controller.setNewHighestLevel(new_highest_level: level_controller.getCurrentLevel());
         }
         
-        if (level_controller.getCurrentLevel() == level_controller.getMaximumLevel()) {
+        if (current_level == maximum_level) {
             // Game Won!!!
             // Do stuff to show game was won.
             menu_view_controller.playerBeatGame(did_player_beat_game: true);
@@ -296,6 +306,7 @@ class GameScene: SKScene {
         menu_view_controller.deleteCoreData();
         menu_view_controller.save_data();
         menu_view_controller.loadScores();
+        setHighScoreLabels();
     }
     
     private func setLivesDisplay() {
@@ -553,5 +564,10 @@ class GameScene: SKScene {
         cleanPlayerLine();
         resetTimer();
         startRound();
+    }
+    
+    private func setHighScoreLabels() {
+        highest_score_label.text = "\(menu_view_controller.getHighestScore())";
+        highest_level_label.text = "\(menu_view_controller.getHighestLevel())";
     }
 }

@@ -174,7 +174,7 @@ class MenuViewController: UIViewController {
         }
     }
     
-    public func save(highest_score: Int64, highest_level: Int64) {
+    private func save(highest_score: Int64, highest_level: Int64) {
         
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {return}
         
