@@ -14,6 +14,7 @@ import GameKit
 
 
 var menu_view_controller:MenuViewController!;
+var animation_frames_manager = AnimationFramesHelper();
 
 class MenuViewController: UIViewController {
     

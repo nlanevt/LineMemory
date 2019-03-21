@@ -30,6 +30,8 @@ enum direction {
 
 class GameScene: SKScene {
     
+    public var view_controller:GameViewController!;
+    
     private var level_controller:LevelController!;
     private var line_controller:LineController!;
     
@@ -68,7 +70,8 @@ class GameScene: SKScene {
     private var pauseButtonTexture:SKTexture = SKTexture.init(imageNamed: "pauseButton");
     private var pauseButtonAnimationTexture:SKTexture = SKTexture.init(imageNamed: "pauseButtonAnimation");
     
-    public var view_controller:GameViewController!;
+    private var round_nodes_array = [SKSpriteNode]();
+    private var life_nodes_array = [SKSpriteNode]();
     
     override func sceneDidLoad() {
         self.backgroundColor = SKColor.black;
@@ -113,6 +116,8 @@ class GameScene: SKScene {
         setRoundsLeftDisplay()
         setLivesDisplay();
         setHighScoreLabels();
+        createRoundsAnimation();
+        createLivesAnimation();
         startRound();
     }
     
@@ -200,7 +205,6 @@ class GameScene: SKScene {
         print("touchesCancelled");
     }
     
-    
     override func update(_ currentTime: TimeInterval) {
 
     }
@@ -209,7 +213,6 @@ class GameScene: SKScene {
         round_started = true;
         
         cleanPlayerLine(); // Removes nodes from the scene. clears up memory.
-        
         ai_line_points.removeAll();
         
         // Create AI Line
@@ -242,14 +245,19 @@ class GameScene: SKScene {
             let level_decreases = level_controller.roundLost();
             
             setLivesDisplay();
+            removeLifeAnimation();
             
             if (level_decreases) {
                 setRoundsLeftDisplay();
                 setLevelDisplay();
+                //MARK: Remove all rounds
+                //MARK: Re-create all rounds
+                createRoundsAnimation();
                 let reduction_amount = level_controller.getScoreReduction();
                 let starting_score = score;
                 score = score - reduction_amount;
-                self.animateSum(starting_value: starting_score, amount: -reduction_amount, label: player_score_label, completion: {})
+                self.animateSum(starting_value: starting_score, amount: -reduction_amount, label: player_score_label, completion: {});
+                createLivesAnimation();
             }
             
             return;
@@ -269,11 +277,15 @@ class GameScene: SKScene {
         // Calling RoundWon() also increases the difficulty within the level.
         let level_increases = level_controller.roundWon(by_amount: amount);
         setRoundsLeftDisplay();
+        removeRoundAnimation();
+        
         if (level_increases) {
             // Do things to congratulate player
             // Do animations to increase level (such as a flash for example)
             setLivesDisplay();
             setLevelDisplay();
+            createRoundsAnimation();
+            createLivesAnimation();
         }
         
         setScoreData();
@@ -333,8 +345,7 @@ class GameScene: SKScene {
             self.endRound(round_won: false);
         })
     }
-    
-    
+
     private func resetTimer() {
         timer_blocker_left.removeAllActions();
         timer_blocker_right.removeAllActions();
@@ -538,6 +549,7 @@ class GameScene: SKScene {
         return current_link_dir;
     }
     
+    // MARK: Needs to be fixed due to current bug where line nodes won't permenantly delete.
     private func cleanPlayerLine() {
         for link in player_line_list {
             link.removeFromParent();
@@ -569,5 +581,79 @@ class GameScene: SKScene {
     private func setHighScoreLabels() {
         highest_score_label.text = "\(menu_view_controller.getHighestScore())";
         highest_level_label.text = "\(menu_view_controller.getHighestLevel())";
+    }
+    
+    private func createRoundsAnimation() {
+        
+        if (round_nodes_array.count > 0) {
+            for round in round_nodes_array {
+                round.removeFromParent();
+                round.removeAllActions();
+            }
+            round_nodes_array.removeAll();
+        }
+        
+        let start_position = CGPoint(x: -145.0, y: 240.0);
+        let round_node_size = CGSize(width: 8, height: 21);
+        let round_node_z:CGFloat = 1.0;
+        let rounds = level_controller.getRoundsLeft()
+        var wait_time:TimeInterval = 0.0;
+        for i in 0 ..< rounds {
+            let round_node = SKSpriteNode(imageNamed: "Round");
+            //round_node.isHidden = true;
+            round_node.size = round_node_size;
+            round_node.position = CGPoint(x: start_position.x + CGFloat(1 + i*10), y: start_position.y)
+            round_node.zPosition = round_node_z;
+            round_nodes_array.append(round_node);
+            self.addChild(round_nodes_array[i]);
+            round_node.alpha = 0.0;
+            let actionSequence = SKAction.sequence([SKAction.wait(forDuration: wait_time), SKAction.unhide(), SKAction.fadeIn(withDuration: 0.5)])
+            round_node.run(actionSequence);
+            wait_time = wait_time + 0.2;
+        }
+    }
+    
+    private func removeRoundAnimation() {
+        let removalSequence = SKAction.sequence([SKAction.animate(with: animation_frames_manager.RoundShrinkFrames, timePerFrame: 0.05), SKAction.hide()])
+        var round_node = round_nodes_array.popLast();
+        round_node?.run(removalSequence, completion: {round_node?.removeFromParent(); round_node = nil});
+    }
+    
+    private func createLivesAnimation() {
+        if (life_nodes_array.count > 0) {
+            for round in life_nodes_array {
+                round.removeFromParent();
+                round.removeAllActions();
+            }
+            life_nodes_array.removeAll();
+        }
+        
+        let start_position = CGPoint(x: 100.0, y: 240.0);
+        let life_node_size = CGSize(width: 24, height: 24);
+        let life_node_z:CGFloat = 1.0;
+        let lives = level_controller.getLivesLeft();
+        var wait_time:TimeInterval = 0.0;
+        for i in 0 ..< lives {
+            let life_node = SKSpriteNode(imageNamed: "Life");
+            //life_node = true;
+            life_node.size = life_node_size;
+            life_node.position = CGPoint(x: start_position.x - CGFloat(1 + i*25), y: start_position.y)
+            life_node.zPosition = life_node_z;
+            life_nodes_array.append(life_node);
+            self.addChild(life_nodes_array[i]);
+            //var life_growth_frames = AnimationFramesManager?.lifeGrowFrames;
+            //let actionSequence = SKAction.sequence([SKAction.setTexture(growth_frames![0]), SKAction.wait(forDuration: wait_time), SKAction.unhide(), SKAction.animate(with: growth_frames!, timePerFrame: 0.01), SKAction.setTexture(ai_life_texture)])
+            life_node.alpha = 0.0;
+            let actionSequence = SKAction.sequence([SKAction.wait(forDuration: wait_time), SKAction.unhide(), SKAction.fadeIn(withDuration: 0.5)])
+            life_node.run(actionSequence);
+            wait_time = wait_time + 0.2;
+        }
+    }
+    
+    private func removeLifeAnimation() {
+        //let removalSequence = SKAction.sequence([SKAction.animate(with: animation_frames_manager.RoundShrinkFrames, timePerFrame: 0.05), SKAction.hide()])
+        let removalSequence = SKAction.sequence([SKAction.fadeOut(withDuration: 0.5), SKAction.hide()]);
+        var life_node = life_nodes_array.popLast();
+        life_node?.run(removalSequence, completion: {life_node?.removeFromParent(); life_node = nil});
     }
 }
