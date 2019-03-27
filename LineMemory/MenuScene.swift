@@ -14,5 +14,6 @@ import UIKit
 class MenuScene: SKScene, SKPhysicsContactDelegate {
     
     override func didMove(to view: SKView) {
+        
     }
 }

@@ -196,6 +196,12 @@ class GameScene: SKScene {
                 }
             }
             
+            if let last_turn = line_controller.getTurnsOfLastLine().last {
+                //player_line_list.last?.setDirection(direction: last_turn);
+                let final_direction = compareDirections(dirA: player_line_list[player_line_list.count-2].getDirection(), dirB: last_turn);
+                player_line_list.last?.setDirection(direction: final_direction)
+            }
+            
             // If none of the above happen, then you won the round.
             endRound(round_won: true);
         }
@@ -388,9 +394,13 @@ class GameScene: SKScene {
         
         let iteration_increase = iterator + 1;
         
-        player_line_list[iterator].run(dissipation_action, completion:{
+        /*player_line_list[iterator].run(dissipation_action, completion:{
             self.animatePlayerLineDissipation(iterator: iteration_increase, completion: completion)
-        });
+        });*/
+        
+        player_line_list[iterator].animateDissipation(completion: {
+            self.animatePlayerLineDissipation(iterator: iteration_increase, completion: completion)
+        })
     }
     
     private func animatePlayerLineDestruction(iterator: Int, completion: @escaping ()->Void) {
@@ -628,7 +638,7 @@ class GameScene: SKScene {
             life_nodes_array.removeAll();
         }
         
-        let start_position = CGPoint(x: 100.0, y: 240.0);
+        let start_position = CGPoint(x: 100.0, y: 242.0);
         let life_node_size = CGSize(width: 24, height: 24);
         let life_node_z:CGFloat = 1.0;
         let lives = level_controller.getLivesLeft();

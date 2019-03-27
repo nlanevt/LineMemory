@@ -17,7 +17,7 @@ class Link: SKSpriteNode {
     init(texture: SKTexture, size: CGSize, direction: direction) {
         self.direction = direction;
         super.init(texture: texture, color: .clear, size: size);
-        self.alpha = 0.5;
+        self.alpha = 0.75;
     }
     
     convenience init() {
@@ -40,40 +40,40 @@ class Link: SKSpriteNode {
         self.direction = direction;
         switch self.direction {
         case .left:
-            self.texture = SKTexture.init(imageNamed: "LinkCoverLeft");
+            self.texture = SKTexture.init(imageNamed: "LinkCoverLeft6");
             break;
         case .right:
-            self.texture = SKTexture.init(imageNamed: "LinkCoverRight");
+            self.texture = SKTexture.init(imageNamed: "LinkCoverRight6");
             break;
         case .up:
-            self.texture = SKTexture.init(imageNamed: "LinkCoverUp");
+            self.texture = SKTexture.init(imageNamed: "LinkCoverUp6");
             break;
         case .down:
-            self.texture = SKTexture.init(imageNamed: "LinkCoverDown");
+            self.texture = SKTexture.init(imageNamed: "LinkCoverDown6");
             break;
         case .left_up:
-            self.texture = SKTexture.init(imageNamed: "LinkCoverLeftUp");
+            self.texture = SKTexture.init(imageNamed: "LinkCoverLeftUp6");
             break;
         case .left_down:
-            self.texture = SKTexture.init(imageNamed: "LinkCoverLeftDown");
+            self.texture = SKTexture.init(imageNamed: "LinkCoverLeftDown6");
             break;
         case .right_up:
-            self.texture = SKTexture.init(imageNamed: "LinkCoverRightUp");
+            self.texture = SKTexture.init(imageNamed: "LinkCoverRightUp6");
             break;
         case .right_down:
-            self.texture = SKTexture.init(imageNamed: "LinkCoverRightDown");
+            self.texture = SKTexture.init(imageNamed: "LinkCoverRightDown6");
             break;
         case .up_left:
-            self.texture = SKTexture.init(imageNamed: "LinkCoverUpLeft");
+            self.texture = SKTexture.init(imageNamed: "LinkCoverUpLeft6");
             break;
         case .up_right:
-            self.texture = SKTexture.init(imageNamed: "LinkCoverUpRight");
+            self.texture = SKTexture.init(imageNamed: "LinkCoverUpRight6");
             break;
         case .down_left:
-            self.texture = SKTexture.init(imageNamed: "LinkCoverDownLeft");
+            self.texture = SKTexture.init(imageNamed: "LinkCoverDownLeft6");
             break;
         case .down_right:
-            self.texture = SKTexture.init(imageNamed: "LinkCoverDownRight");
+            self.texture = SKTexture.init(imageNamed: "LinkCoverDownRight6");
             break;
         case .none:
             self.texture = SKTexture.init(imageNamed: "LinkCoverHead");
@@ -81,6 +81,144 @@ class Link: SKSpriteNode {
         default:
             break;
         }
+    }
+    
+    public func animateCreation(completion: @escaping ()->Void) {
+        var animation_frames = [SKTexture]();
+        var texture_name = "";
+        self.texture = nil;
+        switch self.direction {
+        case .left:
+            animation_frames = animation_frames_manager.LinkCoverLeft;
+            texture_name = "LinkCoverLeft";
+            break;
+        case .right:
+            animation_frames = animation_frames_manager.LinkCoverRight;
+            texture_name = "LinkCoverRight";
+            break;
+        case .up:
+            animation_frames = animation_frames_manager.LinkCoverUp;
+            texture_name = "LinkCoverUp";
+            break;
+        case .down:
+            animation_frames = animation_frames_manager.LinkCoverDown;
+            texture_name = "LinkCoverDown";
+            break;
+        case .left_up:
+            animation_frames = animation_frames_manager.LinkCoverLeftUp;
+            texture_name = "LinkCoverLeftUp";
+            break;
+        case .left_down:
+            animation_frames = animation_frames_manager.LinkCoverLeftDown;
+            texture_name = "LinkCoverLeftDown";
+            break;
+        case .right_up:
+            animation_frames = animation_frames_manager.LinkCoverRightUp;
+            texture_name = "LinkCoverRightUp";
+            break;
+        case .right_down:
+            animation_frames = animation_frames_manager.LinkCoverRightDown;
+            texture_name = "LinkCoverRightDown";
+            break;
+        case .up_left:
+            animation_frames = animation_frames_manager.LinkCoverUpLeft;
+            texture_name = "LinkCoverUpLeft";
+            break;
+        case .up_right:
+            animation_frames = animation_frames_manager.LinkCoverUpRight;
+            texture_name = "LinkCoverUpRight";
+            break;
+        case .down_left:
+            animation_frames = animation_frames_manager.LinkCoverDownLeft;
+            texture_name = "LinkCoverDownLeft";
+            break;
+        case .down_right:
+            animation_frames = animation_frames_manager.LinkCoverDownRight;
+            texture_name = "LinkCoverDownRight";
+            break;
+        case .none:
+            animation_frames = animation_frames_manager.LinkCoverUp;
+            texture_name = "LinkCoverUp";
+            break;
+        default:
+            break;
+        }
+        
+        self.isHidden = false;
+        texture_name = texture_name + "\(SKTextureAtlas(named: texture_name).textureNames.count)";
+        
+        self.run(SKAction.sequence([SKAction.animate(with: animation_frames, timePerFrame: 0.02),SKAction.setTexture(SKTexture.init(imageNamed: texture_name))]), completion: {
+            completion();
+        })
+    }
+    
+    public func animateDissipation(completion: @escaping ()->Void) {
+        var animation_frames = [SKTexture]();
+        var texture_name = "";
+        //self.texture = nil;
+        switch self.direction {
+        case .left:
+            animation_frames = animation_frames_manager.LinkCoverLeftDissipation;
+            texture_name = "LinkCoverLeft";
+            break;
+        case .right:
+            animation_frames = animation_frames_manager.LinkCoverRightDissipation;
+            texture_name = "LinkCoverRight";
+            break;
+        case .up:
+            animation_frames = animation_frames_manager.LinkCoverUpDissipation;
+            texture_name = "LinkCoverUp";
+            break;
+        case .down:
+            animation_frames = animation_frames_manager.LinkCoverDownDissipation;
+            texture_name = "LinkCoverDown";
+            break;
+        case .left_up:
+            animation_frames = animation_frames_manager.LinkCoverLeftUpDissipation;
+            texture_name = "LinkCoverLeftUp";
+            break;
+        case .left_down:
+            animation_frames = animation_frames_manager.LinkCoverLeftDownDissipation;
+            texture_name = "LinkCoverLeftDown";
+            break;
+        case .right_up:
+            animation_frames = animation_frames_manager.LinkCoverRightUpDissipation;
+            texture_name = "LinkCoverRightUp";
+            break;
+        case .right_down:
+            animation_frames = animation_frames_manager.LinkCoverRightDownDissipation;
+            texture_name = "LinkCoverRightDown";
+            break;
+        case .up_left:
+            animation_frames = animation_frames_manager.LinkCoverUpLeftDissipation;
+            texture_name = "LinkCoverUpLeft";
+            break;
+        case .up_right:
+            animation_frames = animation_frames_manager.LinkCoverUpRightDissipation;
+            texture_name = "LinkCoverUpRight";
+            break;
+        case .down_left:
+            animation_frames = animation_frames_manager.LinkCoverDownLeftDissipation;
+            texture_name = "LinkCoverDownLeft";
+            break;
+        case .down_right:
+            animation_frames = animation_frames_manager.LinkCoverDownRightDissipation;
+            texture_name = "LinkCoverDownRight";
+            break;
+        case .none:
+            animation_frames = animation_frames_manager.LinkCoverUpDissipation;
+            texture_name = "LinkCoverUp";
+            break;
+        default:
+            break;
+        }
+        
+        //self.isHidden = false;
+        texture_name = texture_name + "\(SKTextureAtlas(named: texture_name).textureNames.count)";
+        
+        self.run(SKAction.sequence([SKAction.unhide(), SKAction.animate(with: animation_frames, timePerFrame: 0.02), SKAction.hide()]), completion: {
+            completion();
+        })
     }
     
     public func remove() {
