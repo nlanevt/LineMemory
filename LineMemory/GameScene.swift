@@ -198,7 +198,7 @@ class GameScene: SKScene {
             
             if let last_turn = line_controller.getTurnsOfLastLine().last {
                 //player_line_list.last?.setDirection(direction: last_turn);
-                let final_direction = compareDirections(dirA: player_line_list[player_line_list.count-2].getDirection(), dirB: last_turn);
+                let final_direction = last_turn//compareDirections(dirA: player_line_list[player_line_list.count-2].getDirection(), dirB: last_turn);
                 player_line_list.last?.setDirection(direction: final_direction)
             }
             
@@ -390,13 +390,7 @@ class GameScene: SKScene {
             return;
         }
         
-        let dissipation_action = SKAction.fadeOut(withDuration: 0.1);
-        
         let iteration_increase = iterator + 1;
-        
-        /*player_line_list[iterator].run(dissipation_action, completion:{
-            self.animatePlayerLineDissipation(iterator: iteration_increase, completion: completion)
-        });*/
         
         player_line_list[iterator].animateDissipation(completion: {
             self.animatePlayerLineDissipation(iterator: iteration_increase, completion: completion)

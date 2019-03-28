@@ -221,14 +221,17 @@ class LineController {
                 let new_dir_for_previous_link = compareDirections(dirA: previous_link_dir!, dirB: dir);
                 
                 ai_link_list.last?!.setDirection(direction: new_dir_for_previous_link);
+                //turns[turns.count-1] = new_dir_for_previous_link
                 
                 let new_link = new_tile.addLink(direction: dir)
                 ai_link_list.append(new_link);
+                
                 
                 if (iterator == line_list.count-1) {
                     let last_turn = turns.last;
                     let final_dir = compareDirections(dirA: dir, dirB: last_turn!);
                     ai_link_list.last?!.setDirection(direction: final_dir);
+                    turns[turns.count-1] = final_dir
                 }
             }
             ai_link_list[iterator]?.isHidden = true;
