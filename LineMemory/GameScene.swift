@@ -59,7 +59,7 @@ class GameScene: SKScene {
     private var x_grid_pivot:CGFloat = -135;
     private var y_grid_pivot:CGFloat = 195;
     private var tile_size = CGSize(width: 45.0, height: 45.0);
-    private var tile_zPosition:CGFloat = 0.0;
+    private var tile_zPosition:CGFloat = 0.5;
     
     private var timer_node = SKSpriteNode();
     private var timer_blocker_left = SKSpriteNode();
@@ -656,8 +656,9 @@ class GameScene: SKScene {
     
     private func removeLifeAnimation() {
         //let removalSequence = SKAction.sequence([SKAction.animate(with: animation_frames_manager.RoundShrinkFrames, timePerFrame: 0.05), SKAction.hide()])
-        let removalSequence = SKAction.sequence([SKAction.fadeOut(withDuration: 0.5), SKAction.hide()]);
+        //let removalSequence = SKAction.sequence([SKAction.fadeOut(withDuration: 0.5), SKAction.hide()]);
+        let removalAction = SKAction.sequence([SKAction.repeat(SKAction.sequence([SKAction.fadeAlpha(to: 0.1, duration: 0.2), SKAction.fadeAlpha(to: 0.5, duration: 0.2)]), count: 4), SKAction.fadeOut(withDuration: 0.2)]);
         var life_node = life_nodes_array.popLast();
-        life_node?.run(removalSequence, completion: {life_node?.removeFromParent(); life_node = nil});
+        life_node?.run(removalAction, completion: {life_node?.removeFromParent(); life_node = nil});
     }
 }
