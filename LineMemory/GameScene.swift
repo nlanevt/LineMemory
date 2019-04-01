@@ -31,7 +31,6 @@ enum direction {
 class GameScene: SKScene {
     
     public var view_controller:GameViewController!;
-    
     private var level_controller:LevelController!;
     private var line_controller:LineController!;
     
@@ -42,6 +41,9 @@ class GameScene: SKScene {
     private var level_display_label = SKLabelNode();
     private var rounds_label = SKLabelNode(); // temporary label. will be replaced by sprite images.
     private var lives_label = SKLabelNode(); // temporary label. will be replaced by sprite images.
+    private var gameWonA_label = SKLabelNode();
+    private var gameWonB_label = SKLabelNode();
+    private var return_home_button = SKLabelNode();
     
     private var player_line_list = [Link]();
     private var max_line_limit = 1000;
@@ -68,11 +70,14 @@ class GameScene: SKScene {
     
     private var pause_button = SKSpriteNode();
     private var pause_button_grid = SKSpriteNode();
-    private var pauseButtonTexture:SKTexture = SKTexture.init(imageNamed: "pauseButton");
-    private var pauseButtonAnimationTexture:SKTexture = SKTexture.init(imageNamed: "pauseButtonAnimation");
+    
+    private var refresh_button = SKSpriteNode();
+    private var refresh_button_grid = SKSpriteNode();
     
     private var round_nodes_array = [SKSpriteNode]();
     private var life_nodes_array = [SKSpriteNode]();
+    
+    private var game_won = false;
     
     override func sceneDidLoad() {
         self.backgroundColor = SKColor.black;
@@ -88,8 +93,15 @@ class GameScene: SKScene {
         level_display_label = self.childNode(withName: "lblLevel") as! SKLabelNode;
         rounds_label = self.childNode(withName: "RoundsLeft") as! SKLabelNode; // temporary
         lives_label = self.childNode(withName: "Lives") as! SKLabelNode;
+        
         pause_button = self.childNode(withName: "PauseButton") as! SKSpriteNode;
         pause_button_grid = self.childNode(withName: "PauseButtonGrid") as! SKSpriteNode;
+        
+        refresh_button = self.childNode(withName: "RefreshButton") as! SKSpriteNode;
+        refresh_button_grid = self.childNode(withName: "RefreshButtonGrid") as! SKSpriteNode;
+        gameWonA_label = self.childNode(withName: "lblGameWonA") as! SKLabelNode;
+        gameWonB_label = self.childNode(withName: "lblGameWonB") as! SKLabelNode;
+        return_home_button = self.childNode(withName: "btnReturnHome") as! SKLabelNode;
         
         grid.removeAll();
         
@@ -110,10 +122,14 @@ class GameScene: SKScene {
                 grid[r][c].setNeighbors(grid_width: grid_width, grid_height: grid_height);
             }
         }
+        
+        gameWonA_label.isHidden = true;
+        gameWonB_label.isHidden = true;
+        return_home_button.isHidden = true;
 
         // need to set score variable according to CORE Data database
         line_controller = LineController(grid_width: grid_width, grid_height: grid_height, grid: grid);
-        level_controller = LevelController(game_scene: self, level: 1);
+        level_controller = LevelController(game_scene: self, level: 256);
         setLevelDisplay();
         setRoundsLeftDisplay()
         setLivesDisplay();
@@ -139,6 +155,12 @@ class GameScene: SKScene {
             if (!isPaused && pause_button_grid.contains(location))
             {
                 pauseGame()
+            }
+            else if (!isPaused && refresh_button_grid.contains(location)) {
+                refreshLine();
+            }
+            else if (!isPaused && game_won && return_home_button.contains(location)) {
+                returnHome();
             }
             
         }
@@ -218,8 +240,10 @@ class GameScene: SKScene {
     }
     
     private func startRound() {
-        round_started = true;
+        if (game_won) {return}
         
+        round_started = true;
+        player_go = false;
         cleanPlayerLine(); // Removes nodes from the scene. clears up memory.
         ai_line_points.removeAll();
         
@@ -311,7 +335,7 @@ class GameScene: SKScene {
         let current_level = level_controller.getCurrentLevel();
         let maximum_level = level_controller.getMaximumLevel();
         
-        if (score <= highest_score && current_level <= highest_level && current_level != maximum_level) {
+        /*if (score <= highest_score && current_level <= highest_level && current_level != maximum_level) {
             return;
         }
         
@@ -321,17 +345,18 @@ class GameScene: SKScene {
         
         if (current_level > highest_level) {
             menu_view_controller.setNewHighestLevel(new_highest_level: level_controller.getCurrentLevel());
+        }*/ //MARK
+        
+        // Game Won!!!
+        if (/*current_level >= maximum_level*/level_controller.didBeatGame()) {
+            game_won = true;
+            //menu_view_controller.playerBeatGame(did_player_beat_game: true); //MARK
+            self.showGameWon();
         }
         
-        if (current_level == maximum_level) {
-            // Game Won!!!
-            // Do stuff to show game was won.
-            menu_view_controller.playerBeatGame(did_player_beat_game: true);
-        }
-        
-        menu_view_controller.deleteCoreData();
+        /*menu_view_controller.deleteCoreData();
         menu_view_controller.save_data();
-        menu_view_controller.loadScores();
+        menu_view_controller.loadScores();*/ //MARK
         setHighScoreLabels();
     }
     
@@ -650,15 +675,22 @@ class GameScene: SKScene {
     }
     
     private func pauseGame() {
-    if (self.isPaused == false && !is_destroying_line && player_line_list.isEmpty) {
-        print("Pause Game");
-        pause_button.run(SKAction.sequence([SKAction.setTexture(SKTexture(imageNamed: "PauseButtonPressed")), SKAction.wait(forDuration: 0.25)]), completion: {
-            //self.isPaused = true;
-            self.view_controller.showPauseView();
-            self.pause_button.texture = SKTexture(imageNamed: "PauseButton");
+        if (self.isPaused == false && !is_destroying_line && player_line_list.isEmpty) {
+            print("Pause Game");
+            pause_button.run(SKAction.sequence([SKAction.setTexture(SKTexture(imageNamed: "PauseButtonPressed")), SKAction.wait(forDuration: 0.25)]), completion: {
+                    self.view_controller.showPauseView();
+                    self.pause_button.texture = SKTexture(imageNamed: "PauseButton");
+                });
+        }
+    }
+    
+    private func refreshLine() {
+        if (!player_go) {return};
+    refresh_button.run(SKAction.sequence([SKAction.setTexture(SKTexture(imageNamed: "RefreshButtonPressed")), SKAction.wait(forDuration: 0.25)]), completion: {
+        self.refreshRound();
+        self.refresh_button.texture = SKTexture(imageNamed: "RefreshButton");
         });
     }
-}
     
     public func refreshRound() {
         //print("refresh");
@@ -740,5 +772,25 @@ class GameScene: SKScene {
         let removalAction = SKAction.sequence([SKAction.repeat(SKAction.sequence([SKAction.fadeAlpha(to: 0.1, duration: 0.2), SKAction.fadeAlpha(to: 0.5, duration: 0.2)]), count: 4), SKAction.fadeOut(withDuration: 0.2)]);
         var life_node = life_nodes_array.popLast();
         life_node?.run(removalAction, completion: {life_node?.removeFromParent(); life_node = nil});
+    }
+
+
+    private func showGameWon() {
+        gameWonA_label.alpha = 0.0;
+        gameWonB_label.alpha = 0.0;
+        return_home_button.alpha = 0.0;
+        gameWonA_label.isHidden = false;
+        gameWonB_label.isHidden = false;
+        return_home_button.isHidden = false;
+        let fade_in_time:TimeInterval = 1.0;
+        gameWonA_label.run(SKAction.fadeIn(withDuration: fade_in_time));
+        gameWonB_label.run(SKAction.fadeIn(withDuration: fade_in_time));
+        return_home_button.run(SKAction.fadeIn(withDuration: fade_in_time));
+    }
+    
+    private func returnHome() {
+        return_home_button.run(SKAction.sequence([SKAction.run({self.return_home_button.color = UIColor.clear}), SKAction.wait(forDuration: 0.5)]), completion: {
+            self.view_controller.returnToMenu();
+        })
     }
 }

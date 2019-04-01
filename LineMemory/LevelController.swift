@@ -21,10 +21,11 @@ class LevelController {
     private var score_reduction:Int64 = 0;
     private var level_score:Int64 = 0;
     private var max_level = 256;
+    private var did_beat_game = false;
     
     init(game_scene: GameScene, level: Int64) {
         self.game_scene = game_scene;
-        level_counter = level;
+        level_counter = level > max_level ? 1 : level;
         rounds_won_counter = 0;
         level_score = 0;
         lives_counter = lives_default;
@@ -48,6 +49,10 @@ class LevelController {
     
     public func getMaximumLevel() -> Int {
         return max_level;
+    }
+    
+    public func didBeatGame() -> Bool {
+        return did_beat_game;
     }
     
     public func getTurns() -> Int {
@@ -573,7 +578,8 @@ class LevelController {
         case 255:
             return getRandomNumber(int_a: 62, int_b: 63)
         case 256:
-            return 64;
+            //return 64;
+            return 2;
         default:
             return 0;
         }
@@ -659,7 +665,10 @@ class LevelController {
     }
     
     private func increaseLevel(score: Int64) {
-        if (level_counter >= 256) {return}
+        if (level_counter >= 256) {
+            did_beat_game = true;
+            return;
+        }
         level_counter = level_counter + 1;
         level_score = 0;
         level_scores.append(score);

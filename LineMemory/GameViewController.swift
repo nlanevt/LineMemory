@@ -14,6 +14,7 @@ class GameViewController: UIViewController {
 
 
     @IBOutlet weak var PauseView: UIView!;
+    
     private var game_scene:GameScene!;
     private var gameScenePaused:Bool = false;
     
@@ -69,14 +70,11 @@ class GameViewController: UIViewController {
         }
     }
 
-
     @IBAction func QuitGameButton(_ sender: Any) {
-        self.navigationController?.popToRootViewController(animated: true);
+        returnToMenu();
     }
     
-    
     @IBAction func ContinueGameButton(_ sender: Any) {
-        print("Un-Pause Game");
         hidePauseView();
     }
     
@@ -121,6 +119,10 @@ class GameViewController: UIViewController {
          print("applicationWillResignActive");
     }
     
+    public func returnToMenu() {
+        self.navigationController?.popToRootViewController(animated: true);
+    }
+    
     public func hidePauseView() {
         if (!gameScenePaused) {return};
         
@@ -136,8 +138,7 @@ class GameViewController: UIViewController {
         PauseView.isHidden = true;
     }
     
-    public func showPauseView()
-    {
+    public func showPauseView() {
         if (gameScenePaused) {return};
         
         gameScenePaused = true;
@@ -159,5 +160,4 @@ class GameViewController: UIViewController {
             self.PauseView.alpha = 1.0
         });
     }
-
 }
