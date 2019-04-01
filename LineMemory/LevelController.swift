@@ -707,10 +707,4 @@ class LevelController {
         rounds_won_counter = 0;
         level_score = 0;
     }
-    
-    public func createRoundSprites() {
-        
-    }
-    
-    
 }

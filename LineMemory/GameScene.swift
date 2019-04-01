@@ -39,6 +39,7 @@ class GameScene: SKScene {
     private var highest_score_label = SKLabelNode();
     private var highest_level_label = SKLabelNode();
     private var level_label = SKLabelNode();
+    private var level_display_label = SKLabelNode();
     private var rounds_label = SKLabelNode(); // temporary label. will be replaced by sprite images.
     private var lives_label = SKLabelNode(); // temporary label. will be replaced by sprite images.
     
@@ -84,6 +85,7 @@ class GameScene: SKScene {
         highest_score_label = self.childNode(withName: "HighestScore") as! SKLabelNode;
         highest_level_label = self.childNode(withName: "HighestLevel") as! SKLabelNode;
         level_label = self.childNode(withName: "Level") as! SKLabelNode;
+        level_display_label = self.childNode(withName: "lblLevel") as! SKLabelNode;
         rounds_label = self.childNode(withName: "RoundsLeft") as! SKLabelNode; // temporary
         lives_label = self.childNode(withName: "Lives") as! SKLabelNode;
         pause_button = self.childNode(withName: "PauseButton") as! SKSpriteNode;
@@ -256,6 +258,9 @@ class GameScene: SKScene {
             if (level_decreases) {
                 setRoundsLeftDisplay();
                 setLevelDisplay();
+                /*flashLabel(label: level_display_label, color: .red, number_of_times: 10)
+                flashLabel(label: level_label, color: .red, number_of_times: 10)*/
+                levelDecreaseAnimation();
                 //MARK: Remove all rounds
                 //MARK: Re-create all rounds
                 createRoundsAnimation();
@@ -290,6 +295,9 @@ class GameScene: SKScene {
             // Do animations to increase level (such as a flash for example)
             setLivesDisplay();
             setLevelDisplay();
+            //flashLabel(label: level_display_label, color: .yellow, number_of_times: 10)
+            //flashLabel(label: level_label, color: .yellow, number_of_times: 10)
+            levelIncreaseAnimation()
             createRoundsAnimation();
             createLivesAnimation();
         }
@@ -327,6 +335,7 @@ class GameScene: SKScene {
         setHighScoreLabels();
     }
     
+    //TODO: Not in use
     private func setLivesDisplay() {
         lives_label.text = "\(level_controller.getLivesLeft())";
     }
@@ -336,7 +345,84 @@ class GameScene: SKScene {
         level_label.text = "\(level_controller.getCurrentLevel())";
     }
     
+    
+    private func flashLabel(label: SKLabelNode, color: UIColor, number_of_times: Int) {
+        if (number_of_times < 1) {return}
+        
+        let waitAction = SKAction.wait(forDuration: 0.1);
+        let changeColorAction = SKAction.run({
+            label.fontColor = color;
+        })
+        
+        let changeColorBackAction = SKAction.run({
+            label.fontColor = UIColor.white;
+        })
+        
+        let repeatAction = SKAction.repeat(SKAction.sequence([changeColorAction, waitAction, changeColorBackAction, waitAction]), count: number_of_times);
+        
+        label.run(repeatAction);
+    }
+    
+    private func levelIncreaseAnimation() {
+        let number_of_times = 5;
+        let waitAction = SKAction.wait(forDuration: 0.1);
+        let changeColorYellow = SKAction.run({
+            self.level_display_label.fontColor = UIColor.yellow;
+            self.level_label.fontColor = UIColor.yellow;
+        })
+        
+        let changeColorBlue = SKAction.run({
+            self.level_display_label.fontColor = UIColor.blue;
+            self.level_label.fontColor = UIColor.blue;
+        })
+        
+        let changeColorGreen = SKAction.run({
+            self.level_display_label.fontColor = UIColor.green;
+            self.level_label.fontColor = UIColor.green;
+        })
+        
+        let changeColorWhite = SKAction.run({
+            self.level_display_label.fontColor = UIColor.white;
+            self.level_label.fontColor = UIColor.white;
+        })
+        
+        let repeatAction = SKAction.repeat(SKAction.sequence([changeColorGreen, waitAction, changeColorBlue, waitAction, changeColorWhite, waitAction]), count: number_of_times);
+        
+        level_display_label.run(repeatAction);
+        level_label.run(repeatAction);
+    }
+    
+    private func levelDecreaseAnimation() {
+        let number_of_times = 10;
+        let waitAction = SKAction.wait(forDuration: 0.1);
+        let changeColorYellow = SKAction.run({
+            self.level_display_label.fontColor = UIColor.yellow;
+            self.level_label.fontColor = UIColor.yellow;
+        })
+        
+        let changeColorRed = SKAction.run({
+            self.level_display_label.fontColor = UIColor.red;
+            self.level_label.fontColor = UIColor.red;
+        })
+        
+        let changeColorGreen = SKAction.run({
+            self.level_display_label.fontColor = UIColor.green;
+            self.level_label.fontColor = UIColor.green;
+        })
+        
+        let changeColorWhite = SKAction.run({
+            self.level_display_label.fontColor = UIColor.white;
+            self.level_label.fontColor = UIColor.white;
+        })
+        
+        let repeatAction = SKAction.repeat(SKAction.sequence([changeColorYellow, waitAction, changeColorRed, waitAction, changeColorWhite, waitAction]), count: number_of_times);
+        
+        level_display_label.run(repeatAction);
+        level_label.run(repeatAction);
+    }
+    
     // Will update this to use animations
+    // TODO: Not in use
     private func setRoundsLeftDisplay() {
         rounds_label.text = "\(level_controller.getRoundsLeft())";
     }
@@ -575,7 +661,7 @@ class GameScene: SKScene {
 }
     
     public func refreshRound() {
-        print("refresh");
+        //print("refresh");
         if (isPaused) {return};
         cleanPlayerLine();
         resetTimer();
@@ -604,7 +690,6 @@ class GameScene: SKScene {
         var wait_time:TimeInterval = 0.0;
         for i in 0 ..< rounds {
             let round_node = SKSpriteNode(imageNamed: "Round");
-            //round_node.isHidden = true;
             round_node.size = round_node_size;
             round_node.position = CGPoint(x: start_position.x + CGFloat(1 + i*10), y: start_position.y)
             round_node.zPosition = round_node_z;
@@ -639,14 +724,11 @@ class GameScene: SKScene {
         var wait_time:TimeInterval = 0.0;
         for i in 0 ..< lives {
             let life_node = SKSpriteNode(imageNamed: "Life");
-            //life_node = true;
             life_node.size = life_node_size;
             life_node.position = CGPoint(x: start_position.x - CGFloat(1 + i*25), y: start_position.y)
             life_node.zPosition = life_node_z;
             life_nodes_array.append(life_node);
             self.addChild(life_nodes_array[i]);
-            //var life_growth_frames = AnimationFramesManager?.lifeGrowFrames;
-            //let actionSequence = SKAction.sequence([SKAction.setTexture(growth_frames![0]), SKAction.wait(forDuration: wait_time), SKAction.unhide(), SKAction.animate(with: growth_frames!, timePerFrame: 0.01), SKAction.setTexture(ai_life_texture)])
             life_node.alpha = 0.0;
             let actionSequence = SKAction.sequence([SKAction.wait(forDuration: wait_time), SKAction.unhide(), SKAction.fadeIn(withDuration: 0.5)])
             life_node.run(actionSequence);
@@ -655,8 +737,6 @@ class GameScene: SKScene {
     }
     
     private func removeLifeAnimation() {
-        //let removalSequence = SKAction.sequence([SKAction.animate(with: animation_frames_manager.RoundShrinkFrames, timePerFrame: 0.05), SKAction.hide()])
-        //let removalSequence = SKAction.sequence([SKAction.fadeOut(withDuration: 0.5), SKAction.hide()]);
         let removalAction = SKAction.sequence([SKAction.repeat(SKAction.sequence([SKAction.fadeAlpha(to: 0.1, duration: 0.2), SKAction.fadeAlpha(to: 0.5, duration: 0.2)]), count: 4), SKAction.fadeOut(withDuration: 0.2)]);
         var life_node = life_nodes_array.popLast();
         life_node?.run(removalAction, completion: {life_node?.removeFromParent(); life_node = nil});
