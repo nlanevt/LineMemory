@@ -24,6 +24,7 @@
 	<true/>
 	<key>UIAppFonts</key>
 	<array>
+		<string>RixVideoGame-3D.ttf</string>
 		<string>RixVideoGame-Bold.ttf</string>
 		<string>manaspc.ttf</string>
 	</array>

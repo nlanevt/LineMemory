@@ -11,8 +11,6 @@ import SpriteKit
 import GameplayKit
 
 class Tile: SKSpriteNode {
-    private var occupied = false;
-    private var grabbed = false;
     private var covered_texture = SKTexture.init(imageNamed: "CoveredTile"); // will replace with more detailed directional cover tiles.
     private var uncovered_texture = SKTexture.init(imageNamed: "Tile");
     private var neighbor_indexes = [[Int]]();
@@ -25,7 +23,6 @@ class Tile: SKSpriteNode {
     public var topNeighbor:Tile? = nil;
     public var bottomNeighbor:Tile? = nil;
     public var rightNeighbor:Tile? = nil;
-    private var cover_counter = 0;
     
     init(row: Int, column: Int, size: CGSize) {
         self.row = row;
@@ -45,7 +42,6 @@ class Tile: SKSpriteNode {
     {
         self.neighbors.append(tile);
     }
-    
     
     public func setNeighbors(grid_width: Int, grid_height: Int) {
         neighbors.removeAll();
@@ -128,72 +124,12 @@ class Tile: SKSpriteNode {
         return .none;
     }
     
-    public func cover() {
-        self.texture = covered_texture;
-        self.occupied = true;
-        
-    }
-    
-    public func grab() {
-        if (!grabbed) {
-            self.texture = covered_texture; // can change to another texture in the future.
-            grabbed = true;
-        }
-    }
-    
-    public func unGrab() {
-        if (grabbed) {
-            self.texture = uncovered_texture;
-            grabbed = false;
-        }
-    }
-    
-    public func uncover() {
-        self.texture = uncovered_texture;
-        self.occupied = false;
-    }
-    
-    public func isOccupied() -> Bool {
-        return cover_counter > 0;
-    }
-    
     public func addLink(direction: direction) -> Link {
-        self.occupied = true;
-        var link_texture:SKTexture!;
-        if (cover_counter == 0) {
-            link_texture = SKTexture.init(imageNamed: "LinkCoverHead");
-        }
-        else if (cover_counter == 1) {
-            link_texture = SKTexture.init(imageNamed: "LinkCoverHead");
-        }
-        else if (cover_counter == 2) {
-            link_texture = SKTexture.init(imageNamed: "LinkCoverHead");
-        }
-        else if (cover_counter == 3) {
-            link_texture = SKTexture.init(imageNamed: "LinkCoverHead");
-        }
-        else if (cover_counter > 3) {
-            link_texture = SKTexture.init(imageNamed: "LinkCoverHead");
-        }
-        else {
-            link_texture = SKTexture.init(imageNamed: "LinkCoverHead");
-        }
-        
+        let link_texture = SKTexture.init(imageNamed: "LinkCoverHead");
         let link_node = Link(texture: link_texture, size: self.size, direction: direction);
-        link_node.zPosition = self.zPosition + CGFloat(cover_counter) + 1;
+        link_node.zPosition = self.zPosition + 1;
         self.addChild(link_node);
-        cover_counter = cover_counter + 1;
         return link_node;
-    }
-    
-    public func removeLink() {
-        cover_counter = cover_counter - 1;
-        if (cover_counter < 0) {
-            cover_counter = 0;
-        }
-        if (cover_counter == 0) {
-            self.occupied = false;
-        }
     }
 
 }

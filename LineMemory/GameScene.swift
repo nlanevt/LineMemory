@@ -388,6 +388,29 @@ class GameScene: SKScene {
         label.run(repeatAction);
     }
     
+    private func flashLabel(label: SKLabelNode, colorA: UIColor, colorB: UIColor, colorC: UIColor, number_of_times: Int, repeatedly: Bool) {
+
+        let waitAction = SKAction.wait(forDuration: 0.1);
+        
+        let changeColorA = SKAction.run({
+            label.fontColor = colorA;
+        })
+        
+        let changeColorB = SKAction.run({
+            label.fontColor = colorB;
+        })
+        
+        let changeColorC = SKAction.run({
+            label.fontColor = colorC;
+        })
+        
+        let actionSequence = SKAction.sequence([changeColorA, waitAction, changeColorB, waitAction, changeColorC, waitAction])
+        
+        let repeatAction =  repeatedly ? SKAction.repeatForever(actionSequence) : SKAction.repeat(actionSequence, count: number_of_times)
+        
+        label.run(repeatAction);
+    }
+    
     private func levelIncreaseAnimation() {
         let number_of_times = 5;
         let waitAction = SKAction.wait(forDuration: 0.1);
@@ -715,7 +738,7 @@ class GameScene: SKScene {
             round_nodes_array.removeAll();
         }
         
-        let start_position = CGPoint(x: -145.0, y: 240.0);
+        let start_position = CGPoint(x: -150.0, y: 240.0);
         let round_node_size = CGSize(width: 8, height: 21);
         let round_node_z:CGFloat = 1.0;
         let rounds = level_controller.getRoundsLeft()
@@ -783,13 +806,34 @@ class GameScene: SKScene {
         gameWonB_label.isHidden = false;
         return_home_button.isHidden = false;
         let fade_in_time:TimeInterval = 1.0;
+        
         gameWonA_label.run(SKAction.fadeIn(withDuration: fade_in_time));
+        
         gameWonB_label.run(SKAction.fadeIn(withDuration: fade_in_time));
+        
         return_home_button.run(SKAction.fadeIn(withDuration: fade_in_time));
+        flashLabel(label: gameWonA_label, colorA: .cyan, colorB: .blue, colorC: .black, number_of_times: 0, repeatedly: true);
+        flashLabel(label: gameWonB_label, colorA: .black, colorB: .cyan, colorC: .blue, number_of_times: 0, repeatedly: true);
+        flashLabel(label: return_home_button, colorA: .blue, colorB: .black, colorC: .cyan, number_of_times: 0, repeatedly: true);
+        animateGameWonLine();
+    }
+    
+    private func animateGameWonLine() {
+        createLine(turn_count: 3)
+        createLine(turn_count: 8);
+        createLine(turn_count: 15);
+    }
+    
+    private func createLine(turn_count: Int) {
+        let line = LineController(grid_width: grid_width, grid_height: grid_height, grid: grid);
+        line.generateLine(turn_count: turn_count, completion: {
+            self.createLine(turn_count: turn_count);
+        });
     }
     
     private func returnHome() {
-        return_home_button.run(SKAction.sequence([SKAction.run({self.return_home_button.color = UIColor.clear}), SKAction.wait(forDuration: 0.5)]), completion: {
+        return_home_button.removeAllActions();
+        return_home_button.run(SKAction.sequence([SKAction.run({self.return_home_button.fontColor = UIColor.lightGray}), SKAction.wait(forDuration: 0.75)]), completion: {
             self.view_controller.returnToMenu();
         })
     }

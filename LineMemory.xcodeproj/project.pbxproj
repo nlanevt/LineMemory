@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		9738CF9E2212579200AC9696 /* Link.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9738CF9D2212579200AC9696 /* Link.swift */; };
 		9738CFA022139F9B00AC9696 /* LineController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9738CF9F22139F9B00AC9696 /* LineController.swift */; };
+		97C505852252E87A00B2064B /* RixVideoGame-3D.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 97C505842252E87A00B2064B /* RixVideoGame-3D.ttf */; };
 		97E140F1223F20D000B17098 /* Data.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 97E140EF223F20D000B17098 /* Data.xcdatamodeld */; };
 		97E140F32241D5AD00B17098 /* MenuScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 97E140F22241D5AD00B17098 /* MenuScene.sks */; };
 		97E140F72241D61600B17098 /* MenuScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E140F62241D61600B17098 /* MenuScene.swift */; };
@@ -50,6 +51,7 @@
 /* Begin PBXFileReference section */
 		9738CF9D2212579200AC9696 /* Link.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Link.swift; sourceTree = "<group>"; };
 		9738CF9F22139F9B00AC9696 /* LineController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineController.swift; sourceTree = "<group>"; };
+		97C505842252E87A00B2064B /* RixVideoGame-3D.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "RixVideoGame-3D.ttf"; sourceTree = "<group>"; };
 		97E140F0223F20D000B17098 /* Data.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Data.xcdatamodel; sourceTree = "<group>"; };
 		97E140F22241D5AD00B17098 /* MenuScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MenuScene.sks; sourceTree = "<group>"; };
 		97E140F62241D61600B17098 /* MenuScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuScene.swift; sourceTree = "<group>"; };
@@ -169,6 +171,7 @@
 		97FA2E5A222F647F0093CDE6 /* Font */ = {
 			isa = PBXGroup;
 			children = (
+				97C505842252E87A00B2064B /* RixVideoGame-3D.ttf */,
 				97FA2E5D222F65B00093CDE6 /* manaspc.ttf */,
 				97FA2E5B222F64C10093CDE6 /* RixVideoGame-Bold.ttf */,
 			);
@@ -286,6 +289,7 @@
 				97E58D1721E5906C003C95E2 /* LaunchScreen.storyboard in Resources */,
 				97E58D0B21E59069003C95E2 /* Actions.sks in Resources */,
 				97FA2E5E222F65B00093CDE6 /* manaspc.ttf in Resources */,
+				97C505852252E87A00B2064B /* RixVideoGame-3D.ttf in Resources */,
 				97E140F32241D5AD00B17098 /* MenuScene.sks in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

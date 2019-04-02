@@ -29,6 +29,7 @@ class LevelController {
         rounds_won_counter = 0;
         level_score = 0;
         lives_counter = lives_default;
+        setRoundsAmount(); //TODO
     }
     
     public func getCurrentLevel() -> Int64 {
@@ -677,29 +678,23 @@ class LevelController {
     }
     
     private func setRoundsAmount() {
-        if (level_counter <= 10) {
+        if (level_counter <= 50) {
             rounds_default = 8;
         }
-        else if (level_counter <= 20) {
+        else if (level_counter <= 100) {
             rounds_default = 9;
         }
-        else if (level_counter <= 30) {
+        else if (level_counter <= 150) {
             rounds_default = 10;
         }
-        else if (level_counter <= 50) {
+        else if (level_counter <= 200) {
             rounds_default = 11;
         }
-        else if (level_counter <= 60) {
+        else if (level_counter <= 250) {
             rounds_default = 12;
         }
-        else if (level_counter <= 70) {
-            rounds_default = 13;
-        }
-        else if (level_counter <= 80) {
-            rounds_default = 14;
-        }
         else {
-            rounds_default = 15;
+            rounds_default = 13;
         }
     }
     
