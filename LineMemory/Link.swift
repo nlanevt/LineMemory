@@ -217,6 +217,7 @@ class Link: SKSpriteNode {
         texture_name = texture_name + "\(SKTextureAtlas(named: texture_name).textureNames.count)";
         
         self.run(SKAction.sequence([SKAction.unhide(), SKAction.animate(with: animation_frames, timePerFrame: 0.02), SKAction.hide()]), completion: {
+            self.removeFromParent();
             completion();
         })
     }

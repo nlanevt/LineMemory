@@ -10,6 +10,7 @@
 		9738CF9E2212579200AC9696 /* Link.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9738CF9D2212579200AC9696 /* Link.swift */; };
 		9738CFA022139F9B00AC9696 /* LineController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9738CF9F22139F9B00AC9696 /* LineController.swift */; };
 		97C505852252E87A00B2064B /* RixVideoGame-3D.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 97C505842252E87A00B2064B /* RixVideoGame-3D.ttf */; };
+		97C505882254360700B2064B /* HexColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C505872254360700B2064B /* HexColor.swift */; };
 		97E140F1223F20D000B17098 /* Data.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 97E140EF223F20D000B17098 /* Data.xcdatamodeld */; };
 		97E140F32241D5AD00B17098 /* MenuScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 97E140F22241D5AD00B17098 /* MenuScene.sks */; };
 		97E140F72241D61600B17098 /* MenuScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E140F62241D61600B17098 /* MenuScene.swift */; };
@@ -52,6 +53,7 @@
 		9738CF9D2212579200AC9696 /* Link.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Link.swift; sourceTree = "<group>"; };
 		9738CF9F22139F9B00AC9696 /* LineController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineController.swift; sourceTree = "<group>"; };
 		97C505842252E87A00B2064B /* RixVideoGame-3D.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "RixVideoGame-3D.ttf"; sourceTree = "<group>"; };
+		97C505872254360700B2064B /* HexColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HexColor.swift; sourceTree = "<group>"; };
 		97E140F0223F20D000B17098 /* Data.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Data.xcdatamodel; sourceTree = "<group>"; };
 		97E140F22241D5AD00B17098 /* MenuScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MenuScene.sks; sourceTree = "<group>"; };
 		97E140F62241D61600B17098 /* MenuScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuScene.swift; sourceTree = "<group>"; };
@@ -104,6 +106,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		97C50586225435EE00B2064B /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				97C505872254360700B2064B /* HexColor.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		97E58CFA21E59068003C95E2 = {
 			isa = PBXGroup;
 			children = (
@@ -127,6 +137,7 @@
 		97E58D0521E59068003C95E2 /* LineMemory */ = {
 			isa = PBXGroup;
 			children = (
+				97C50586225435EE00B2064B /* Extensions */,
 				97FA2E5A222F647F0093CDE6 /* Font */,
 				97E58D3D21E5919F003C95E2 /* LevelController.swift */,
 				97E58D3A21E5919E003C95E2 /* MenuViewController.swift */,
@@ -316,6 +327,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				97E58D0D21E59069003C95E2 /* GameScene.swift in Sources */,
+				97C505882254360700B2064B /* HexColor.swift in Sources */,
 				9738CF9E2212579200AC9696 /* Link.swift in Sources */,
 				97E58D0F21E59069003C95E2 /* GameViewController.swift in Sources */,
 				9738CFA022139F9B00AC9696 /* LineController.swift in Sources */,

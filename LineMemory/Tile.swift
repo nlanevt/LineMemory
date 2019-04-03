@@ -43,7 +43,7 @@ class Tile: SKSpriteNode {
         self.neighbors.append(tile);
     }
     
-    public func setNeighbors(grid_width: Int, grid_height: Int) {
+    public func setNeighbors(grid_width: Int, grid_height: Int, grid: [[Tile]]) {
         neighbors.removeAll();
         leftNeighbor = nil;
         rightNeighbor = nil
@@ -51,23 +51,28 @@ class Tile: SKSpriteNode {
         bottomNeighbor = nil;
         
         if column - 1 >= 0 {
-            leftNeighbor = (self.parent as? GameScene)?.grid[row][column-1];
+            //leftNeighbor = (self.parent as? GameScene)?.grid[row][column-1];
+            leftNeighbor = grid[row][column-1];
             neighbors.append(leftNeighbor!)
         }
         
         
         if row - 1 >= 0 {
-            topNeighbor = (self.parent as? GameScene)?.grid[row-1][column];
+            //topNeighbor = (self.parent as? GameScene)?.grid[row-1][column];
+            topNeighbor = grid[row-1][column];
             neighbors.append(topNeighbor!)
         }
         
         if row + 1 < grid_height {
-            bottomNeighbor = (self.parent as? GameScene)?.grid[row+1][column]
+           // bottomNeighbor = (self.parent as? GameScene)?.grid[row+1][column]
+            bottomNeighbor = grid[row+1][column]
+
             neighbors.append(bottomNeighbor!);
         }
         
         if column + 1 < grid_width {
-            rightNeighbor = (self.parent as? GameScene)?.grid[row][column+1]
+            //rightNeighbor = (self.parent as? GameScene)?.grid[row][column+1]
+            rightNeighbor = grid[row][column+1]
             neighbors.append(rightNeighbor!)
         }
     }

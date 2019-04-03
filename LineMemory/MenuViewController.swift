@@ -18,6 +18,7 @@ var animation_frames_manager = AnimationFramesHelper();
 
 class MenuViewController: UIViewController {
     
+    private var menu_scene:MenuScene!;
     private var highest_score:Int64 = 0;
     private var highest_level:Int64 = 0;
     private var did_beat_game = false;
@@ -53,6 +54,27 @@ class MenuViewController: UIViewController {
             object: nil)
         
         menu_view_controller = self;
+        
+        // Load 'MenuScene.sks' as a GKScene. This provides gameplay related content
+        // including entities and graphs.
+        if let scene = GKScene(fileNamed: "MenuScene") {
+            
+            // Get the SKScene from the loaded GKScene
+            if let sceneNode = scene.rootNode as! MenuScene? {
+                // Copy gameplay related content over to the scene
+                menu_scene = sceneNode;
+                // Set the scale mode to scale to fit the window
+                menu_scene.scaleMode = .aspectFill
+                
+                // Present the scene
+                if let view = self.view as! SKView? {
+                    view.presentScene(menu_scene)
+                    view.ignoresSiblingOrder = true
+                    view.showsFPS = true
+                    view.showsNodeCount = true
+                }
+            }
+        }
     }
     
     override var shouldAutorotate: Bool {

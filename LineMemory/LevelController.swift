@@ -29,7 +29,7 @@ class LevelController {
         rounds_won_counter = 0;
         level_score = 0;
         lives_counter = lives_default;
-        setRoundsAmount(); //TODO
+        setRoundsAmount(); 
     }
     
     public func getCurrentLevel() -> Int64 {
@@ -579,8 +579,8 @@ class LevelController {
         case 255:
             return getRandomNumber(int_a: 62, int_b: 63)
         case 256:
-            //return 64;
-            return 2;
+            return 64;
+        //return 2; // MARK: For testing final level
         default:
             return 0;
         }
@@ -616,13 +616,13 @@ class LevelController {
     }
     
     public func getTimerMultiplier() -> TimeInterval {
-        if (level_counter > 0 && level_counter <= 5) {
+        if (level_counter <= 50) {
             return 3.0;
         }
-        else if (level_counter > 3 && level_counter <= 10) {
+        else if (level_counter <= 100) {
             return 2.0;
         }
-        else if (level_counter > 10 && level_counter <= 15){
+        else if (level_counter <= 150){
             return 1.5;
         }
         else {

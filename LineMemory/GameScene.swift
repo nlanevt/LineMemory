@@ -8,9 +8,7 @@
 
 import SpriteKit
 import GameplayKit
-
-
-
+import UIKit
 
 enum direction {
     case left;
@@ -54,7 +52,7 @@ class GameScene: SKScene {
     private var player_lives = 5;
     private var is_destroying_line = false;
     
-    public var grid = [[Tile]]();
+    private var grid = [[Tile]]();
     private var grid_height = 10;
     private var grid_width = 7;
     private var grid_center:CGFloat = -64.0;
@@ -119,7 +117,7 @@ class GameScene: SKScene {
         
         for r in 0 ..< grid_height {
             for c in 0 ..< grid_width {
-                grid[r][c].setNeighbors(grid_width: grid_width, grid_height: grid_height);
+                grid[r][c].setNeighbors(grid_width: grid_width, grid_height: grid_height, grid: grid);
             }
         }
         
@@ -129,7 +127,7 @@ class GameScene: SKScene {
 
         // need to set score variable according to CORE Data database
         line_controller = LineController(grid_width: grid_width, grid_height: grid_height, grid: grid);
-        level_controller = LevelController(game_scene: self, level: 256);
+        level_controller = LevelController(game_scene: self, level: 1);
         setLevelDisplay();
         setRoundsLeftDisplay()
         setLivesDisplay();
@@ -282,8 +280,6 @@ class GameScene: SKScene {
             if (level_decreases) {
                 setRoundsLeftDisplay();
                 setLevelDisplay();
-                /*flashLabel(label: level_display_label, color: .red, number_of_times: 10)
-                flashLabel(label: level_label, color: .red, number_of_times: 10)*/
                 levelDecreaseAnimation();
                 //MARK: Remove all rounds
                 //MARK: Re-create all rounds
@@ -298,6 +294,9 @@ class GameScene: SKScene {
             return;
         }
         
+        let score_sign_position = player_line_list.first?.convert(player_line_list.first?.position ?? CGPoint(x: 0.0, y: 0.0), to: self); //player_line_list.last?.convert(player_line_list.last?.position ?? CGPoint(x: 0.0, y: 0.0), to: self);
+        
+        
         self.animatePlayerLineDissipation(iterator: 0, completion: {
             self.startRound();
         })
@@ -306,24 +305,33 @@ class GameScene: SKScene {
         let amount = Int64(player_line_list.count)*5;
         let starting_score = score;
         score = score + amount;
-        self.animateSum(starting_value: starting_score, amount: amount, label: player_score_label, completion: {});
+        animateScoreSign(score_amount: amount, position: score_sign_position ?? CGPoint(x: 0.0, y: 0.0));
+        
+        animateSum(starting_value: starting_score, amount: amount, label: player_score_label, completion: {});
+        if (score > menu_view_controller.getHighestScore()) {
+            self.animateSum(starting_value: score - amount, amount: amount, label: highest_score_label, completion: {});
+        }
         
         // Increase the level if enough rounds have been won.
         // Calling RoundWon() also increases the difficulty within the level.
         let level_increases = level_controller.roundWon(by_amount: amount);
+        
         setRoundsLeftDisplay();
         removeRoundAnimation();
         
         if (level_increases) {
             // Do things to congratulate player
             // Do animations to increase level (such as a flash for example)
+            if (level_controller.getCurrentLevel() > menu_view_controller.getHighestLevel()) {
+                flashLabel(label: highest_level_label, colorA: .white, colorB: .purple, colorC: .blue, number_of_times: 10, repeatedly: false);
+            }
+            
             setLivesDisplay();
             setLevelDisplay();
-            //flashLabel(label: level_display_label, color: .yellow, number_of_times: 10)
-            //flashLabel(label: level_label, color: .yellow, number_of_times: 10)
             levelIncreaseAnimation()
             createRoundsAnimation();
             createLivesAnimation();
+            
         }
         
         setScoreData();
@@ -335,7 +343,8 @@ class GameScene: SKScene {
         let current_level = level_controller.getCurrentLevel();
         let maximum_level = level_controller.getMaximumLevel();
         
-        /*if (score <= highest_score && current_level <= highest_level && current_level != maximum_level) {
+        /**/ //use for hiding the below
+        if (score <= highest_score && current_level <= highest_level && current_level != maximum_level) {
             return;
         }
         
@@ -345,18 +354,26 @@ class GameScene: SKScene {
         
         if (current_level > highest_level) {
             menu_view_controller.setNewHighestLevel(new_highest_level: level_controller.getCurrentLevel());
-        }*/ //MARK
+        }
         
         // Game Won!!!
-        if (/*current_level >= maximum_level*/level_controller.didBeatGame()) {
+        if (level_controller.didBeatGame()) {
             game_won = true;
-            //menu_view_controller.playerBeatGame(did_player_beat_game: true); //MARK
+            menu_view_controller.playerBeatGame(did_player_beat_game: true); //MARK
             self.showGameWon();
         }
         
-        /*menu_view_controller.deleteCoreData();
+        menu_view_controller.deleteCoreData();
         menu_view_controller.save_data();
-        menu_view_controller.loadScores();*/ //MARK
+        menu_view_controller.loadScores(); //MARK
+        /**/ //Use for hiding the above
+        
+        // Game Won!!!
+        /*if (/*current_level >= maximum_level*/level_controller.didBeatGame()) {
+            game_won = true;
+            self.showGameWon();
+        }*/ //MARK use testing congratulations display.
+        
         setHighScoreLabels();
     }
     
@@ -374,6 +391,7 @@ class GameScene: SKScene {
     private func flashLabel(label: SKLabelNode, color: UIColor, number_of_times: Int) {
         if (number_of_times < 1) {return}
         
+        let original_color = label.fontColor;
         let waitAction = SKAction.wait(forDuration: 0.1);
         let changeColorAction = SKAction.run({
             label.fontColor = color;
@@ -385,11 +403,14 @@ class GameScene: SKScene {
         
         let repeatAction = SKAction.repeat(SKAction.sequence([changeColorAction, waitAction, changeColorBackAction, waitAction]), count: number_of_times);
         
-        label.run(repeatAction);
+        label.run(repeatAction, completion: {
+            label.fontColor = original_color;
+        });
     }
     
     private func flashLabel(label: SKLabelNode, colorA: UIColor, colorB: UIColor, colorC: UIColor, number_of_times: Int, repeatedly: Bool) {
-
+        
+        let original_color = label.fontColor;
         let waitAction = SKAction.wait(forDuration: 0.1);
         
         let changeColorA = SKAction.run({
@@ -408,65 +429,23 @@ class GameScene: SKScene {
         
         let repeatAction =  repeatedly ? SKAction.repeatForever(actionSequence) : SKAction.repeat(actionSequence, count: number_of_times)
         
-        label.run(repeatAction);
+        label.run(repeatAction, completion: {
+            label.fontColor = original_color;
+        });
     }
     
     private func levelIncreaseAnimation() {
-        let number_of_times = 5;
-        let waitAction = SKAction.wait(forDuration: 0.1);
-        let changeColorYellow = SKAction.run({
-            self.level_display_label.fontColor = UIColor.yellow;
-            self.level_label.fontColor = UIColor.yellow;
-        })
+        let number_of_times = 10;
         
-        let changeColorBlue = SKAction.run({
-            self.level_display_label.fontColor = UIColor.blue;
-            self.level_label.fontColor = UIColor.blue;
-        })
-        
-        let changeColorGreen = SKAction.run({
-            self.level_display_label.fontColor = UIColor.green;
-            self.level_label.fontColor = UIColor.green;
-        })
-        
-        let changeColorWhite = SKAction.run({
-            self.level_display_label.fontColor = UIColor.white;
-            self.level_label.fontColor = UIColor.white;
-        })
-        
-        let repeatAction = SKAction.repeat(SKAction.sequence([changeColorGreen, waitAction, changeColorBlue, waitAction, changeColorWhite, waitAction]), count: number_of_times);
-        
-        level_display_label.run(repeatAction);
-        level_label.run(repeatAction);
+        flashLabel(label: level_display_label, colorA: .purple, colorB: .blue, colorC: .white, number_of_times: number_of_times, repeatedly: false);
+        flashLabel(label: level_label, colorA: .purple, colorB: .blue, colorC: .white, number_of_times: number_of_times, repeatedly: false);
     }
     
     private func levelDecreaseAnimation() {
         let number_of_times = 10;
-        let waitAction = SKAction.wait(forDuration: 0.1);
-        let changeColorYellow = SKAction.run({
-            self.level_display_label.fontColor = UIColor.yellow;
-            self.level_label.fontColor = UIColor.yellow;
-        })
         
-        let changeColorRed = SKAction.run({
-            self.level_display_label.fontColor = UIColor.red;
-            self.level_label.fontColor = UIColor.red;
-        })
-        
-        let changeColorGreen = SKAction.run({
-            self.level_display_label.fontColor = UIColor.green;
-            self.level_label.fontColor = UIColor.green;
-        })
-        
-        let changeColorWhite = SKAction.run({
-            self.level_display_label.fontColor = UIColor.white;
-            self.level_label.fontColor = UIColor.white;
-        })
-        
-        let repeatAction = SKAction.repeat(SKAction.sequence([changeColorYellow, waitAction, changeColorRed, waitAction, changeColorWhite, waitAction]), count: number_of_times);
-        
-        level_display_label.run(repeatAction);
-        level_label.run(repeatAction);
+        flashLabel(label: level_display_label, colorA: .yellow, colorB: .red, colorC: .white, number_of_times: number_of_times, repeatedly: false);
+        flashLabel(label: level_label, colorA: .yellow, colorB: .red, colorC: .white, number_of_times: number_of_times, repeatedly: false);
     }
     
     // Will update this to use animations
@@ -549,11 +528,14 @@ class GameScene: SKScene {
             if (player_line_list.isEmpty) {
                 link.run(SKAction.sequence([wait_action, SKAction.fadeOut(withDuration: 0.25)]), completion: {
                     self.is_destroying_line = false;
+                    link.removeFromParent();
                     completion();
                 });
             }
             else {
-               link.run(SKAction.sequence([wait_action, SKAction.fadeOut(withDuration: 0.25)]));
+                link.run(SKAction.sequence([wait_action, SKAction.fadeOut(withDuration: 0.25)]), completion: {
+                    link.removeFromParent();
+                });
             }
             wait_duration = wait_duration + 0.05;
         }
@@ -814,7 +796,7 @@ class GameScene: SKScene {
         return_home_button.run(SKAction.fadeIn(withDuration: fade_in_time));
         flashLabel(label: gameWonA_label, colorA: .cyan, colorB: .blue, colorC: .black, number_of_times: 0, repeatedly: true);
         flashLabel(label: gameWonB_label, colorA: .black, colorB: .cyan, colorC: .blue, number_of_times: 0, repeatedly: true);
-        flashLabel(label: return_home_button, colorA: .blue, colorB: .black, colorC: .cyan, number_of_times: 0, repeatedly: true);
+        flashLabel(label: return_home_button, colorA: .blue, colorB: .black, colorC: .purple, number_of_times: 0, repeatedly: true);
         animateGameWonLine();
     }
     
@@ -836,5 +818,46 @@ class GameScene: SKScene {
         return_home_button.run(SKAction.sequence([SKAction.run({self.return_home_button.fontColor = UIColor.lightGray}), SKAction.wait(forDuration: 0.75)]), completion: {
             self.view_controller.returnToMenu();
         })
+    }
+    
+    private func animateScoreSign(score_amount: Int64, position: CGPoint) {
+        let boundary_y:CGFloat = -200.0
+        let scorelabelnode = SKLabelNode(fontNamed: "RixVideoGame3D");
+        scorelabelnode.alpha = 1.0;
+        scorelabelnode.zPosition = 5.0;
+        scorelabelnode.fontColor = UIColor.green; //UIColor.init(red: 73, green: 170, blue: 16);
+        scorelabelnode.fontSize = 32;
+        scorelabelnode.horizontalAlignmentMode = .center;
+        scorelabelnode.verticalAlignmentMode = .top;
+        scorelabelnode.text = "+\(score_amount)";
+        
+        var moveVector:CGVector!
+        
+        if (position.x < 0) {
+            if (position.y < boundary_y) {
+                moveVector = CGVector(dx: 4, dy: 6)
+                scorelabelnode.position = CGPoint(x: position.x + 10, y: position.y + 10)
+            }
+            else {
+                moveVector = CGVector(dx: 4, dy: -6)
+                scorelabelnode.position = CGPoint(x: position.x + 10, y: position.y)
+            }
+        }
+        else {
+            if (position.y < boundary_y) {
+                moveVector = CGVector(dx: -4, dy: 6)
+                scorelabelnode.position = CGPoint(x: position.x - 10, y: position.y + 10)
+            }
+            else {
+                moveVector = CGVector(dx: -4, dy: -6)
+                scorelabelnode.position = CGPoint(x: position.x - 10, y: position.y)
+            }
+        }
+        
+        self.addChild(scorelabelnode);
+        
+        let scoreLabelActionSequence = SKAction.sequence([SKAction.move(by: moveVector, duration: 1.5), SKAction.fadeOut(withDuration: 0.25)]);
+        
+        scorelabelnode.run(scoreLabelActionSequence, completion: {scorelabelnode.removeFromParent()});
     }
 }
