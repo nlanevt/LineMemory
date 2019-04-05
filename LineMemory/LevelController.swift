@@ -36,6 +36,10 @@ class LevelController {
         return level_counter;
     }
     
+    public func getLevelsBeaten() -> Int64 {
+        return level_counter - 1;
+    }
+    
     public func getLevelRounds() -> Int {
         return rounds_default;
     }
@@ -578,9 +582,10 @@ class LevelController {
             return getRandomNumber(int_a: 61, int_b: 62)
         case 255:
             return getRandomNumber(int_a: 62, int_b: 63)
+            //return 1;
         case 256:
             return 64;
-        //return 2; // MARK: For testing final level
+            //return 1; // MARK: For testing final level
         default:
             return 0;
         }

@@ -248,7 +248,7 @@ class GameScene: SKScene {
         // Create AI Line
         var turns = level_controller.getTurns();
         //turns = ;
-        print("level \(level_controller.getCurrentLevel()), round \(level_controller.getRoundsLeft()), turns: \(turns)");
+        print("level \(level_controller.getLevelsBeaten()), round \(level_controller.getRoundsLeft()), turns: \(turns)");
         ai_line_points = line_controller.generateLine(turn_count: turns, completion: {
             self.startTimer();
             self.player_go = true;
@@ -319,19 +319,12 @@ class GameScene: SKScene {
         setRoundsLeftDisplay();
         removeRoundAnimation();
         
-        if (level_increases) {
-            // Do things to congratulate player
-            // Do animations to increase level (such as a flash for example)
-            if (level_controller.getCurrentLevel() > menu_view_controller.getHighestLevel()) {
-                flashLabel(label: highest_level_label, colorA: .white, colorB: .purple, colorC: .blue, number_of_times: 10, repeatedly: false);
-            }
-            
+        if (level_increases) {            
             setLivesDisplay();
             setLevelDisplay();
             levelIncreaseAnimation()
             createRoundsAnimation();
             createLivesAnimation();
-            
         }
         
         setScoreData();
@@ -340,11 +333,12 @@ class GameScene: SKScene {
     private func setScoreData() {
         let highest_score = menu_view_controller.getHighestScore();
         let highest_level = menu_view_controller.getHighestLevel();
-        let current_level = level_controller.getCurrentLevel();
+        let levels_beaten = level_controller.getLevelsBeaten();
         let maximum_level = level_controller.getMaximumLevel();
+        let did_beat_game = level_controller.didBeatGame()
         
         /**/ //use for hiding the below
-        if (score <= highest_score && current_level <= highest_level && current_level != maximum_level) {
+        if (score <= highest_score && levels_beaten <= highest_level && !did_beat_game) {
             return;
         }
         
@@ -352,13 +346,17 @@ class GameScene: SKScene {
             menu_view_controller.setNewHighScore(new_high_score: score);
         }
         
-        if (current_level > highest_level) {
-            menu_view_controller.setNewHighestLevel(new_highest_level: level_controller.getCurrentLevel());
+        if (levels_beaten > highest_level) {
+            flashLabel(label: highest_level_label, colorA: .white, colorB: .purple, colorC: .blue, number_of_times: 10, repeatedly: false);
+            menu_view_controller.setNewHighestLevel(new_highest_level: levels_beaten);
         }
         
         // Game Won!!!
-        if (level_controller.didBeatGame()) {
+        if (did_beat_game) {
             game_won = true;
+            menu_view_controller.setNewHighestLevel(new_highest_level: Int64(maximum_level));
+            setHighScoreLabels();
+            flashLabel(label: highest_level_label, colorA: .white, colorB: .purple, colorC: .blue, number_of_times: 10, repeatedly: false);
             menu_view_controller.playerBeatGame(did_player_beat_game: true); //MARK
             self.showGameWon();
         }

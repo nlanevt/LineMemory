@@ -12,18 +12,27 @@ import GameplayKit
 import CoreData
 import GameKit
 
-
 var menu_view_controller:MenuViewController!;
 var animation_frames_manager = AnimationFramesHelper();
 
-class MenuViewController: UIViewController {
-    
+class MenuViewController: UIViewController, GKGameCenterControllerDelegate {
     private var menu_scene:MenuScene!;
     private var highest_score:Int64 = 0;
     private var highest_level:Int64 = 0;
     private var did_beat_game = false;
-    var player:NSManagedObject? = nil;
-    var players:[NSManagedObject] = [];
+    private var player:NSManagedObject? = nil;
+    private var players:[NSManagedObject] = [];
+    private var max_level:Int64 = 256;
+    
+    /* Variables */
+    private var gcEnabled = Bool() // Check if the user has Game Center enabled
+    private var gcDefaultLeaderBoard = String() // Check the default leaderboardID
+    
+    // IMPORTANT: replace the red string below with your own Leaderboard ID (the one you've set in iTunes Connect)
+    private let LEADERBOARD_HIGHESTSCORE_ID = "com.linememory.highestscore"
+    private let LEADERBOARD_HIGHESTLEVEL_ID = "com.linememory.highestlevel"
+    
+    private var delete_core_data = false;
     
     @IBAction func StartGameButton(_ sender: Any) {
         let gameVC = self.storyboard?.instantiateViewController(withIdentifier: "GameVC") as! GameViewController;
@@ -34,6 +43,8 @@ class MenuViewController: UIViewController {
         super.viewDidLoad()
         
         loadScores();
+        authenticateLocalPlayer();
+        menu_view_controller = self;
         
         NotificationCenter.default.addObserver(
             self,
@@ -52,8 +63,6 @@ class MenuViewController: UIViewController {
             selector: #selector(applicationWillResignActive(notification:)),
             name: NSNotification.Name.UIApplicationWillResignActive,
             object: nil)
-        
-        menu_view_controller = self;
         
         // Load 'MenuScene.sks' as a GKScene. This provides gameplay related content
         // including entities and graphs.
@@ -75,6 +84,13 @@ class MenuViewController: UIViewController {
                 }
             }
         }
+    }
+    
+    @IBAction func CheckLeaderboard(_ sender: Any) {
+        let gcVC = GKGameCenterViewController()
+        gcVC.gameCenterDelegate = self
+        gcVC.viewState = .default;
+        present(gcVC, animated: true, completion: nil)
     }
     
     override var shouldAutorotate: Bool {
@@ -112,14 +128,17 @@ class MenuViewController: UIViewController {
     
     public func setNewHighScore(new_high_score: Int64) {
         highest_score = new_high_score;
+        addHighestScoreToLeaderBoard(score: highest_score);
     }
     
     public func setNewHighestLevel(new_highest_level: Int64) {
         highest_level = new_highest_level;
+        addHighestLevelToLeaderBoard(level: highest_level)
     }
     
     public func playerBeatGame(did_player_beat_game: Bool) {
         did_beat_game = did_player_beat_game;
+        //addHighestLevelToLeaderBoard(level: max_level)
     }
     
     public func wasGameBeaten() -> Bool {
@@ -159,6 +178,10 @@ class MenuViewController: UIViewController {
     }
     
     public func loadScores() {
+        if (delete_core_data) {
+            deleteCoreData();
+        }
+        
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {return}
         
         let managedContext = appDelegate.persistentContainer.viewContext
@@ -199,6 +222,7 @@ class MenuViewController: UIViewController {
     
     private func save(highest_score: Int64, highest_level: Int64) {
         
+        
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {return}
         
         // 1
@@ -219,6 +243,67 @@ class MenuViewController: UIViewController {
         } catch let error as NSError {
             print("Could not save. \(error), \(error.userInfo)")
         }
+    }
+    
+    private func addHighestScoreToLeaderBoard(score: Int64) {
+        if (self.gcEnabled) {
+            let ScoreInt = GKScore(leaderboardIdentifier: LEADERBOARD_HIGHESTSCORE_ID)
+            ScoreInt.value = score;
+            GKScore.report([ScoreInt]) { (error) in
+                if error != nil {
+                    print(error!.localizedDescription)
+                } else {
+                    print("Your high score was submitted to the High Score Leaderboard!")
+                }
+            }
+        }
+    }
+    
+    private func addHighestLevelToLeaderBoard(level: Int64) {
+        if (self.gcEnabled) {
+            let LevelInt = GKScore(leaderboardIdentifier: LEADERBOARD_HIGHESTLEVEL_ID)
+            LevelInt.value = level;
+            GKScore.report([LevelInt]) { (error) in
+                if error != nil {
+                    print(error!.localizedDescription)
+                } else {
+                    print("Your high score was submitted to the High Score Leaderboard!")
+                }
+            }
+        }
+    }
+    
+    
+    // MARK: - AUTHENTICATE LOCAL PLAYER
+    func authenticateLocalPlayer() {
+        let localPlayer: GKLocalPlayer = GKLocalPlayer.localPlayer();
+        
+        localPlayer.authenticateHandler = {(ViewController, error) -> Void in
+            if((ViewController) != nil) {
+                // 1. Show login if player is not logged in
+                self.present(ViewController!, animated: true, completion: nil)
+            } else if (localPlayer.isAuthenticated) {
+                // 2. Player is already authenticated & logged in, load game center
+                self.gcEnabled = true
+                
+                // Get the default leaderboard ID
+                localPlayer.loadDefaultLeaderboardIdentifier(completionHandler: { (leaderboardIdentifer, error) in
+                    if error != nil { print(error as Any)
+                    } else { self.gcDefaultLeaderBoard = leaderboardIdentifer! }
+                })
+                
+            } else {
+                // 3. Game center is not enabled on the users device
+                self.gcEnabled = false
+                print("Local player could not be authenticated!")
+                print(error as Any)
+            }
+        }
+    }
+    
+    // Delegate to dismiss the GC controller
+    func gameCenterViewControllerDidFinish(_ gameCenterViewController: GKGameCenterViewController) {
+        gameCenterViewController.dismiss(animated: true, completion: nil)
     }
     
 }
