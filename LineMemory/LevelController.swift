@@ -678,7 +678,6 @@ class LevelController {
         level_counter = level_counter + 1;
         level_score = 0;
         level_scores.append(score);
-        
         setRoundsAmount();
     }
     

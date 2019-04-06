@@ -55,9 +55,9 @@ class MenuScene: SKScene, SKPhysicsContactDelegate {
     }
     
     private func animateLines() {
-        createLine(turn_count: 3)
+        //createLine(turn_count: 3)
         createLine(turn_count: 8);
-        createLine(turn_count: 15);
+        //createLine(turn_count: 15);
     }
     
     private func createLine(turn_count: Int) {

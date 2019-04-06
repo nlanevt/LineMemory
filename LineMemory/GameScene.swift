@@ -138,7 +138,6 @@ class GameScene: SKScene {
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        print("touches began");
         if (isPaused) {return}
         
         for touch in touches {
@@ -150,8 +149,7 @@ class GameScene: SKScene {
                 }
             }
             
-            if (!isPaused && pause_button_grid.contains(location))
-            {
+            if (!isPaused && pause_button_grid.contains(location)) {
                 pauseGame()
             }
             else if (!isPaused && refresh_button_grid.contains(location)) {
@@ -160,7 +158,6 @@ class GameScene: SKScene {
             else if (!isPaused && game_won && return_home_button.contains(location)) {
                 returnHome();
             }
-            
         }
     }
     
@@ -199,7 +196,6 @@ class GameScene: SKScene {
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         // Compares the player and AI line if the line list is not empty.
         // No comparison will occur if no line has been made.
-        print("touches ended");
         if (isPaused) {return}
         
         if (player_go && !player_line_list.isEmpty) {
@@ -219,8 +215,7 @@ class GameScene: SKScene {
             }
             
             if let last_turn = line_controller.getTurnsOfLastLine().last {
-                //player_line_list.last?.setDirection(direction: last_turn);
-                let final_direction = last_turn//compareDirections(dirA: player_line_list[player_line_list.count-2].getDirection(), dirB: last_turn);
+                let final_direction = last_turn
                 player_line_list.last?.setDirection(direction: final_direction)
             }
             
@@ -230,11 +225,11 @@ class GameScene: SKScene {
     }
     
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-        print("touchesCancelled");
+        // Not implemented
     }
     
     override func update(_ currentTime: TimeInterval) {
-
+        //Not implemented
     }
     
     private func startRound() {
@@ -246,19 +241,14 @@ class GameScene: SKScene {
         ai_line_points.removeAll();
         
         // Create AI Line
-        var turns = level_controller.getTurns();
-        //turns = ;
-        print("level \(level_controller.getLevelsBeaten()), round \(level_controller.getRoundsLeft()), turns: \(turns)");
+        let turns = level_controller.getTurns();
         ai_line_points = line_controller.generateLine(turn_count: turns, completion: {
             self.startTimer();
             self.player_go = true;
         });
-
-        print("starting round: \(score)");
     }
     
     private func endRound(round_won: Bool) {
-        print("end round");
         if (!player_go || !round_started) {return}
         
         round_started = false;
@@ -281,8 +271,6 @@ class GameScene: SKScene {
                 setRoundsLeftDisplay();
                 setLevelDisplay();
                 levelDecreaseAnimation();
-                //MARK: Remove all rounds
-                //MARK: Re-create all rounds
                 createRoundsAnimation();
                 let reduction_amount = level_controller.getScoreReduction();
                 let starting_score = score;
@@ -294,12 +282,7 @@ class GameScene: SKScene {
             return;
         }
         
-        let score_sign_position = player_line_list.first?.convert(player_line_list.first?.position ?? CGPoint(x: 0.0, y: 0.0), to: self); //player_line_list.last?.convert(player_line_list.last?.position ?? CGPoint(x: 0.0, y: 0.0), to: self);
-        
-        
-        self.animatePlayerLineDissipation(iterator: 0, completion: {
-            self.startRound();
-        })
+        let score_sign_position = player_line_list.first?.convert(player_line_list.first?.position ?? CGPoint(x: 0.0, y: 0.0), to: self);
         
         // Set and animate the score.
         let amount = Int64(player_line_list.count)*5;
@@ -319,7 +302,7 @@ class GameScene: SKScene {
         setRoundsLeftDisplay();
         removeRoundAnimation();
         
-        if (level_increases) {            
+        if (level_increases) {
             setLivesDisplay();
             setLevelDisplay();
             levelIncreaseAnimation()
@@ -328,6 +311,14 @@ class GameScene: SKScene {
         }
         
         setScoreData();
+        
+        self.animatePlayerLineDissipation(iterator: 0, completion: {
+            if (/*Int(arc4random_uniform(UInt32(2))) > 0*/true && level_increases && !self.level_controller.didBeatGame()) {
+                self.view_controller.showPauseView();
+                menu_view_controller.showAd();
+            }
+            self.startRound();
+        })
     }
     
     private func setScoreData() {
@@ -384,7 +375,6 @@ class GameScene: SKScene {
     private func setLevelDisplay() {
         level_label.text = "\(level_controller.getCurrentLevel())";
     }
-    
     
     private func flashLabel(label: SKLabelNode, color: UIColor, number_of_times: Int) {
         if (number_of_times < 1) {return}
@@ -673,13 +663,11 @@ class GameScene: SKScene {
             link.removeFromParent();
             link.removeAllActions();
         }
-        
         player_line_list.removeAll();
     }
     
-    private func pauseGame() {
-        if (self.isPaused == false && !is_destroying_line && player_line_list.isEmpty) {
-            print("Pause Game");
+    public func pauseGame() {
+        if (self.isPaused == false) {
             pause_button.run(SKAction.sequence([SKAction.setTexture(SKTexture(imageNamed: "PauseButtonPressed")), SKAction.wait(forDuration: 0.25)]), completion: {
                     self.view_controller.showPauseView();
                     self.pause_button.texture = SKTexture(imageNamed: "PauseButton");
@@ -696,9 +684,11 @@ class GameScene: SKScene {
     }
     
     public func refreshRound() {
-        //print("refresh");
         if (isPaused) {return};
+        if (is_destroying_line || !player_line_list.isEmpty) {return};
+        
         cleanPlayerLine();
+        line_controller.cleanLine();
         resetTimer();
         startRound();
     }

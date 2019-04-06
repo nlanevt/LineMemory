@@ -11,11 +11,15 @@ import SpriteKit
 import GameplayKit
 import CoreData
 import GameKit
+import GoogleMobileAds //MARK
 
 var menu_view_controller:MenuViewController!;
 var animation_frames_manager = AnimationFramesHelper();
+var INTERSTITIAL_AD_ID = "ca-app-pub-2893925630884266/8093921056";
+var INTERSTITIAL_TEST_ID = "ca-app-pub-3940256099942544/4411468910";
+var GOOGLE_AD_APP_ID = "ca-app-pub-2893925630884266~9063264087";
 
-class MenuViewController: UIViewController, GKGameCenterControllerDelegate {
+class MenuViewController: UIViewController, GKGameCenterControllerDelegate, GADInterstitialDelegate {
     private var menu_scene:MenuScene!;
     private var highest_score:Int64 = 0;
     private var highest_level:Int64 = 0;
@@ -23,28 +27,20 @@ class MenuViewController: UIViewController, GKGameCenterControllerDelegate {
     private var player:NSManagedObject? = nil;
     private var players:[NSManagedObject] = [];
     private var max_level:Int64 = 256;
-    
-    /* Variables */
     private var gcEnabled = Bool() // Check if the user has Game Center enabled
     private var gcDefaultLeaderBoard = String() // Check the default leaderboardID
-    
-    // IMPORTANT: replace the red string below with your own Leaderboard ID (the one you've set in iTunes Connect)
     private let LEADERBOARD_HIGHESTSCORE_ID = "com.linememory.highestscore"
     private let LEADERBOARD_HIGHESTLEVEL_ID = "com.linememory.highestlevel"
-    
     private var delete_core_data = false;
-    
-    @IBAction func StartGameButton(_ sender: Any) {
-        let gameVC = self.storyboard?.instantiateViewController(withIdentifier: "GameVC") as! GameViewController;
-        self.navigationController?.pushViewController(gameVC, animated: true)
-    }
+    private var interstitial: GADInterstitial!
+    private var request: GADRequest!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        menu_view_controller = self;
         loadScores();
         authenticateLocalPlayer();
-        menu_view_controller = self;
+        configureNewInterstitial();
         
         NotificationCenter.default.addObserver(
             self,
@@ -64,10 +60,8 @@ class MenuViewController: UIViewController, GKGameCenterControllerDelegate {
             name: NSNotification.Name.UIApplicationWillResignActive,
             object: nil)
         
-        // Load 'MenuScene.sks' as a GKScene. This provides gameplay related content
-        // including entities and graphs.
         if let scene = GKScene(fileNamed: "MenuScene") {
-            
+        
             // Get the SKScene from the loaded GKScene
             if let sceneNode = scene.rootNode as! MenuScene? {
                 // Copy gameplay related content over to the scene
@@ -84,6 +78,12 @@ class MenuViewController: UIViewController, GKGameCenterControllerDelegate {
                 }
             }
         }
+    }
+    
+    @IBAction func StartGameButton(_ sender: Any) {
+        let gameVC = self.storyboard?.instantiateViewController(withIdentifier: "GameVC") as! GameViewController;
+        self.navigationController?.pushViewController(gameVC, animated: true)
+        configureNewInterstitial();
     }
     
     @IBAction func CheckLeaderboard(_ sender: Any) {
@@ -115,7 +115,10 @@ class MenuViewController: UIViewController, GKGameCenterControllerDelegate {
     }
     
     @objc func applicationDidBecomeActive(notification: NSNotification) {
-
+        if (interstitial.hasBeenUsed == false && interstitial.isReady == false) {
+            request = GADRequest();
+            interstitial.load(request);
+        }
     }
     
     @objc func applicationDidEnterBackground(notification: NSNotification) {
@@ -138,7 +141,6 @@ class MenuViewController: UIViewController, GKGameCenterControllerDelegate {
     
     public func playerBeatGame(did_player_beat_game: Bool) {
         did_beat_game = did_player_beat_game;
-        //addHighestLevelToLeaderBoard(level: max_level)
     }
     
     public func wasGameBeaten() -> Bool {
@@ -306,4 +308,31 @@ class MenuViewController: UIViewController, GKGameCenterControllerDelegate {
         gameCenterViewController.dismiss(animated: true, completion: nil)
     }
     
+    private func createAndLoadInterstitial() -> GADInterstitial {
+        request = GADRequest();
+        let interstitial = GADInterstitial(adUnitID: INTERSTITIAL_TEST_ID); // MARK
+        interstitial.delegate = self
+        interstitial.load(request);
+        return interstitial;
+    }
+    
+    public func configureNewInterstitial() {
+        interstitial = createAndLoadInterstitial();
+    }
+    
+    public func showAd()
+    {
+        if interstitial.isReady {
+            interstitial.present(fromRootViewController: self)
+        } else {
+            print("Ad wasn't ready")
+            request = GADRequest();
+            interstitial.load(request);
+        }
+    }
+    
+    //Loads a new intersitital if the current one has been dismissed.
+    func interstitialDidDismissScreen(_ ad: GADInterstitial) {
+        configureNewInterstitial();
+    }
 }

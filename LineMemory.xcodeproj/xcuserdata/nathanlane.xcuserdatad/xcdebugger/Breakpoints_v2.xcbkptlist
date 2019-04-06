@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LineMemory/GameScene.swift"
-            timestampString = "576131206.2748359"
+            timestampString = "576273348.72148"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "477"
-            endingLineNumber = "477"
+            startingLineNumber = "467"
+            endingLineNumber = "467"
             landmarkName = "animateSum(starting_value:amount:label:completion:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -26,77 +26,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LineMemory/LineController.swift"
-            timestampString = "575950652.077356"
+            timestampString = "576272987.7575361"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "252"
             endingLineNumber = "252"
             landmarkName = "animateLineCreation(iterator:code:completion:)"
             landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "LineMemory/GameScene.swift"
-            timestampString = "576131206.27534"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "281"
-            endingLineNumber = "281"
-            landmarkName = "endRound(round_won:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "LineMemory/GameScene.swift"
-            timestampString = "576131206.2756521"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "290"
-            endingLineNumber = "290"
-            landmarkName = "endRound(round_won:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "LineMemory.GameScene.(endRound in _540454C01127D5CCCE901635196DC013)(round_won: Swift.Bool) -&gt; ()"
-                  moduleName = "LineMemory"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/nathanlane/Documents/Development/Products/LineMemory/LineMemory/LineMemory/GameScene.swift"
-                  timestampString = "573098222.899857"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "260"
-                  endingLineNumber = "260"
-                  offsetFromSymbolStart = "1104">
-               </Location>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #2 () -&gt; () in LineMemory.GameScene.(endRound in _540454C01127D5CCCE901635196DC013)(round_won: Swift.Bool) -&gt; ()"
-                  moduleName = "LineMemory"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/nathanlane/Documents/Development/Products/LineMemory/LineMemory/LineMemory/GameScene.swift"
-                  timestampString = "573098222.902741"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "260"
-                  endingLineNumber = "260"
-                  offsetFromSymbolStart = "0">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -154,27 +90,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LineMemory/GameScene.swift"
-            timestampString = "576131206.275979"
+            timestampString = "576273348.7216311"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "223"
-            endingLineNumber = "223"
-            landmarkName = "touchesEnded(_:with:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "LineMemory/GameScene.swift"
-            timestampString = "576131206.276391"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "825"
-            endingLineNumber = "825"
+            startingLineNumber = "816"
+            endingLineNumber = "816"
             landmarkName = "animateScoreSign(score_amount:position:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -186,44 +106,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LineMemory/GameScene.swift"
-            timestampString = "576131206.276721"
+            timestampString = "576273348.721702"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "297"
-            endingLineNumber = "297"
-            landmarkName = "endRound(round_won:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "LineMemory/GameScene.swift"
-            timestampString = "576131206.277023"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "833"
-            endingLineNumber = "833"
+            startingLineNumber = "824"
+            endingLineNumber = "824"
             landmarkName = "animateScoreSign(score_amount:position:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "LineMemory/LevelController.swift"
-            timestampString = "576131206.277334"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "674"
-            endingLineNumber = "674"
-            landmarkName = "increaseLevel(score:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -234,11 +122,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LineMemory/MenuViewController.swift"
-            timestampString = "576131206.277395"
+            timestampString = "576273348.721773"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "141"
-            endingLineNumber = "141"
+            startingLineNumber = "144"
+            endingLineNumber = "144"
             landmarkName = "playerBeatGame(did_player_beat_game:)"
             landmarkType = "7">
          </BreakpointContent>

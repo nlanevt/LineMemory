@@ -7,9 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		34DB5CDDC750FC4F0D1A8336 /* libPods-LineMemory.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D14E4B05454A7F1EC45B7F19 /* libPods-LineMemory.a */; };
 		9738CF9E2212579200AC9696 /* Link.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9738CF9D2212579200AC9696 /* Link.swift */; };
 		9738CFA022139F9B00AC9696 /* LineController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9738CF9F22139F9B00AC9696 /* LineController.swift */; };
 		97C218202256EA9600EAF558 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97C2181F2256EA9600EAF558 /* GameKit.framework */; };
+		97C2182422591F8600EAF558 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 97C2182322591F8600EAF558 /* Podfile */; };
 		97C505852252E87A00B2064B /* RixVideoGame-3D.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 97C505842252E87A00B2064B /* RixVideoGame-3D.ttf */; };
 		97C505882254360700B2064B /* HexColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C505872254360700B2064B /* HexColor.swift */; };
 		97E140F1223F20D000B17098 /* Data.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 97E140EF223F20D000B17098 /* Data.xcdatamodeld */; };
@@ -51,9 +53,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		7182030CC7F3430F28A398E4 /* Pods-LineMemory.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LineMemory.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LineMemory/Pods-LineMemory.debug.xcconfig"; sourceTree = "<group>"; };
 		9738CF9D2212579200AC9696 /* Link.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Link.swift; sourceTree = "<group>"; };
 		9738CF9F22139F9B00AC9696 /* LineController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineController.swift; sourceTree = "<group>"; };
 		97C2181F2256EA9600EAF558 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
+		97C2182322591F8600EAF558 /* Podfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
 		97C505842252E87A00B2064B /* RixVideoGame-3D.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "RixVideoGame-3D.ttf"; sourceTree = "<group>"; };
 		97C505872254360700B2064B /* HexColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HexColor.swift; sourceTree = "<group>"; };
 		97E140F0223F20D000B17098 /* Data.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Data.xcdatamodel; sourceTree = "<group>"; };
@@ -81,6 +85,8 @@
 		97E58D3D21E5919F003C95E2 /* LevelController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelController.swift; sourceTree = "<group>"; };
 		97FA2E5B222F64C10093CDE6 /* RixVideoGame-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "RixVideoGame-Bold.ttf"; sourceTree = "<group>"; };
 		97FA2E5D222F65B00093CDE6 /* manaspc.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = manaspc.ttf; sourceTree = "<group>"; };
+		D14E4B05454A7F1EC45B7F19 /* libPods-LineMemory.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-LineMemory.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F942B745E8879AB7182DCA74 /* Pods-LineMemory.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LineMemory.release.xcconfig"; path = "Pods/Target Support Files/Pods-LineMemory/Pods-LineMemory.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +95,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				97C218202256EA9600EAF558 /* GameKit.framework in Frameworks */,
+				34DB5CDDC750FC4F0D1A8336 /* libPods-LineMemory.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -113,6 +120,7 @@
 			isa = PBXGroup;
 			children = (
 				97C2181F2256EA9600EAF558 /* GameKit.framework */,
+				D14E4B05454A7F1EC45B7F19 /* libPods-LineMemory.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -128,11 +136,13 @@
 		97E58CFA21E59068003C95E2 = {
 			isa = PBXGroup;
 			children = (
+				97C2182322591F8600EAF558 /* Podfile */,
 				97E58D0521E59068003C95E2 /* LineMemory */,
 				97E58D2021E5906D003C95E2 /* LineMemoryTests */,
 				97E58D2B21E5906D003C95E2 /* LineMemoryUITests */,
 				97E58D0421E59068003C95E2 /* Products */,
 				97C2181E2256EA9600EAF558 /* Frameworks */,
+				DCD568839221A87DA60FF561 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -201,6 +211,15 @@
 			path = Font;
 			sourceTree = "<group>";
 		};
+		DCD568839221A87DA60FF561 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				7182030CC7F3430F28A398E4 /* Pods-LineMemory.debug.xcconfig */,
+				F942B745E8879AB7182DCA74 /* Pods-LineMemory.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -208,6 +227,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 97E58D3121E5906D003C95E2 /* Build configuration list for PBXNativeTarget "LineMemory" */;
 			buildPhases = (
+				EF20BD9236789FA4524867F8 /* [CP] Check Pods Manifest.lock */,
 				97E58CFF21E59068003C95E2 /* Sources */,
 				97E58D0021E59068003C95E2 /* Frameworks */,
 				97E58D0121E59068003C95E2 /* Resources */,
@@ -310,6 +330,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				97C2182422591F8600EAF558 /* Podfile in Resources */,
 				97E58D1221E59069003C95E2 /* Main.storyboard in Resources */,
 				97E58D0921E59069003C95E2 /* GameScene.sks in Resources */,
 				97E58D1421E5906C003C95E2 /* Assets.xcassets in Resources */,
@@ -337,6 +358,31 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		EF20BD9236789FA4524867F8 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-LineMemory-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		97E58CFF21E59068003C95E2 /* Sources */ = {
@@ -525,6 +571,7 @@
 		};
 		97E58D3221E5906D003C95E2 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7182030CC7F3430F28A398E4 /* Pods-LineMemory.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -544,6 +591,7 @@
 		};
 		97E58D3321E5906D003C95E2 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F942B745E8879AB7182DCA74 /* Pods-LineMemory.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;

@@ -39,7 +39,7 @@ class LineController {
         run_time = 0.0;
         line_code = line_code + 1;
         
-        print("Generate Line: \(line_list?.count)");
+        //print("Generate Line: \(line_list?.count)");
         
         addLinkNodesToList(line_list: line_list!, code: line_code);
         animateLineCreation(iterator: 0, code: line_code, completion: {completion()})
@@ -62,7 +62,7 @@ class LineController {
         var line_list = [CGPoint]();
         var turn_list = [direction]();
         
-        print("start_edge: \(start_edge), start_point: \(start_point)");
+        //print("start_edge: \(start_edge), start_point: \(start_point)");
         if (start_edge.x == start_point.x) {
             var incrementer = 1;
             var length = Int(start_point.y) - Int(start_edge.y);

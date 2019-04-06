@@ -12,7 +12,6 @@ import GameplayKit
 
 class GameViewController: UIViewController {
 
-
     @IBOutlet weak var PauseView: UIView!;
     
     private var game_scene:GameScene!;
@@ -72,6 +71,7 @@ class GameViewController: UIViewController {
 
     @IBAction func QuitGameButton(_ sender: Any) {
         returnToMenu();
+        menu_view_controller.showAd();
     }
     
     @IBAction func ContinueGameButton(_ sender: Any) {
@@ -125,7 +125,6 @@ class GameViewController: UIViewController {
     
     public func hidePauseView() {
         if (!gameScenePaused) {return};
-        
         gameScenePaused = false;
         game_scene.isPaused = false;
         game_scene.refreshRound();
