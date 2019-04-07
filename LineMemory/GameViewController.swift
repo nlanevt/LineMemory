@@ -13,9 +13,16 @@ import GameplayKit
 class GameViewController: UIViewController {
 
     @IBOutlet weak var PauseView: UIView!;
+    @IBOutlet weak var QuitGameButton: UIButton!
+    @IBOutlet weak var ContinueButton: UIButton!
     
-    private var game_scene:GameScene!;
+    private weak var game_scene: GameScene?;
     private var gameScenePaused:Bool = false;
+    private weak var game_view: SKView?;
+    
+    deinit {
+        print("Game View Controller has been deallocated");
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,31 +49,18 @@ class GameViewController: UIViewController {
         PauseView.isHidden = true;
         PauseView.alpha = 0.0;
         
-        print("highest Score: \(menu_view_controller.getHighestScore()), highest level: \(menu_view_controller.getHighestLevel())");
+        game_scene = GameScene(fileNamed: "GameScene")
+        // Set the scale mode to scale to fit the window
+        game_scene?.scaleMode = .aspectFill
+        game_scene?.view_controller = self;
         
-        // Load 'GameScene.sks' as a GKScene. This provides gameplay related content
-        // including entities and graphs.
-        if let scene = GKScene(fileNamed: "GameScene") {
-            
-            // Get the SKScene from the loaded GKScene
-            if let sceneNode = scene.rootNode as! GameScene? {
-                // Copy gameplay related content over to the scene
-                game_scene = sceneNode;
-                // Set the scale mode to scale to fit the window
-                game_scene.scaleMode = .aspectFill
-                game_scene.view_controller = self;
-                
-                // Present the scene
-                if let view = self.view as! SKView? {
-                    view.presentScene(game_scene)
-                    
-                    view.ignoresSiblingOrder = true
-                    
-                    view.showsFPS = true
-                    view.showsNodeCount = true
-                }
-            }
-        }
+        game_view = (self.view as! SKView);
+        game_view?.presentScene(game_scene)
+        game_view?.ignoresSiblingOrder = true
+        game_view?.showsFPS = true
+        game_view?.showsNodeCount = true
+        
+        setUpStringLocalization()
     }
 
     @IBAction func QuitGameButton(_ sender: Any) {
@@ -100,9 +94,9 @@ class GameViewController: UIViewController {
     }
     
     @objc func applicationDidBecomeActive(notification: NSNotification) {
-        game_scene.isPaused = gameScenePaused;
+        game_scene?.isPaused = gameScenePaused;
         if (gameScenePaused) {return};
-        game_scene.refreshRound();
+        game_scene?.refreshRound();
         print("applicationDidBecomeActive");
     }
     
@@ -120,14 +114,21 @@ class GameViewController: UIViewController {
     }
     
     public func returnToMenu() {
+        game_scene?.deallocateContent();
+        game_scene?.removeAllChildren();
+        game_scene?.removeFromParent();
+        game_scene = nil;
+        game_view?.removeFromSuperview();
+        menu_view_controller.presentMenuScene();
         self.navigationController?.popToRootViewController(animated: true);
+        self.removeFromParentViewController();
     }
     
     public func hidePauseView() {
         if (!gameScenePaused) {return};
         gameScenePaused = false;
-        game_scene.isPaused = false;
-        game_scene.refreshRound();
+        game_scene?.isPaused = false;
+        game_scene?.refreshRound();
         UIView.animate(withDuration: 0.25, animations: {
             self.view.viewWithTag(100)?.alpha = 0.0;
             self.PauseView.alpha = 0.0;
@@ -141,7 +142,7 @@ class GameViewController: UIViewController {
         if (gameScenePaused) {return};
         
         gameScenePaused = true;
-        game_scene.isPaused = true;
+        game_scene?.isPaused = true;
         PauseView.isHidden = false;
         PauseView.alpha = 0.0;
         let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark)
@@ -158,5 +159,10 @@ class GameViewController: UIViewController {
             blurEffectView.alpha = 1.0;
             self.PauseView.alpha = 1.0
         });
+    }
+    
+    private func setUpStringLocalization() {
+        QuitGameButton.titleLabel?.font = UIFont(name: String.localizedStringWithFormat(NSLocalizedString("fontNameA", comment: "")), size: CGFloat((String.localizedStringWithFormat(NSLocalizedString("fontSize24", comment: "")) as NSString).floatValue));
+        ContinueButton.titleLabel?.font = UIFont(name: String.localizedStringWithFormat(NSLocalizedString("fontNameA", comment: "")), size: CGFloat((String.localizedStringWithFormat(NSLocalizedString("fontSize24", comment: "")) as NSString).floatValue));
     }
 }

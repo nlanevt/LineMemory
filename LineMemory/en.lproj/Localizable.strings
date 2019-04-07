@@ -1,0 +1,32 @@
+/* 
+  Localizable.strings
+  LineMemory
+
+  Created by Nathan Lane on 4/7/19.
+  Copyright © 2019 Nathan Lane. All rights reserved.
+*/
+"fontNameA" = "RixVideoGameB";
+"fontNameB" = "RixVideoGame3D";
+
+"Start Game" = "Start Game";
+"Leaderboard" = "Leaderboard";
+
+"Your Highest Score" = "Your Highest Score";
+"Your Highest Level" = "Your Highest Level";
+"Level" = "Level";
+
+"Highest Score" = "Highest Score";
+"Highest Level" = "Highest Level";
+
+"CONGRATULATIONS" = "CONGRATULATIONS";
+"You Beat Line Memory!" = "You Beat Line Memory!";
+"Return Home" = "Return Home";
+
+"Quit Game" = "QUIT GAME";
+"Continue" = "CONTINUE";
+
+"fontSize18" = "18";
+"fontSize20" = "20";
+"fontSize24" = "24";
+"fontSize32" = "32";
+"fontSize40" = "40";

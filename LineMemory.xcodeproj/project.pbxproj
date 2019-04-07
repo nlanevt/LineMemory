@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		34DB5CDDC750FC4F0D1A8336 /* libPods-LineMemory.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D14E4B05454A7F1EC45B7F19 /* libPods-LineMemory.a */; };
+		972453C1225A829C0060547F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 972453C3225A829C0060547F /* Localizable.strings */; };
 		9738CF9E2212579200AC9696 /* Link.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9738CF9D2212579200AC9696 /* Link.swift */; };
 		9738CFA022139F9B00AC9696 /* LineController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9738CF9F22139F9B00AC9696 /* LineController.swift */; };
 		97C218202256EA9600EAF558 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97C2181F2256EA9600EAF558 /* GameKit.framework */; };
@@ -54,6 +55,13 @@
 
 /* Begin PBXFileReference section */
 		7182030CC7F3430F28A398E4 /* Pods-LineMemory.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LineMemory.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LineMemory/Pods-LineMemory.debug.xcconfig"; sourceTree = "<group>"; };
+		972453B9225A820C0060547F /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
+		972453BA225A820C0060547F /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
+		972453BC225A82200060547F /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Main.strings; sourceTree = "<group>"; };
+		972453BD225A82200060547F /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		972453C2225A829C0060547F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		972453C4225A82A20060547F /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		972453C5225A82A50060547F /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
 		9738CF9D2212579200AC9696 /* Link.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Link.swift; sourceTree = "<group>"; };
 		9738CF9F22139F9B00AC9696 /* LineController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineController.swift; sourceTree = "<group>"; };
 		97C2181F2256EA9600EAF558 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
@@ -179,6 +187,7 @@
 				97E140F22241D5AD00B17098 /* MenuScene.sks */,
 				97E140F62241D61600B17098 /* MenuScene.swift */,
 				97E140F82243284B00B17098 /* AnimationFramesHelper.swift */,
+				972453C3225A829C0060547F /* Localizable.strings */,
 			);
 			path = LineMemory;
 			sourceTree = "<group>";
@@ -312,6 +321,8 @@
 			knownRegions = (
 				en,
 				Base,
+				"zh-Hans",
+				ko,
 			);
 			mainGroup = 97E58CFA21E59068003C95E2;
 			productRefGroup = 97E58D0421E59068003C95E2 /* Products */;
@@ -332,6 +343,7 @@
 			files = (
 				97C2182422591F8600EAF558 /* Podfile in Resources */,
 				97E58D1221E59069003C95E2 /* Main.storyboard in Resources */,
+				972453C1225A829C0060547F /* Localizable.strings in Resources */,
 				97E58D0921E59069003C95E2 /* GameScene.sks in Resources */,
 				97E58D1421E5906C003C95E2 /* Assets.xcassets in Resources */,
 				97FA2E5C222F64C10093CDE6 /* RixVideoGame-Bold.ttf in Resources */,
@@ -436,10 +448,22 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		972453C3225A829C0060547F /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				972453C2225A829C0060547F /* en */,
+				972453C4225A82A20060547F /* zh-Hans */,
+				972453C5225A82A50060547F /* ko */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 		97E58D1021E59069003C95E2 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				97E58D1121E59069003C95E2 /* Base */,
+				972453B9225A820C0060547F /* zh-Hans */,
+				972453BC225A82200060547F /* ko */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -448,6 +472,8 @@
 			isa = PBXVariantGroup;
 			children = (
 				97E58D1621E5906C003C95E2 /* Base */,
+				972453BA225A820C0060547F /* zh-Hans */,
+				972453BD225A82200060547F /* ko */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -459,6 +485,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -519,6 +546,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";

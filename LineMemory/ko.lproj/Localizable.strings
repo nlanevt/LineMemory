@@ -1,0 +1,32 @@
+/* 
+  Localizable.strings
+  LineMemory
+
+  Created by Nathan Lane on 4/7/19.
+  Copyright © 2019 Nathan Lane. All rights reserved.
+*/
+"fontNameA" = "RixVideoGameB";
+"fontNameB" = "RixVideoGame3D";
+
+"Start Game" = "게임시작";
+"Leaderboard" = "전체순위";
+
+"Your Highest Score" = "나의 최고점수";
+"Your Highest Level" = "나의 최고레벨";
+"Level" = "레벨";
+
+"Highest Score" = "최고점수";
+"Highest Level" = "최고레벨";
+
+"CONGRATULATIONS" = "축하합니다";
+"You Beat Line Memory!" = "기억력이 매우 좋으시군요!";
+"Return Home" = "홈으로";
+
+"Quit Game" = "그만하기";
+"Continue" = "계속하기";
+
+"fontSize18" = "18";
+"fontSize20" = "20";
+"fontSize24" = "24";
+"fontSize32" = "32";
+"fontSize40" = "40";

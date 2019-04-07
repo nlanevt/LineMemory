@@ -11,7 +11,7 @@ import SpriteKit
 import GameplayKit
 
 class LevelController {
-    private var game_scene:GameScene!
+    private weak var game_scene: GameScene?
     private var level_counter:Int64 = 1;
     private var rounds_won_counter:Int = 0;
     private var rounds_default:Int = 8;
@@ -30,6 +30,10 @@ class LevelController {
         level_score = 0;
         lives_counter = lives_default;
         setRoundsAmount(); 
+    }
+    
+    deinit {
+        print("Level Controller has been deallocated");
     }
     
     public func getCurrentLevel() -> Int64 {

@@ -15,7 +15,7 @@ class LineController {
     private var grid_height = 8;
     private var ai_link_list = [Link?]();
     private var turns = [direction]();
-    private var grid = [[Tile]]();
+    private var grid:[[Tile]]? = [];
     private var run_time:TimeInterval!;
     private var line_code:Int64 = 0; // Manages accidental overlapping of a new line and previous line animations.
     
@@ -25,16 +25,20 @@ class LineController {
         self.grid = grid;
     }
     
+    deinit {
+        print("Line Controller has been deallocated");
+    }
+    
     public func generateLine(turn_count: Int, completion: @escaping ()->Void) -> [CGPoint] {
         cleanLine();
         var line_list = createLine(turn_count: turn_count);
         while (line_list == nil) {line_list = createLine(turn_count: turn_count)}
         
-        if (line_list != nil) {
+        /*if (line_list != nil) {
             for i in 0..<line_list!.count {
-                //print("\(line_list![i])")
+                print("\(line_list![i])")
             }
-        }
+        }*/
         
         run_time = 0.0;
         line_code = line_code + 1;
@@ -62,7 +66,6 @@ class LineController {
         var line_list = [CGPoint]();
         var turn_list = [direction]();
         
-        //print("start_edge: \(start_edge), start_point: \(start_point)");
         if (start_edge.x == start_point.x) {
             var incrementer = 1;
             var length = Int(start_point.y) - Int(start_edge.y);
@@ -207,29 +210,29 @@ class LineController {
             let cur_point = line_list[iterator]
             let r = Int(cur_point.y);
             let c = Int(cur_point.x);
-            let new_tile = grid[r][c];
+            let new_tile = grid?[r][c];
             
             if (iterator == 0) {
-                ai_link_list.append(new_tile.addLink(direction: .none));
+                ai_link_list.append(new_tile?.addLink(direction: .none));
             }
             else {
                 let prev_point = line_list[iterator-1];
-                let previous_tile = grid[Int(prev_point.y)][Int(prev_point.x)];
-                let dir = new_tile.getDirectionFrom(tile: previous_tile);
+                let previous_tile = grid?[Int(prev_point.y)][Int(prev_point.x)];
+                let dir = new_tile?.getDirectionFrom(tile: previous_tile!);
                 
                 let previous_link_dir = ai_link_list.last!?.getDirection();
-                let new_dir_for_previous_link = compareDirections(dirA: previous_link_dir!, dirB: dir);
+                let new_dir_for_previous_link = compareDirections(dirA: previous_link_dir!, dirB: dir!);
                 
                 ai_link_list.last?!.setDirection(direction: new_dir_for_previous_link);
                 //turns[turns.count-1] = new_dir_for_previous_link
                 
-                let new_link = new_tile.addLink(direction: dir)
+                let new_link = new_tile?.addLink(direction: dir!)
                 ai_link_list.append(new_link);
                 
                 
                 if (iterator == line_list.count-1) {
                     let last_turn = turns.last;
-                    let final_dir = compareDirections(dirA: dir, dirB: last_turn!);
+                    let final_dir = compareDirections(dirA: dir!, dirB: last_turn!);
                     ai_link_list.last?!.setDirection(direction: final_dir);
                     turns[turns.count-1] = final_dir
                 }

@@ -58,7 +58,9 @@
                         <viewLayoutGuide key="safeArea" id="4qk-I5-YsI"/>
                     </view>
                     <connections>
+                        <outlet property="ContinueButton" destination="ZHm-X4-457" id="sfT-if-wqY"/>
                         <outlet property="PauseView" destination="8Wz-xb-8yI" id="qSp-fJ-Xlh"/>
+                        <outlet property="QuitGameButton" destination="1ZC-ph-DX1" id="qQv-4Y-ESn"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
@@ -110,19 +112,15 @@
                                     <action selector="CheckLeaderboard:" destination="Nt2-pi-vNL" eventType="touchUpInside" id="HxI-uC-we9"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gBe-et-WCy">
-                                <rect key="frame" x="108" y="362" width="153" height="39"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" name="RixVideoGameB" family="RixVideoGame" pointSize="24"/>
-                                <state key="normal" title="Options and Help">
-                                    <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
-                                </state>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="mBb-ui-dFw"/>
                     </view>
                     <navigationItem key="navigationItem" id="Ib0-UT-4zS"/>
+                    <connections>
+                        <outlet property="LeaderboardButton" destination="Q2c-Rc-HEC" id="UH8-q5-kss"/>
+                        <outlet property="StartGameButton" destination="4tL-wA-mBz" id="0hL-VJ-lmG"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3mM-XN-qBx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

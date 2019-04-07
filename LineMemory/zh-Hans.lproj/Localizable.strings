@@ -1,0 +1,32 @@
+/* 
+  Localizable.strings
+  LineMemory
+
+  Created by Nathan Lane on 4/7/19.
+  Copyright © 2019 Nathan Lane. All rights reserved.
+*/
+"fontNameA" = "RixVideoGameB";
+"fontNameB" = "RixVideoGame3D";
+
+"Start Game" = "游戏开始";
+"Leaderboard" = "领先牌";
+
+"Your Highest Score" = "你的最高分";
+"Your Highest Level" = "你的最高级";
+"Level" = "级";
+
+"Highest Score" = "最高分";
+"Highest Level" = "最高级";
+
+"CONGRATULATIONS" = "恭喜";
+"You Beat Line Memory!" = "你赢了！";
+"Return Home" = "回到主页";
+
+"Quit Game" = "结束游戏";
+"Continue" = "继续";
+
+"fontSize18" = "18";
+"fontSize20" = "20";
+"fontSize24" = "24";
+"fontSize32" = "32";
+"fontSize40" = "40";

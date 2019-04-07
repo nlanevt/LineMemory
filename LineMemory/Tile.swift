@@ -14,20 +14,24 @@ class Tile: SKSpriteNode {
     private var covered_texture = SKTexture.init(imageNamed: "CoveredTile"); // will replace with more detailed directional cover tiles.
     private var uncovered_texture = SKTexture.init(imageNamed: "Tile");
     private var neighbor_indexes = [[Int]]();
-    private var neighbors = [Tile]();
+    private var neighbors:[Tile?]? = [];
     private var row = 0;
     private var column = 0;
     private var value = 0;
     private var label = SKLabelNode();
-    public var leftNeighbor:Tile? = nil;
-    public var topNeighbor:Tile? = nil;
-    public var bottomNeighbor:Tile? = nil;
-    public var rightNeighbor:Tile? = nil;
+    public weak var leftNeighbor:Tile? = nil;
+    public weak var topNeighbor:Tile? = nil;
+    public weak var bottomNeighbor:Tile? = nil;
+    public weak var rightNeighbor:Tile? = nil;
     
     init(row: Int, column: Int, size: CGSize) {
         self.row = row;
         self.column = column;
         super.init(texture: uncovered_texture, color: .clear, size: size)
+    }
+    
+    deinit {
+        print("Tile has been deallocated");
     }
     
     convenience init() {
@@ -40,40 +44,36 @@ class Tile: SKSpriteNode {
     
     public func addNeighbor(tile: Tile)
     {
-        self.neighbors.append(tile);
+        self.neighbors?.append(tile);
     }
     
     public func setNeighbors(grid_width: Int, grid_height: Int, grid: [[Tile]]) {
-        neighbors.removeAll();
+        neighbors?.removeAll();
         leftNeighbor = nil;
         rightNeighbor = nil
         topNeighbor = nil;
         bottomNeighbor = nil;
         
         if column - 1 >= 0 {
-            //leftNeighbor = (self.parent as? GameScene)?.grid[row][column-1];
             leftNeighbor = grid[row][column-1];
-            neighbors.append(leftNeighbor!)
+            neighbors?.append(leftNeighbor!)
         }
         
         
         if row - 1 >= 0 {
-            //topNeighbor = (self.parent as? GameScene)?.grid[row-1][column];
             topNeighbor = grid[row-1][column];
-            neighbors.append(topNeighbor!)
+            neighbors?.append(topNeighbor!)
         }
         
         if row + 1 < grid_height {
-           // bottomNeighbor = (self.parent as? GameScene)?.grid[row+1][column]
             bottomNeighbor = grid[row+1][column]
 
-            neighbors.append(bottomNeighbor!);
+            neighbors?.append(bottomNeighbor!);
         }
         
         if column + 1 < grid_width {
-            //rightNeighbor = (self.parent as? GameScene)?.grid[row][column+1]
             rightNeighbor = grid[row][column+1]
-            neighbors.append(rightNeighbor!)
+            neighbors?.append(rightNeighbor!)
         }
     }
     
@@ -109,8 +109,8 @@ class Tile: SKSpriteNode {
     }
     
     public func checkNeighbors(location: CGPoint) -> Tile? {
-        for tile in neighbors {
-            if tile.contains(location) {
+        for tile in neighbors! {
+            if (tile?.contains(location))! {
                 return tile;
             }
         }
@@ -137,4 +137,9 @@ class Tile: SKSpriteNode {
         return link_node;
     }
 
+    public func deallocateContent() {
+        self.removeFromParent();
+        neighbors?.removeAll();
+        neighbors = nil;
+    }
 }

@@ -28,12 +28,14 @@ enum direction {
 
 class GameScene: SKScene {
     
-    public var view_controller:GameViewController!;
-    private var level_controller:LevelController!;
-    private var line_controller:LineController!;
+    public weak var view_controller: GameViewController!;
+    private var level_controller: LevelController!;
+    private var line_controller: LineController!;
     
     private var player_score_label = SKLabelNode();
+    private var lblHighestScore = SKLabelNode();
     private var highest_score_label = SKLabelNode();
+    private var lblHighestLevel = SKLabelNode();
     private var highest_level_label = SKLabelNode();
     private var level_label = SKLabelNode();
     private var level_display_label = SKLabelNode();
@@ -77,6 +79,10 @@ class GameScene: SKScene {
     
     private var game_won = false;
     
+    deinit {
+        print("Game Scene has been deallocated");
+    }
+    
     override func sceneDidLoad() {
         self.backgroundColor = SKColor.black;
         
@@ -85,7 +91,9 @@ class GameScene: SKScene {
         timer_blocker_right = self.childNode(withName: "TimerBlockerRight") as! SKSpriteNode;
         
         player_score_label = self.childNode(withName: "Score") as! SKLabelNode;
+        lblHighestScore = self.childNode(withName: "lblHighestScore") as! SKLabelNode;
         highest_score_label = self.childNode(withName: "HighestScore") as! SKLabelNode;
+        lblHighestLevel = self.childNode(withName: "lblHighestLevel") as! SKLabelNode;
         highest_level_label = self.childNode(withName: "HighestLevel") as! SKLabelNode;
         level_label = self.childNode(withName: "Level") as! SKLabelNode;
         level_display_label = self.childNode(withName: "lblLevel") as! SKLabelNode;
@@ -128,12 +136,15 @@ class GameScene: SKScene {
         // need to set score variable according to CORE Data database
         line_controller = LineController(grid_width: grid_width, grid_height: grid_height, grid: grid);
         level_controller = LevelController(game_scene: self, level: 1);
+        
+        setUpStringLocalization();
         setLevelDisplay();
         setRoundsLeftDisplay()
         setLivesDisplay();
         setHighScoreLabels();
         createRoundsAnimation();
         createLivesAnimation();
+        
         startRound();
     }
     
@@ -313,7 +324,7 @@ class GameScene: SKScene {
         setScoreData();
         
         self.animatePlayerLineDissipation(iterator: 0, completion: {
-            if (/*Int(arc4random_uniform(UInt32(2))) > 0*/true && level_increases && !self.level_controller.didBeatGame()) {
+            if (Int(arc4random_uniform(UInt32(3))) > 1 && level_increases && !self.level_controller.didBeatGame()) {
                 self.view_controller.showPauseView();
                 menu_view_controller.showAd();
             }
@@ -847,5 +858,43 @@ class GameScene: SKScene {
         let scoreLabelActionSequence = SKAction.sequence([SKAction.move(by: moveVector, duration: 1.5), SKAction.fadeOut(withDuration: 0.25)]);
         
         scorelabelnode.run(scoreLabelActionSequence, completion: {scorelabelnode.removeFromParent()});
+    }
+    
+    private func setUpStringLocalization() {
+        level_display_label.fontName = String.localizedStringWithFormat(NSLocalizedString("fontNameA", comment: "The localized font"));
+        level_display_label.text = String.localizedStringWithFormat(NSLocalizedString("Level", comment: "N/A"));
+        level_display_label.fontSize = CGFloat((String.localizedStringWithFormat(NSLocalizedString("fontSize24", comment: "N/A")) as NSString).floatValue);
+        
+        level_label.position.x = level_display_label.position.x + level_display_label.frame.width + 10.0;
+        
+        gameWonA_label.fontName = String.localizedStringWithFormat(NSLocalizedString("fontNameB", comment: "The localized font"));
+        gameWonA_label.text = String.localizedStringWithFormat(NSLocalizedString("CONGRATULATIONS", comment: "N/A"));
+        gameWonA_label.fontSize = CGFloat((String.localizedStringWithFormat(NSLocalizedString("fontSize40", comment: "N/A")) as NSString).floatValue);
+        
+        gameWonB_label.fontName = String.localizedStringWithFormat(NSLocalizedString("fontNameB", comment: "The localized font"));
+        gameWonB_label.text = String.localizedStringWithFormat(NSLocalizedString("You Beat Line Memory!", comment: "N/A"));
+        gameWonB_label.fontSize = CGFloat((String.localizedStringWithFormat(NSLocalizedString("fontSize32", comment: "N/A")) as NSString).floatValue);
+        
+        return_home_button.fontName = String.localizedStringWithFormat(NSLocalizedString("fontNameB", comment: "The localized font"));
+        return_home_button.text = String.localizedStringWithFormat(NSLocalizedString("Return Home", comment: "N/A"));
+        return_home_button.fontSize = CGFloat((String.localizedStringWithFormat(NSLocalizedString("fontSize32", comment: "N/A")) as NSString).floatValue);
+        
+        lblHighestScore.fontName = String.localizedStringWithFormat(NSLocalizedString("fontNameA", comment: "The localized font"));
+        lblHighestScore.text = String.localizedStringWithFormat(NSLocalizedString("Highest Score", comment: "N/A"));
+        lblHighestScore.fontSize = CGFloat((String.localizedStringWithFormat(NSLocalizedString("fontSize20", comment: "N/A")) as NSString).floatValue);
+        
+        highest_score_label.position.x = lblHighestScore.position.x + lblHighestScore.frame.width + 10.0;
+        
+        lblHighestLevel.fontName = String.localizedStringWithFormat(NSLocalizedString("fontNameA", comment: "The localized font"));
+        lblHighestLevel.text = String.localizedStringWithFormat(NSLocalizedString("Highest Level", comment: "N/A"));
+        lblHighestLevel.fontSize = CGFloat((String.localizedStringWithFormat(NSLocalizedString("fontSize20", comment: "N/A")) as NSString).floatValue);
+        
+        highest_level_label.position.x = lblHighestLevel.position.x + lblHighestLevel.frame.width + 10.0;
+    }
+    
+    public func deallocateContent() {
+        grid.removeAll(keepingCapacity: false);
+        line_controller = nil;
+        level_controller = nil;
     }
 }

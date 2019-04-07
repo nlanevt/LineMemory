@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LineMemory/GameScene.swift"
-            timestampString = "576273348.72148"
+            timestampString = "576371030.878732"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "467"
-            endingLineNumber = "467"
+            startingLineNumber = "478"
+            endingLineNumber = "478"
             landmarkName = "animateSum(starting_value:amount:label:completion:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LineMemory/LineController.swift"
-            timestampString = "576272987.7575361"
+            timestampString = "576371030.878993"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "252"
-            endingLineNumber = "252"
+            startingLineNumber = "255"
+            endingLineNumber = "255"
             landmarkName = "animateLineCreation(iterator:code:completion:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -42,7 +42,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LineMemory/Link.swift"
-            timestampString = "575951506.8000571"
+            timestampString = "576370144.768993"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "219"
@@ -90,11 +90,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LineMemory/GameScene.swift"
-            timestampString = "576273348.7216311"
+            timestampString = "576371030.879276"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "816"
-            endingLineNumber = "816"
+            startingLineNumber = "827"
+            endingLineNumber = "827"
             landmarkName = "animateScoreSign(score_amount:position:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -106,11 +106,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LineMemory/GameScene.swift"
-            timestampString = "576273348.721702"
+            timestampString = "576371030.8795201"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "824"
-            endingLineNumber = "824"
+            startingLineNumber = "835"
+            endingLineNumber = "835"
             landmarkName = "animateScoreSign(score_amount:position:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -122,11 +122,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LineMemory/MenuViewController.swift"
-            timestampString = "576273348.721773"
+            timestampString = "576371030.879801"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "144"
-            endingLineNumber = "144"
+            startingLineNumber = "141"
+            endingLineNumber = "141"
             landmarkName = "playerBeatGame(did_player_beat_game:)"
             landmarkType = "7">
          </BreakpointContent>

@@ -20,12 +20,12 @@ var INTERSTITIAL_TEST_ID = "ca-app-pub-3940256099942544/4411468910";
 var GOOGLE_AD_APP_ID = "ca-app-pub-2893925630884266~9063264087";
 
 class MenuViewController: UIViewController, GKGameCenterControllerDelegate, GADInterstitialDelegate {
-    private var menu_scene:MenuScene!;
+    private weak var menu_scene:MenuScene!;
     private var highest_score:Int64 = 0;
     private var highest_level:Int64 = 0;
     private var did_beat_game = false;
     private var player:NSManagedObject? = nil;
-    private var players:[NSManagedObject] = [];
+    private var players:[NSManagedObject]? = [];
     private var max_level:Int64 = 256;
     private var gcEnabled = Bool() // Check if the user has Game Center enabled
     private var gcDefaultLeaderBoard = String() // Check the default leaderboardID
@@ -34,6 +34,15 @@ class MenuViewController: UIViewController, GKGameCenterControllerDelegate, GADI
     private var delete_core_data = false;
     private var interstitial: GADInterstitial!
     private var request: GADRequest!
+    
+    @IBOutlet weak var StartGameButton: UIButton!
+    
+    @IBOutlet weak var LeaderboardButton: UIButton!
+    
+    
+    deinit {
+        print("Menu View Controller has been deallocated");
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,30 +69,18 @@ class MenuViewController: UIViewController, GKGameCenterControllerDelegate, GADI
             name: NSNotification.Name.UIApplicationWillResignActive,
             object: nil)
         
-        if let scene = GKScene(fileNamed: "MenuScene") {
-        
-            // Get the SKScene from the loaded GKScene
-            if let sceneNode = scene.rootNode as! MenuScene? {
-                // Copy gameplay related content over to the scene
-                menu_scene = sceneNode;
-                // Set the scale mode to scale to fit the window
-                menu_scene.scaleMode = .aspectFill
-                
-                // Present the scene
-                if let view = self.view as! SKView? {
-                    view.presentScene(menu_scene)
-                    view.ignoresSiblingOrder = true
-                    view.showsFPS = true
-                    view.showsNodeCount = true
-                }
-            }
-        }
+        setUpStringLocalization()
+        presentMenuScene();
     }
     
     @IBAction func StartGameButton(_ sender: Any) {
         let gameVC = self.storyboard?.instantiateViewController(withIdentifier: "GameVC") as! GameViewController;
         self.navigationController?.pushViewController(gameVC, animated: true)
         configureNewInterstitial();
+        menu_scene.deallocateContent();
+        menu_scene.removeAllChildren();
+        menu_scene.removeFromParent();
+        menu_scene = nil;
     }
     
     @IBAction func CheckLeaderboard(_ sender: Any) {
@@ -160,18 +157,18 @@ class MenuViewController: UIViewController, GKGameCenterControllerDelegate, GADI
     }
     
     public func deleteCoreData() {
-        if (!players.isEmpty)
+        if (!(players?.isEmpty)!)
         {
             guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {return}
             let managedContext = appDelegate.persistentContainer.viewContext
             
-            for index in 0 ..< players.count
+            for index in 0 ..< (players?.count)!
             {
-                managedContext.delete(players[index])
+                managedContext.delete((players?[index])!)
             }
             
-            players.removeAll();
-            
+            players?.removeAll();
+
             do {
                 try managedContext.save()
             } catch _ {
@@ -199,15 +196,15 @@ class MenuViewController: UIViewController, GKGameCenterControllerDelegate, GADI
         }
         
         // If there are no records in Core Data for the player yet, create one.
-        if (players.isEmpty)
+        if ((players?.isEmpty)!)
         {
             highest_score = 0;
             highest_level = 0;
             save(highest_score: highest_score, highest_level: highest_level)
         }
-        else if (players.count > 1) // if there is for some reason more than one record
+        else if ((players?.count)! > 1) // if there is for some reason more than one record
         {
-            player = players.last;
+            player = players?.last;
             highest_score = (player?.value(forKeyPath: "highest_score") as? Int64)!;
             highest_level = (player?.value(forKeyPath: "highest_level") as? Int64)!;
             deleteCoreData();
@@ -216,7 +213,7 @@ class MenuViewController: UIViewController, GKGameCenterControllerDelegate, GADI
         }
         else
         {
-            player = players.last;
+            player = players?.last;
             highest_score = (player?.value(forKeyPath: "highest_score") as? Int64)!;
             highest_level = (player?.value(forKeyPath: "highest_level") as? Int64)!;
         }
@@ -277,7 +274,7 @@ class MenuViewController: UIViewController, GKGameCenterControllerDelegate, GADI
     
     
     // MARK: - AUTHENTICATE LOCAL PLAYER
-    func authenticateLocalPlayer() {
+    private func authenticateLocalPlayer() {
         let localPlayer: GKLocalPlayer = GKLocalPlayer.localPlayer();
         
         localPlayer.authenticateHandler = {(ViewController, error) -> Void in
@@ -334,5 +331,31 @@ class MenuViewController: UIViewController, GKGameCenterControllerDelegate, GADI
     //Loads a new intersitital if the current one has been dismissed.
     func interstitialDidDismissScreen(_ ad: GADInterstitial) {
         configureNewInterstitial();
+    }
+    
+    public func presentMenuScene() {
+        if let scene = GKScene(fileNamed: "MenuScene") {
+            
+            // Get the SKScene from the loaded GKScene
+            if let sceneNode = scene.rootNode as! MenuScene? {
+                // Copy gameplay related content over to the scene
+                menu_scene = sceneNode;
+                // Set the scale mode to scale to fit the window
+                menu_scene.scaleMode = .aspectFill
+                
+                // Present the scene
+                if let view = self.view as! SKView? {
+                    view.presentScene(menu_scene)
+                    view.ignoresSiblingOrder = true
+                    view.showsFPS = true
+                    view.showsNodeCount = true
+                }
+            }
+        }
+    }
+    
+    private func setUpStringLocalization() {
+        StartGameButton.titleLabel?.font = UIFont(name: String.localizedStringWithFormat(NSLocalizedString("fontNameA", comment: "")), size: CGFloat((String.localizedStringWithFormat(NSLocalizedString("fontSize24", comment: "")) as NSString).floatValue));
+        LeaderboardButton.titleLabel?.font = UIFont(name: String.localizedStringWithFormat(NSLocalizedString("fontNameA", comment: "")), size: CGFloat((String.localizedStringWithFormat(NSLocalizedString("fontSize24", comment: "")) as NSString).floatValue));
     }
 }
