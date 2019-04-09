@@ -77,6 +77,8 @@ class GameScene: SKScene {
     private var round_nodes_array = [SKSpriteNode]();
     private var life_nodes_array = [SKSpriteNode]();
     
+    private var line_alpha:CGFloat = 0.8;
+    
     private var game_won = false;
     
     deinit {
@@ -134,7 +136,7 @@ class GameScene: SKScene {
         return_home_button.isHidden = true;
 
         // need to set score variable according to CORE Data database
-        line_controller = LineController(grid_width: grid_width, grid_height: grid_height, grid: grid);
+        line_controller = LineController(grid_width: grid_width, grid_height: grid_height, grid: grid, alpha: line_alpha);
         level_controller = LevelController(game_scene: self, level: 1);
         
         setUpStringLocalization();
@@ -156,7 +158,7 @@ class GameScene: SKScene {
             if (player_go && player_line_list.isEmpty) {
                 let tile = findTile(location: location);
                 if (tile != nil) {
-                    player_line_list.append((tile?.addLink(direction: .none))!);
+                    player_line_list.append((tile?.addLink(direction: .none, alpha: line_alpha))!);
                 }
             }
             
@@ -197,7 +199,7 @@ class GameScene: SKScene {
                         let previous_link_dir = player_line_list.last!.getDirection();
                         let new_dir_for_previous_link = compareDirections(dirA: previous_link_dir, dirB: dir!);
                         player_line_list.last?.setDirection(direction: new_dir_for_previous_link);
-                        player_line_list.append((new_tile?.addLink(direction: dir!))!);
+                        player_line_list.append((new_tile?.addLink(direction: dir!, alpha: line_alpha))!);
                     }
                 }
             }
@@ -806,7 +808,7 @@ class GameScene: SKScene {
     }
     
     private func createLine(turn_count: Int) {
-        let line = LineController(grid_width: grid_width, grid_height: grid_height, grid: grid);
+        let line = LineController(grid_width: grid_width, grid_height: grid_height, grid: grid, alpha: line_alpha);
         line.generateLine(turn_count: turn_count, completion: {
             self.createLine(turn_count: turn_count);
         });

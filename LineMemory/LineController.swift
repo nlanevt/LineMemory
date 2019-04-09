@@ -18,11 +18,13 @@ class LineController {
     private var grid:[[Tile]]? = [];
     private var run_time:TimeInterval!;
     private var line_code:Int64 = 0; // Manages accidental overlapping of a new line and previous line animations.
+    private var line_alpha:CGFloat?
     
-    init(grid_width: Int, grid_height: Int, grid: [[Tile]]) {
+    init(grid_width: Int, grid_height: Int, grid: [[Tile]], alpha: CGFloat) {
         self.grid_width = grid_width;
         self.grid_height = grid_height;
         self.grid = grid;
+        self.line_alpha = alpha;
     }
     
     deinit {
@@ -213,22 +215,19 @@ class LineController {
             let new_tile = grid?[r][c];
             
             if (iterator == 0) {
-                ai_link_list.append(new_tile?.addLink(direction: .none));
+                ai_link_list.append(new_tile?.addLink(direction: .none, alpha: line_alpha!));
             }
             else {
                 let prev_point = line_list[iterator-1];
-                let previous_tile = grid?[Int(prev_point.y)][Int(prev_point.x)];
-                let dir = new_tile?.getDirectionFrom(tile: previous_tile!);
+                let dir = new_tile?.getDirectionFrom(tile: (grid?[Int(prev_point.y)][Int(prev_point.x)])!);
                 
                 let previous_link_dir = ai_link_list.last!?.getDirection();
                 let new_dir_for_previous_link = compareDirections(dirA: previous_link_dir!, dirB: dir!);
                 
                 ai_link_list.last?!.setDirection(direction: new_dir_for_previous_link);
-                //turns[turns.count-1] = new_dir_for_previous_link
                 
-                let new_link = new_tile?.addLink(direction: dir!)
+                let new_link = new_tile?.addLink(direction: dir!, alpha: line_alpha!)
                 ai_link_list.append(new_link);
-                
                 
                 if (iterator == line_list.count-1) {
                     let last_turn = turns.last;
@@ -495,12 +494,16 @@ class LineController {
             ai_link_list[i]?.removeFromParent()
             ai_link_list[i]?.removeAllActions();
             ai_link_list[i] = nil;
-            
         }
         
         ai_link_list.removeAll();
         
         turns.removeAll();
+    }
+    
+    public func deallocateContent() {
+        grid?.removeAll();
+        grid = nil;
     }
 }
 

@@ -17,7 +17,6 @@ class Link: SKSpriteNode {
     init(texture: SKTexture, size: CGSize, direction: direction) {
         self.direction = direction;
         super.init(texture: texture, color: .clear, size: size);
-        self.alpha = 0.75;
     }
     
     convenience init() {

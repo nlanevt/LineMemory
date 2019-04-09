@@ -21,12 +21,14 @@ class MenuScene: SKScene, SKPhysicsContactDelegate {
     private var x_grid_pivot:CGFloat = -135;
     private var y_grid_pivot:CGFloat = 275;
     private var tile_size = CGSize(width: 45.0, height: 45.0);
-    private var tile_zPosition:CGFloat = 0.5;
+    private var tile_zPosition:CGFloat = 0.0;
     
     private var highest_score_label = SKLabelNode();
     private var highest_level_label = SKLabelNode();
     private var lblHighestLevel = SKLabelNode();
     private var lblHighestScore = SKLabelNode();
+    
+    private var line_alpha:CGFloat = 0.1;
     
     deinit {
         print("Menu Scene has been deallocated");
@@ -64,16 +66,17 @@ class MenuScene: SKScene, SKPhysicsContactDelegate {
     }
     
     private func animateLines() {
-        //createLine(turn_count: 3)
-        createLine(turn_count: 8);
+        createLine(turn_count: 3)
+        createLine(turn_count: 2);
         //createLine(turn_count: 15);
     }
     
     private func createLine(turn_count: Int) {
-        var line: LineController? = LineController(grid_width: grid_width, grid_height: grid_height, grid: grid! as! [[Tile]]);
-        line?.generateLine(turn_count: turn_count, completion: {
+        var line: LineController? = LineController(grid_width: grid_width, grid_height: grid_height, grid: grid! as! [[Tile]], alpha: line_alpha);
+        line?.generateLine(turn_count: turn_count, completion: { [weak self] in
+            line?.deallocateContent();
             line = nil;
-            self.createLine(turn_count: turn_count);
+            self?.createLine(turn_count: turn_count);
         });
     }
     

@@ -347,8 +347,8 @@ class MenuViewController: UIViewController, GKGameCenterControllerDelegate, GADI
                 if let view = self.view as! SKView? {
                     view.presentScene(menu_scene)
                     view.ignoresSiblingOrder = true
-                    view.showsFPS = true
-                    view.showsNodeCount = true
+                    //view.showsFPS = true
+                    //view.showsNodeCount = true
                 }
             }
         }

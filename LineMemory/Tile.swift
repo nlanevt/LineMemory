@@ -77,37 +77,6 @@ class Tile: SKSpriteNode {
         }
     }
     
-    public func getRowTiles() -> [Tile] {
-        
-        var row_tiles:[Tile] = [];
-        var iterator:Tile? = self;
-        while(iterator?.leftNeighbor != nil) {
-            iterator = iterator?.leftNeighbor;
-        }
-        
-        while(iterator != nil) {
-            row_tiles.append(iterator!);
-            iterator = iterator?.rightNeighbor;
-        }
-        
-        return row_tiles;
-    }
-    
-    public func getColumnTiles() -> [Tile] {
-        var column_tiles:[Tile] = [];
-        var iterator:Tile? = self;
-        while(iterator?.bottomNeighbor != nil) {
-            iterator = iterator?.bottomNeighbor;
-        }
-        
-        while(iterator != nil) {
-            column_tiles.append(iterator!);
-            iterator = iterator?.topNeighbor;
-        }
-        
-        return column_tiles;
-    }
-    
     public func checkNeighbors(location: CGPoint) -> Tile? {
         for tile in neighbors! {
             if (tile?.contains(location))! {
@@ -129,16 +98,23 @@ class Tile: SKSpriteNode {
         return .none;
     }
     
-    public func addLink(direction: direction) -> Link {
-        let link_texture = SKTexture.init(imageNamed: "LinkCoverHead");
-        let link_node = Link(texture: link_texture, size: self.size, direction: direction);
+    public func addLink(direction: direction, alpha: CGFloat) -> Link {
+        let link_node = Link(texture: SKTexture.init(imageNamed: "LinkCoverHead"), size: self.size, direction: direction);
         link_node.zPosition = self.zPosition + 1;
+        link_node.alpha = alpha;
         self.addChild(link_node);
         return link_node;
     }
 
     public func deallocateContent() {
         self.removeFromParent();
+        leftNeighbor = nil;
+        rightNeighbor = nil
+        topNeighbor = nil;
+        bottomNeighbor = nil;
+        for i in 0 ..< (neighbors?.count)! {
+            neighbors?[i] = nil;
+        }
         neighbors?.removeAll();
         neighbors = nil;
     }
