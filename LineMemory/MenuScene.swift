@@ -89,10 +89,10 @@ class MenuScene: SKScene, SKPhysicsContactDelegate {
     
     private func setUpStringLocalization() {
         lblHighestLevel.fontName = String.localizedStringWithFormat(NSLocalizedString("fontNameA", comment: "The localized font"));
-        lblHighestLevel.text = String.localizedStringWithFormat(NSLocalizedString("Your Highest Score", comment: "N/A"));
+        lblHighestLevel.text = String.localizedStringWithFormat(NSLocalizedString("Your Highest Level", comment: "N/A"));
         
         lblHighestScore.fontName = String.localizedStringWithFormat(NSLocalizedString("fontNameA", comment: "The localized font"));
-        lblHighestScore.text = String.localizedStringWithFormat(NSLocalizedString("Your Highest Level", comment: "N/A"));
+        lblHighestScore.text = String.localizedStringWithFormat(NSLocalizedString("Your Highest Score", comment: "N/A"));
     }
     
     public func deallocateContent() {

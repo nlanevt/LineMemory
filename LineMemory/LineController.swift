@@ -277,10 +277,6 @@ class LineController {
         
         let iteration_increase = iterator + 1;
         
-       /* ai_link_list[iterator]?.run(dissipation_action, completion:{
-            self.animateLineDissipation(iterator: iteration_increase, code: code, completion: completion)
-        });*/
-        
         ai_link_list[iterator]?.animateDissipation(completion: { [unowned self] in
             self.animateLineDissipation(iterator: iteration_increase, code: code, completion: completion)
         })
