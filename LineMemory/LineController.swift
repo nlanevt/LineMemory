@@ -48,7 +48,7 @@ class LineController {
         //print("Generate Line: \(line_list?.count)");
         
         addLinkNodesToList(line_list: line_list!, code: line_code);
-        animateLineCreation(iterator: 0, code: line_code, completion: {completion()})
+        animateLineCreation(iterator: 0, code: line_code, completion: {[unowned self] in completion()})
         
         return line_list!;
     }
@@ -260,7 +260,7 @@ class LineController {
 
         let iteration_increase = iterator + 1;
         
-        ai_link_list[iterator]?.animateCreation(completion: {
+        ai_link_list[iterator]?.animateCreation(completion: {[unowned self] in
             self.animateLineCreation(iterator: iteration_increase, code: code, completion: completion)
         })
     }
@@ -281,7 +281,7 @@ class LineController {
             self.animateLineDissipation(iterator: iteration_increase, code: code, completion: completion)
         });*/
         
-        ai_link_list[iterator]?.animateDissipation(completion: {
+        ai_link_list[iterator]?.animateDissipation(completion: { [unowned self] in
             self.animateLineDissipation(iterator: iteration_increase, code: code, completion: completion)
         })
     }

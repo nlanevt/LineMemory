@@ -36,12 +36,10 @@ class MenuViewController: UIViewController, GKGameCenterControllerDelegate, GADI
     private var request: GADRequest!
     
     @IBOutlet weak var StartGameButton: UIButton!
-    
     @IBOutlet weak var LeaderboardButton: UIButton!
     
-    
     deinit {
-        print("Menu View Controller has been deallocated");
+        //print("Menu View Controller has been deallocated");
     }
     
     override func viewDidLoad() {
@@ -70,17 +68,23 @@ class MenuViewController: UIViewController, GKGameCenterControllerDelegate, GADI
             object: nil)
         
         setUpStringLocalization()
+        print("Menu View Controller has been loaded");
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        print("Menu View Will Appear");
         presentMenuScene();
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        print("Menu View Will Disappear")
+        deallocateMenuScene();
     }
     
     @IBAction func StartGameButton(_ sender: Any) {
         let gameVC = self.storyboard?.instantiateViewController(withIdentifier: "GameVC") as! GameViewController;
         self.navigationController?.pushViewController(gameVC, animated: true)
         configureNewInterstitial();
-        menu_scene.deallocateContent();
-        menu_scene.removeAllChildren();
-        menu_scene.removeFromParent();
-        menu_scene = nil;
     }
     
     @IBAction func CheckLeaderboard(_ sender: Any) {
@@ -341,8 +345,8 @@ class MenuViewController: UIViewController, GKGameCenterControllerDelegate, GADI
                 // Copy gameplay related content over to the scene
                 menu_scene = sceneNode;
                 // Set the scale mode to scale to fit the window
-                menu_scene.scaleMode = .aspectFill
-                
+                //menu_scene.scaleMode = .aspectFill
+                menu_scene.scaleMode = .aspectFit
                 // Present the scene
                 if let view = self.view as! SKView? {
                     view.presentScene(menu_scene)
@@ -357,5 +361,14 @@ class MenuViewController: UIViewController, GKGameCenterControllerDelegate, GADI
     private func setUpStringLocalization() {
         StartGameButton.titleLabel?.font = UIFont(name: String.localizedStringWithFormat(NSLocalizedString("fontNameA", comment: "")), size: CGFloat((String.localizedStringWithFormat(NSLocalizedString("fontSize24", comment: "")) as NSString).floatValue));
         LeaderboardButton.titleLabel?.font = UIFont(name: String.localizedStringWithFormat(NSLocalizedString("fontNameA", comment: "")), size: CGFloat((String.localizedStringWithFormat(NSLocalizedString("fontSize24", comment: "")) as NSString).floatValue));
+    }
+    
+    public func deallocateMenuScene() {
+        //if (menu_scene == nil) {return}
+        menu_scene.deallocateContent();
+        menu_scene.removeAllChildren();
+        menu_scene.removeFromParent();
+        menu_scene = nil;
+        self.view = nil;
     }
 }

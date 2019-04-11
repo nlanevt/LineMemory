@@ -146,7 +146,6 @@ class GameScene: SKScene {
         setHighScoreLabels();
         createRoundsAnimation();
         createLivesAnimation();
-        
         startRound();
     }
     
@@ -256,8 +255,9 @@ class GameScene: SKScene {
         // Create AI Line
         let turns = level_controller.getTurns();
         ai_line_points = line_controller.generateLine(turn_count: turns, completion: {
-            self.startTimer();
-            self.player_go = true;
+            [weak self] in
+            self?.startTimer();
+            self?.player_go = true;
         });
     }
     
@@ -271,7 +271,8 @@ class GameScene: SKScene {
         // If you lose the round due to the timer running out or due to incorrect line...
         if (!round_won) {
             self.animatePlayerLineDestruction(iterator: player_line_list.count-1, completion: {
-                self.startRound();
+                [weak self] in
+                self?.startRound();
             });
             
             // lower player lives
@@ -326,11 +327,12 @@ class GameScene: SKScene {
         setScoreData();
         
         self.animatePlayerLineDissipation(iterator: 0, completion: {
-            if (Int(arc4random_uniform(UInt32(3))) > 1 && level_increases && !self.level_controller.didBeatGame()) {
-                self.view_controller.showPauseView();
+            [weak self] in
+            if (Int(arc4random_uniform(UInt32(3))) > 1 && level_increases && !(self?.level_controller.didBeatGame())!) {
+                self?.view_controller.showPauseView();
                 menu_view_controller.showAd();
             }
-            self.startRound();
+            self?.startRound();
         })
     }
     
@@ -405,6 +407,7 @@ class GameScene: SKScene {
         let repeatAction = SKAction.repeat(SKAction.sequence([changeColorAction, waitAction, changeColorBackAction, waitAction]), count: number_of_times);
         
         label.run(repeatAction, completion: {
+            [weak self] in
             label.fontColor = original_color;
         });
     }
@@ -431,6 +434,7 @@ class GameScene: SKScene {
         let repeatAction =  repeatedly ? SKAction.repeatForever(actionSequence) : SKAction.repeat(actionSequence, count: number_of_times)
         
         label.run(repeatAction, completion: {
+            [weak self] in
             label.fontColor = original_color;
         });
     }
@@ -462,7 +466,8 @@ class GameScene: SKScene {
         let run_time = self.line_controller.getRunTime() * self.level_controller.getTimerMultiplier();
         timer_blocker_left.run(SKAction.moveTo(x: -80.0, duration: run_time));
         timer_blocker_right.run(SKAction.moveTo(x: 80.0, duration: run_time), completion: {
-            self.endRound(round_won: false);
+           [weak self] in
+            self?.endRound(round_won: false);
         })
     }
 
@@ -485,6 +490,7 @@ class GameScene: SKScene {
         
         let waitAction = SKAction.wait(forDuration: 0.005);
         let increaseScoreAction = SKAction.run({
+            [weak self] in
             label.fontColor = UIColor.yellow;
             score_counter = score_counter + iterator;
             label.text = "\(score_counter)";
@@ -493,6 +499,7 @@ class GameScene: SKScene {
         let repeatScoreIncreaseAction = SKAction.repeat(SKAction.sequence([increaseScoreAction, waitAction]), count: abs(Int(amount)));
         
         label.run(repeatScoreIncreaseAction, completion: {
+            [weak self] in
             label.fontColor = UIColor.white;
             completion();
         });
@@ -506,8 +513,8 @@ class GameScene: SKScene {
         
         let iteration_increase = iterator + 1;
         
-        player_line_list[iterator].animateDissipation(completion: {
-            self.animatePlayerLineDissipation(iterator: iteration_increase, completion: completion)
+        player_line_list[iterator].animateDissipation(completion: {[weak self] in
+            self?.animatePlayerLineDissipation(iterator: iteration_increase, completion: completion)
         })
     }
     
@@ -528,13 +535,14 @@ class GameScene: SKScene {
             
             if (player_line_list.isEmpty) {
                 link.run(SKAction.sequence([wait_action, SKAction.fadeOut(withDuration: 0.25)]), completion: {
-                    self.is_destroying_line = false;
+                    [weak self] in
+                    self?.is_destroying_line = false;
                     link.removeFromParent();
                     completion();
                 });
             }
             else {
-                link.run(SKAction.sequence([wait_action, SKAction.fadeOut(withDuration: 0.25)]), completion: {
+                link.run(SKAction.sequence([wait_action, SKAction.fadeOut(withDuration: 0.25)]), completion: {[weak self] in
                     link.removeFromParent();
                 });
             }
@@ -682,17 +690,18 @@ class GameScene: SKScene {
     public func pauseGame() {
         if (self.isPaused == false) {
             pause_button.run(SKAction.sequence([SKAction.setTexture(SKTexture(imageNamed: "PauseButtonPressed")), SKAction.wait(forDuration: 0.25)]), completion: {
-                    self.view_controller.showPauseView();
-                    self.pause_button.texture = SKTexture(imageNamed: "PauseButton");
+                [weak self] in
+                    self?.view_controller.showPauseView();
+                    self?.pause_button.texture = SKTexture(imageNamed: "PauseButton");
                 });
         }
     }
     
     private func refreshLine() {
         if (!player_go) {return};
-    refresh_button.run(SKAction.sequence([SKAction.setTexture(SKTexture(imageNamed: "RefreshButtonPressed")), SKAction.wait(forDuration: 0.25)]), completion: {
-        self.refreshRound();
-        self.refresh_button.texture = SKTexture(imageNamed: "RefreshButton");
+    refresh_button.run(SKAction.sequence([SKAction.setTexture(SKTexture(imageNamed: "RefreshButtonPressed")), SKAction.wait(forDuration: 0.25)]), completion: {[weak self] in
+        self?.refreshRound();
+        self?.refresh_button.texture = SKTexture(imageNamed: "RefreshButton");
         });
     }
     
@@ -743,7 +752,7 @@ class GameScene: SKScene {
     private func removeRoundAnimation() {
         let removalSequence = SKAction.sequence([SKAction.animate(with: animation_frames_manager.RoundShrinkFrames, timePerFrame: 0.05), SKAction.hide()])
         var round_node = round_nodes_array.popLast();
-        round_node?.run(removalSequence, completion: {round_node?.removeFromParent(); round_node = nil});
+        round_node?.run(removalSequence, completion: {[weak self] in round_node?.removeFromParent(); round_node = nil});
     }
     
     private func createLivesAnimation() {
@@ -777,7 +786,7 @@ class GameScene: SKScene {
     private func removeLifeAnimation() {
         let removalAction = SKAction.sequence([SKAction.repeat(SKAction.sequence([SKAction.fadeAlpha(to: 0.1, duration: 0.2), SKAction.fadeAlpha(to: 0.5, duration: 0.2)]), count: 4), SKAction.fadeOut(withDuration: 0.2)]);
         var life_node = life_nodes_array.popLast();
-        life_node?.run(removalAction, completion: {life_node?.removeFromParent(); life_node = nil});
+        life_node?.run(removalAction, completion: {[weak self] in life_node?.removeFromParent(); life_node = nil});
     }
 
 
@@ -809,15 +818,16 @@ class GameScene: SKScene {
     
     private func createLine(turn_count: Int) {
         let line = LineController(grid_width: grid_width, grid_height: grid_height, grid: grid, alpha: line_alpha);
-        line.generateLine(turn_count: turn_count, completion: {
-            self.createLine(turn_count: turn_count);
+        line.generateLine(turn_count: turn_count, completion: {[weak self] in
+            self?.createLine(turn_count: turn_count);
         });
     }
     
     private func returnHome() {
         return_home_button.removeAllActions();
-        return_home_button.run(SKAction.sequence([SKAction.run({self.return_home_button.fontColor = UIColor.lightGray}), SKAction.wait(forDuration: 0.75)]), completion: {
-            self.view_controller.returnToMenu();
+        return_home_button.run(SKAction.sequence([SKAction.run({[weak self] in self?.return_home_button.fontColor = UIColor.lightGray}), SKAction.wait(forDuration: 0.75)]), completion: {
+            [weak self] in
+            self?.view_controller.returnToMenu();
         })
     }
     
@@ -859,7 +869,7 @@ class GameScene: SKScene {
         
         let scoreLabelActionSequence = SKAction.sequence([SKAction.move(by: moveVector, duration: 1.5), SKAction.fadeOut(withDuration: 0.25)]);
         
-        scorelabelnode.run(scoreLabelActionSequence, completion: {scorelabelnode.removeFromParent()});
+        scorelabelnode.run(scoreLabelActionSequence, completion: {[weak self] in scorelabelnode.removeFromParent()});
     }
     
     private func setUpStringLocalization() {
@@ -898,5 +908,11 @@ class GameScene: SKScene {
         grid.removeAll(keepingCapacity: false);
         line_controller = nil;
         level_controller = nil;
+    }
+    
+    public func deallocateMainMenu() {
+        self.run(SKAction.wait(forDuration: 0.5), completion: {
+            menu_view_controller.deallocateMenuScene();
+        })
     }
 }

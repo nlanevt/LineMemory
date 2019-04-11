@@ -34,6 +34,8 @@ class MenuScene: SKScene, SKPhysicsContactDelegate {
         print("Menu Scene has been deallocated");
     }
     
+    //override func did
+    
     override func didMove(to view: SKView) {
         highest_score_label = self.childNode(withName: "HighestScore") as! SKLabelNode;
         highest_level_label = self.childNode(withName: "HighestLevel") as! SKLabelNode;
@@ -73,10 +75,10 @@ class MenuScene: SKScene, SKPhysicsContactDelegate {
     
     private func createLine(turn_count: Int) {
         var line: LineController? = LineController(grid_width: grid_width, grid_height: grid_height, grid: grid! as! [[Tile]], alpha: line_alpha);
-        line?.generateLine(turn_count: turn_count, completion: { [weak self] in
+        line?.generateLine(turn_count: turn_count, completion: { [unowned self] in
             line?.deallocateContent();
             line = nil;
-            self?.createLine(turn_count: turn_count);
+            self.createLine(turn_count: turn_count);
         });
     }
     

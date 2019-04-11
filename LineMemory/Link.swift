@@ -147,6 +147,7 @@ class Link: SKSpriteNode {
         texture_name = texture_name + "\(SKTextureAtlas(named: texture_name).textureNames.count)";
         
         self.run(SKAction.sequence([SKAction.animate(with: animation_frames, timePerFrame: 0.02),SKAction.setTexture(SKTexture.init(imageNamed: texture_name))]), completion: {
+            [unowned self] in
             completion();
         })
     }
@@ -216,6 +217,7 @@ class Link: SKSpriteNode {
         texture_name = texture_name + "\(SKTextureAtlas(named: texture_name).textureNames.count)";
         
         self.run(SKAction.sequence([SKAction.unhide(), SKAction.animate(with: animation_frames, timePerFrame: 0.02), SKAction.hide()]), completion: {
+            [unowned self] in
             self.removeFromParent();
             completion();
         })

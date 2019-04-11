@@ -51,7 +51,7 @@ class GameViewController: UIViewController {
         
         game_scene = GameScene(fileNamed: "GameScene")
         // Set the scale mode to scale to fit the window
-        game_scene?.scaleMode = .aspectFill
+        game_scene?.scaleMode = .aspectFit
         game_scene?.view_controller = self;
         
         game_view = (self.view as! SKView);
@@ -118,10 +118,10 @@ class GameViewController: UIViewController {
         game_scene?.removeAllChildren();
         game_scene?.removeFromParent();
         game_scene = nil;
-        game_view?.removeFromSuperview();
-        menu_view_controller.presentMenuScene();
         self.navigationController?.popToRootViewController(animated: true);
         self.removeFromParentViewController();
+        game_view?.removeFromSuperview();
+        game_view = nil;
     }
     
     public func hidePauseView() {
