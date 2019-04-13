@@ -108,21 +108,35 @@ class GameViewController: UIViewController {
     }
     
     @objc func applicationWillResignActive(notification: NSNotification) {
-       
         if (gameScenePaused) {return};
         self.showPauseView();
          print("applicationWillResignActive");
     }
     
     public func returnToMenu() {
-        game_scene?.deallocateContent();
+        UIView.animate(withDuration: 0.5, delay: 0.0, options: .curveEaseOut, animations: {
+            self.view.alpha = 0.0;
+        }, completion: {[weak self] (a: Bool) in
+            self?.QuitGameButton.alpha = 0.0;
+            self?.ContinueButton.alpha = 0.0;
+            self?.game_scene?.deallocateContent();
+            self?.game_scene?.removeAllChildren();
+            self?.game_scene?.removeFromParent();
+            self?.game_scene = nil;
+            self?.navigationController?.popToRootViewController(animated: true);
+            self?.removeFromParentViewController();
+            self?.game_view?.removeFromSuperview();
+            self?.game_view = nil;
+        })
+        
+        /*game_scene?.deallocateContent();
         game_scene?.removeAllChildren();
         game_scene?.removeFromParent();
         game_scene = nil;
         self.navigationController?.popToRootViewController(animated: true);
         self.removeFromParentViewController();
         game_view?.removeFromSuperview();
-        game_view = nil;
+        game_view = nil;*/
     }
     
     public func hidePauseView() {
@@ -165,5 +179,15 @@ class GameViewController: UIViewController {
     private func setUpStringLocalization() {
         QuitGameButton.titleLabel?.font = UIFont(name: String.localizedStringWithFormat(NSLocalizedString("fontNameA", comment: "")), size: CGFloat((String.localizedStringWithFormat(NSLocalizedString("fontSize24", comment: "")) as NSString).floatValue));
         ContinueButton.titleLabel?.font = UIFont(name: String.localizedStringWithFormat(NSLocalizedString("fontNameA", comment: "")), size: CGFloat((String.localizedStringWithFormat(NSLocalizedString("fontSize24", comment: "")) as NSString).floatValue));
+    }
+    
+    public func deallocateContent() {
+        game_scene?.deallocateContent();
+        game_scene?.removeAllChildren();
+        game_scene?.removeFromParent();
+        game_scene = nil;
+        self.removeFromParentViewController();
+        game_view?.removeFromSuperview();
+        game_view = nil;
     }
 }

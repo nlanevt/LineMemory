@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		34DB5CDDC750FC4F0D1A8336 /* libPods-LineMemory.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D14E4B05454A7F1EC45B7F19 /* libPods-LineMemory.a */; };
 		972453C1225A829C0060547F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 972453C3225A829C0060547F /* Localizable.strings */; };
+		972453CB226275B60060547F /* LaunchScreenImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 972453CA226275B60060547F /* LaunchScreenImage.png */; };
 		9738CF9E2212579200AC9696 /* Link.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9738CF9D2212579200AC9696 /* Link.swift */; };
 		9738CFA022139F9B00AC9696 /* LineController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9738CF9F22139F9B00AC9696 /* LineController.swift */; };
 		97C218202256EA9600EAF558 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97C2181F2256EA9600EAF558 /* GameKit.framework */; };
@@ -62,10 +63,11 @@
 		972453C2225A829C0060547F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		972453C4225A82A20060547F /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		972453C5225A82A50060547F /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
+		972453CA226275B60060547F /* LaunchScreenImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LaunchScreenImage.png; sourceTree = "<group>"; };
 		9738CF9D2212579200AC9696 /* Link.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Link.swift; sourceTree = "<group>"; };
 		9738CF9F22139F9B00AC9696 /* LineController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineController.swift; sourceTree = "<group>"; };
 		97C2181F2256EA9600EAF558 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
-		97C2182322591F8600EAF558 /* Podfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
+		97C2182322591F8600EAF558 /* Podfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		97C505842252E87A00B2064B /* RixVideoGame-3D.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "RixVideoGame-3D.ttf"; sourceTree = "<group>"; };
 		97C505872254360700B2064B /* HexColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HexColor.swift; sourceTree = "<group>"; };
 		97E140F0223F20D000B17098 /* Data.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Data.xcdatamodel; sourceTree = "<group>"; };
@@ -124,6 +126,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		972453C6226273490060547F /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				972453CA226275B60060547F /* LaunchScreenImage.png */,
+			);
+			path = Images;
+			sourceTree = "<group>";
+		};
 		97C2181E2256EA9600EAF558 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -167,6 +177,7 @@
 		97E58D0521E59068003C95E2 /* LineMemory */ = {
 			isa = PBXGroup;
 			children = (
+				972453C6226273490060547F /* Images */,
 				97C50586225435EE00B2064B /* Extensions */,
 				97FA2E5A222F647F0093CDE6 /* Font */,
 				97E58D3D21E5919F003C95E2 /* LevelController.swift */,
@@ -351,6 +362,7 @@
 				97E58D0B21E59069003C95E2 /* Actions.sks in Resources */,
 				97FA2E5E222F65B00093CDE6 /* manaspc.ttf in Resources */,
 				97C505852252E87A00B2064B /* RixVideoGame-3D.ttf in Resources */,
+				972453CB226275B60060547F /* LaunchScreenImage.png in Resources */,
 				97E140F32241D5AD00B17098 /* MenuScene.sks in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

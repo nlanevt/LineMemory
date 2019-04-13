@@ -20,7 +20,7 @@ var INTERSTITIAL_TEST_ID = "ca-app-pub-3940256099942544/4411468910";
 var GOOGLE_AD_APP_ID = "ca-app-pub-2893925630884266~9063264087";
 
 class MenuViewController: UIViewController, GKGameCenterControllerDelegate, GADInterstitialDelegate {
-    private weak var menu_scene:MenuScene!;
+    private weak var menu_scene: MenuScene!
     private var highest_score:Int64 = 0;
     private var highest_level:Int64 = 0;
     private var did_beat_game = false;
@@ -39,7 +39,7 @@ class MenuViewController: UIViewController, GKGameCenterControllerDelegate, GADI
     @IBOutlet weak var LeaderboardButton: UIButton!
     
     deinit {
-        //print("Menu View Controller has been deallocated");
+        print("Menu View Controller has been deallocated");
     }
     
     override func viewDidLoad() {
@@ -67,24 +67,29 @@ class MenuViewController: UIViewController, GKGameCenterControllerDelegate, GADI
             name: NSNotification.Name.UIApplicationWillResignActive,
             object: nil)
         
-        setUpStringLocalization()
+        setUpStringLocalization();
+        presentMenuScene();
         print("Menu View Controller has been loaded");
     }
     
     override func viewWillAppear(_ animated: Bool) {
         print("Menu View Will Appear");
-        presentMenuScene();
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         print("Menu View Will Disappear")
-        deallocateMenuScene();
     }
     
     @IBAction func StartGameButton(_ sender: Any) {
         let gameVC = self.storyboard?.instantiateViewController(withIdentifier: "GameVC") as! GameViewController;
         self.navigationController?.pushViewController(gameVC, animated: true)
-        configureNewInterstitial();
+        self.configureNewInterstitial();
+        
+        UIView.animate(withDuration: 0.5, delay: 0.5, options: .curveEaseOut, animations: {
+            self.view.alpha = 0.0;
+        }, completion: {(a: Bool) in
+            self.deallocateMenuScene();
+        })
     }
     
     @IBAction func CheckLeaderboard(_ sender: Any) {
@@ -365,10 +370,9 @@ class MenuViewController: UIViewController, GKGameCenterControllerDelegate, GADI
     }
     
     public func deallocateMenuScene() {
-        //if (menu_scene == nil) {return}
-        menu_scene.deallocateContent();
-        menu_scene.removeAllChildren();
-        menu_scene.removeFromParent();
+        menu_scene?.deallocateContent();
+        menu_scene?.removeAllChildren();
+        menu_scene?.removeFromParent();
         menu_scene = nil;
         self.view = nil;
     }

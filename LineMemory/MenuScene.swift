@@ -48,7 +48,7 @@ class MenuScene: SKScene, SKPhysicsContactDelegate {
         grid?.removeAll();
         
         for r in 0 ..< grid_height {
-            grid?.append([Tile]());
+            grid?.append([Tile?]());
             for c in 0 ..< grid_width {
                 var new_tile_node = Tile(row: r, column: c, size: tile_size);
                 new_tile_node.position = CGPoint(x: x_grid_pivot + (CGFloat(c)*tile_size.width), y: y_grid_pivot - (CGFloat(r)*tile_size.height));
@@ -78,7 +78,6 @@ class MenuScene: SKScene, SKPhysicsContactDelegate {
         line_controller_A?.generateLine(turn_count: 3, completion: {[weak self] in
             self?.animateLineA();
         })
-        
     }
     
     private func animateLineB() {

@@ -919,10 +919,4 @@ class GameScene: SKScene {
         line_controller = nil;
         level_controller = nil;
     }
-    
-    public func deallocateMainMenu() {
-        self.run(SKAction.wait(forDuration: 0.5), completion: {
-            menu_view_controller.deallocateMenuScene();
-        })
-    }
 }
