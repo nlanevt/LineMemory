@@ -28,7 +28,7 @@ class LineController {
     }
     
     deinit {
-        print("Line Controller has been deallocated");
+        //print("Line Controller has been deallocated");
     }
     
     public func generateLine(turn_count: Int, completion: @escaping ()->Void) -> [CGPoint] {

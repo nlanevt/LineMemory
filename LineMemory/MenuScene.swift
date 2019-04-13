@@ -34,10 +34,8 @@ class MenuScene: SKScene, SKPhysicsContactDelegate {
     private var line_alpha:CGFloat = 0.1;
     
     deinit {
-        print("Menu Scene has been deallocated");
+        //print("Menu Scene has been deallocated");
     }
-    
-    //override func did
     
     override func didMove(to view: SKView) {
         highest_score_label = self.childNode(withName: "HighestScore") as! SKLabelNode;

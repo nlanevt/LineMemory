@@ -31,6 +31,7 @@ class GameScene: SKScene {
     public weak var view_controller: GameViewController!;
     private var level_controller: LevelController!;
     private var line_controller: LineController!;
+    private var line_controller_b: LineController!;
     
     private var player_score_label = SKLabelNode();
     private var lblHighestScore = SKLabelNode();
@@ -82,7 +83,7 @@ class GameScene: SKScene {
     private var game_won = false;
     
     deinit {
-        print("Game Scene has been deallocated");
+        //print("Game Scene has been deallocated");
     }
     
     override func sceneDidLoad() {
@@ -441,9 +442,9 @@ class GameScene: SKScene {
     
     private func levelIncreaseAnimation() {
         let number_of_times = 10;
-        
-        flashLabel(label: level_display_label, colorA: .purple, colorB: .blue, colorC: .white, number_of_times: number_of_times, repeatedly: false);
-        flashLabel(label: level_label, colorA: .purple, colorB: .blue, colorC: .white, number_of_times: number_of_times, repeatedly: false);
+        let flash_color = UIColor.init(red: 100, green: 149, blue: 237);
+        flashLabel(label: level_display_label, colorA: flash_color, colorB: .blue, colorC: .white, number_of_times: number_of_times, repeatedly: false);
+        flashLabel(label: level_label, colorA: flash_color, colorB: .blue, colorC: .white, number_of_times: number_of_times, repeatedly: false);
     }
     
     private func levelDecreaseAnimation() {
@@ -519,7 +520,7 @@ class GameScene: SKScene {
     }
     
     private func animatePlayerLineDestruction(iterator: Int, completion: @escaping ()->Void) {
-        print("destroy player line: \(player_line_list.count)");
+        //print("destroy player line: \(player_line_list.count)");
         if (player_line_list.isEmpty) {
             completion();
             return;
@@ -798,22 +799,35 @@ class GameScene: SKScene {
         gameWonB_label.isHidden = false;
         return_home_button.isHidden = false;
         let fade_in_time:TimeInterval = 1.0;
+        let flash_color = UIColor.init(red: 100, green: 149, blue: 237);
         
         gameWonA_label.run(SKAction.fadeIn(withDuration: fade_in_time));
         
         gameWonB_label.run(SKAction.fadeIn(withDuration: fade_in_time));
         
         return_home_button.run(SKAction.fadeIn(withDuration: fade_in_time));
-        flashLabel(label: gameWonA_label, colorA: .cyan, colorB: .blue, colorC: .black, number_of_times: 0, repeatedly: true);
-        flashLabel(label: gameWonB_label, colorA: .black, colorB: .cyan, colorC: .blue, number_of_times: 0, repeatedly: true);
+        flashLabel(label: gameWonA_label, colorA: flash_color, colorB: .blue, colorC: .black, number_of_times: 0, repeatedly: true);
+        flashLabel(label: gameWonB_label, colorA: .black, colorB: flash_color, colorC: .blue, number_of_times: 0, repeatedly: true);
         flashLabel(label: return_home_button, colorA: .blue, colorB: .black, colorC: .purple, number_of_times: 0, repeatedly: true);
-        animateGameWonLine();
+        
+        line_controller = nil;
+        line_controller = LineController(grid_width: grid_width, grid_height: grid_height, grid: grid! as! [[Tile]], alpha: 0.25);
+        line_controller_b = LineController(grid_width: grid_width, grid_height: grid_height, grid: grid! as! [[Tile]], alpha: 0.25);
+        
+        animateGameWonLineA();
+        animateGameWonLineB()
     }
     
-    private func animateGameWonLine() {
-        createLine(turn_count: 3)
-        createLine(turn_count: 8);
-        createLine(turn_count: 15);
+    private func animateGameWonLineA() {
+        line_controller?.generateLine(turn_count: 3, completion: {[weak self] in
+            self?.animateGameWonLineA();
+        })
+    }
+    
+    private func animateGameWonLineB() {
+        line_controller_b?.generateLine(turn_count: 5, completion: {[weak self] in
+            self?.animateGameWonLineB();
+        })
     }
     
     private func createLine(turn_count: Int) {
@@ -917,6 +931,7 @@ class GameScene: SKScene {
         self.removeAllActions();
         self.removeAllChildren();
         line_controller = nil;
+        line_controller_b = nil;
         level_controller = nil;
     }
 }

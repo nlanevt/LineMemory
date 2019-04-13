@@ -21,7 +21,7 @@ class GameViewController: UIViewController {
     private weak var game_view: SKView?;
     
     deinit {
-        print("Game View Controller has been deallocated");
+        //print("Game View Controller has been deallocated");
     }
     
     override func viewDidLoad() {
@@ -128,15 +128,6 @@ class GameViewController: UIViewController {
             self?.game_view?.removeFromSuperview();
             self?.game_view = nil;
         })
-        
-        /*game_scene?.deallocateContent();
-        game_scene?.removeAllChildren();
-        game_scene?.removeFromParent();
-        game_scene = nil;
-        self.navigationController?.popToRootViewController(animated: true);
-        self.removeFromParentViewController();
-        game_view?.removeFromSuperview();
-        game_view = nil;*/
     }
     
     public func hidePauseView() {
@@ -179,15 +170,5 @@ class GameViewController: UIViewController {
     private func setUpStringLocalization() {
         QuitGameButton.titleLabel?.font = UIFont(name: String.localizedStringWithFormat(NSLocalizedString("fontNameA", comment: "")), size: CGFloat((String.localizedStringWithFormat(NSLocalizedString("fontSize24", comment: "")) as NSString).floatValue));
         ContinueButton.titleLabel?.font = UIFont(name: String.localizedStringWithFormat(NSLocalizedString("fontNameA", comment: "")), size: CGFloat((String.localizedStringWithFormat(NSLocalizedString("fontSize24", comment: "")) as NSString).floatValue));
-    }
-    
-    public func deallocateContent() {
-        game_scene?.deallocateContent();
-        game_scene?.removeAllChildren();
-        game_scene?.removeFromParent();
-        game_scene = nil;
-        self.removeFromParentViewController();
-        game_view?.removeFromSuperview();
-        game_view = nil;
     }
 }

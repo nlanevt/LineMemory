@@ -666,7 +666,7 @@ class LevelController {
     
     public func getRoundsLeft() -> Int {
         let result = getLevelRounds() - rounds_won_counter;
-        print("Rounds Left: \(result)");
+        //print("Rounds Left: \(result)");
         return result;
     }
     

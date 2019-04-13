@@ -39,7 +39,7 @@ class MenuViewController: UIViewController, GKGameCenterControllerDelegate, GADI
     @IBOutlet weak var LeaderboardButton: UIButton!
     
     deinit {
-        print("Menu View Controller has been deallocated");
+       //print("Menu View Controller has been deallocated");
     }
     
     override func viewDidLoad() {
@@ -67,17 +67,18 @@ class MenuViewController: UIViewController, GKGameCenterControllerDelegate, GADI
             name: NSNotification.Name.UIApplicationWillResignActive,
             object: nil)
         
+        //resetScoreDataAndLeaderboard(); //Use to reset leaderboard and core data.
         setUpStringLocalization();
         presentMenuScene();
         print("Menu View Controller has been loaded");
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        print("Menu View Will Appear");
+        //print("Menu View Will Appear");
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        print("Menu View Will Disappear")
+        //print("Menu View Will Disappear")
     }
     
     @IBAction func StartGameButton(_ sender: Any) {
@@ -316,7 +317,7 @@ class MenuViewController: UIViewController, GKGameCenterControllerDelegate, GADI
     
     private func createAndLoadInterstitial() -> GADInterstitial {
         request = GADRequest();
-        let interstitial = GADInterstitial(adUnitID: INTERSTITIAL_TEST_ID); // MARK
+        let interstitial = GADInterstitial(adUnitID: INTERSTITIAL_AD_ID); // MARK
         interstitial.delegate = self
         interstitial.load(request);
         return interstitial;
@@ -375,5 +376,14 @@ class MenuViewController: UIViewController, GKGameCenterControllerDelegate, GADI
         menu_scene?.removeFromParent();
         menu_scene = nil;
         self.view = nil;
+    }
+    
+    private func resetScoreDataAndLeaderboard() {
+        setNewHighScore(new_high_score: 0);
+        setNewHighestLevel(new_highest_level: 0);
+        playerBeatGame(did_player_beat_game: false);
+        deleteCoreData();
+        save_data();
+        loadScores();
     }
 }

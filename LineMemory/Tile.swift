@@ -31,7 +31,7 @@ class Tile: SKSpriteNode {
     }
     
     deinit {
-        print("Tile has been deallocated");
+        //print("Tile has been deallocated");
     }
     
     convenience init() {
