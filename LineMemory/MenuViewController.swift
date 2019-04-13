@@ -350,6 +350,7 @@ class MenuViewController: UIViewController, GKGameCenterControllerDelegate, GADI
                 // Present the scene
                 if let view = self.view as! SKView? {
                     view.presentScene(menu_scene)
+                    view.preferredFramesPerSecond = 60;
                     view.ignoresSiblingOrder = true
                     //view.showsFPS = true
                     //view.showsNodeCount = true

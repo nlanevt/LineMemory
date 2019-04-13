@@ -28,6 +28,9 @@ class MenuScene: SKScene, SKPhysicsContactDelegate {
     private var lblHighestLevel = SKLabelNode();
     private var lblHighestScore = SKLabelNode();
     
+    private var line_controller_A:LineController?
+    private var line_controller_B:LineController?
+    
     private var line_alpha:CGFloat = 0.1;
     
     deinit {
@@ -62,24 +65,26 @@ class MenuScene: SKScene, SKPhysicsContactDelegate {
             }
         }
         
-        animateLines();
+        line_controller_A = LineController(grid_width: grid_width, grid_height: grid_height, grid: grid! as! [[Tile]], alpha: line_alpha);
+        line_controller_B = LineController(grid_width: grid_width, grid_height: grid_height, grid: grid! as! [[Tile]], alpha: line_alpha);
+        
+        animateLineA();
+        animateLineB();
         setHighScoreLabels();
         setUpStringLocalization()
     }
     
-    private func animateLines() {
-        createLine(turn_count: 3)
-        createLine(turn_count: 2);
-        //createLine(turn_count: 15);
+    private func animateLineA() {
+        line_controller_A?.generateLine(turn_count: 3, completion: {[weak self] in
+            self?.animateLineA();
+        })
+        
     }
     
-    private func createLine(turn_count: Int) {
-        var line: LineController? = LineController(grid_width: grid_width, grid_height: grid_height, grid: grid! as! [[Tile]], alpha: line_alpha);
-        line?.generateLine(turn_count: turn_count, completion: { [unowned self] in
-            line?.deallocateContent();
-            line = nil;
-            self.createLine(turn_count: turn_count);
-        });
+    private func animateLineB() {
+        line_controller_B?.generateLine(turn_count: 2, completion: {[weak self] in
+            self?.animateLineB();
+        })
     }
     
     private func setHighScoreLabels() {
@@ -105,6 +110,8 @@ class MenuScene: SKScene, SKPhysicsContactDelegate {
         }
         grid?.removeAll(keepingCapacity: false);
         grid = nil;
+        line_controller_A = nil;
+        line_controller_B = nil;
         self.removeAllActions();
         self.removeAllChildren();
     }

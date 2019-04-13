@@ -54,7 +54,7 @@ class GameScene: SKScene {
     private var player_lives = 5;
     private var is_destroying_line = false;
     
-    private var grid = [[Tile]]();
+    private var grid:[[Tile?]]? = [];
     private var grid_height = 10;
     private var grid_width = 7;
     private var grid_center:CGFloat = -64.0;
@@ -111,23 +111,23 @@ class GameScene: SKScene {
         gameWonB_label = self.childNode(withName: "lblGameWonB") as! SKLabelNode;
         return_home_button = self.childNode(withName: "btnReturnHome") as! SKLabelNode;
         
-        grid.removeAll();
+        grid?.removeAll();
         
         for r in 0 ..< grid_height {
-            grid.append([Tile]());
+            grid?.append([Tile]());
             for c in 0 ..< grid_width {
                 let new_tile_node = Tile(row: r, column: c, size: tile_size);
                 new_tile_node.position = CGPoint(x: x_grid_pivot + (CGFloat(c)*tile_size.width), y: y_grid_pivot - (CGFloat(r)*tile_size.height));
                 new_tile_node.zPosition = tile_zPosition;
                 self.addChild(new_tile_node)
-                grid[r].append(new_tile_node);
+                grid?[r].append(new_tile_node);
             }
         }
         
         
         for r in 0 ..< grid_height {
             for c in 0 ..< grid_width {
-                grid[r][c].setNeighbors(grid_width: grid_width, grid_height: grid_height, grid: grid);
+                grid?[r][c]?.setNeighbors(grid_width: grid_width, grid_height: grid_height, grid: grid! as! [[Tile]]);
             }
         }
         
@@ -136,7 +136,7 @@ class GameScene: SKScene {
         return_home_button.isHidden = true;
 
         // need to set score variable according to CORE Data database
-        line_controller = LineController(grid_width: grid_width, grid_height: grid_height, grid: grid, alpha: line_alpha);
+        line_controller = LineController(grid_width: grid_width, grid_height: grid_height, grid: grid! as! [[Tile]], alpha: line_alpha);
         level_controller = LevelController(game_scene: self, level: 1);
         
         setUpStringLocalization();
@@ -220,7 +220,7 @@ class GameScene: SKScene {
             
             // Compare each point individually.
             for i in 0 ..< player_line_list.count {
-                if (player_line_list[i].parent != grid[Int(ai_line_points[i].y)][Int(ai_line_points[i].x)]) {
+                if (player_line_list[i].parent != grid?[Int(ai_line_points[i].y)][Int(ai_line_points[i].x)]) {
                     endRound(round_won: false);
                     return;
                 }
@@ -574,25 +574,25 @@ class GameScene: SKScene {
             let mid_c = (c_lowerbound + c_upperbound) / 2;
             let mid_r = (r_lowerbound + r_upperbound) / 2;
 
-            if (grid[mid_r][mid_c].contains(location)) {
-                return grid[mid_r][mid_c];
+            if ((grid?[mid_r][mid_c]?.contains(location))!) {
+                return grid?[mid_r][mid_c];
             }
             else if (c_lowerbound > c_upperbound || r_lowerbound > r_upperbound) {
                 return nil;
             }
             else {
-                if (location.x < grid[mid_r][mid_c].frame.minX) {
+                if (location.x < (grid?[mid_r][mid_c]?.frame.minX)!) {
                     c_upperbound = mid_c-1;
                 }
-                else if (location.x > grid[mid_r][mid_c].frame.maxX) {
+                else if (location.x > (grid?[mid_r][mid_c]?.frame.maxX)!) {
                     c_lowerbound = mid_c+1;
                 }
                 
-                if (location.y < grid[mid_r][mid_c].frame.minY) {
+                if (location.y < (grid?[mid_r][mid_c]?.frame.minY)!) {
                     
                     r_lowerbound = mid_r+1;
                 }
-                else if (location.y > grid[mid_r][mid_c].frame.maxY) {
+                else if (location.y > (grid?[mid_r][mid_c]?.frame.maxY)!) {
                     r_upperbound = mid_r-1;
                 }
             }
@@ -817,7 +817,7 @@ class GameScene: SKScene {
     }
     
     private func createLine(turn_count: Int) {
-        let line = LineController(grid_width: grid_width, grid_height: grid_height, grid: grid, alpha: line_alpha);
+        let line = LineController(grid_width: grid_width, grid_height: grid_height, grid: grid! as! [[Tile]], alpha: line_alpha);
         line.generateLine(turn_count: turn_count, completion: {[weak self] in
             self?.createLine(turn_count: turn_count);
         });
@@ -905,7 +905,17 @@ class GameScene: SKScene {
     }
     
     public func deallocateContent() {
-        grid.removeAll(keepingCapacity: false);
+        for r in 0 ..< grid_height {
+            for c in 0 ..< grid_width {
+                grid?[r][c]?.deallocateContent();
+                grid?[r][c]?.removeFromParent();
+                grid?[r][c] = nil;
+            }
+        }
+        grid?.removeAll();
+        grid = nil;
+        self.removeAllActions();
+        self.removeAllChildren();
         line_controller = nil;
         level_controller = nil;
     }
