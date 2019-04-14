@@ -480,7 +480,7 @@ class GameScene: SKScene {
     }
     
     private func animateSum(starting_value: Int64, amount: Int64, label: SKLabelNode, completion: @escaping ()->Void) {
-        print("amount: \(amount), \(Int(amount))");
+        //print("amount: \(amount), \(Int(amount))");
         
         var score_counter = starting_value;
         var iterator:Int64 = 0;
