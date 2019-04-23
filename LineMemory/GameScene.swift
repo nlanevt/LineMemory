@@ -78,7 +78,7 @@ class GameScene: SKScene {
     private var round_nodes_array = [SKSpriteNode]();
     private var life_nodes_array = [SKSpriteNode]();
     
-    private var line_alpha:CGFloat = 0.8;
+    private var line_alpha:CGFloat = 0.6;
     
     private var game_won = false;
     
@@ -137,7 +137,7 @@ class GameScene: SKScene {
         return_home_button.isHidden = true;
 
         // need to set score variable according to CORE Data database
-        line_controller = LineController(grid_width: grid_width, grid_height: grid_height, grid: grid! as! [[Tile]], alpha: line_alpha);
+        line_controller = LineController(grid_width: grid_width, grid_height: grid_height, grid: grid! as! [[Tile]], alpha: line_alpha, smoke_on: true);
         level_controller = LevelController(game_scene: self, level: 1);
         
         setUpStringLocalization();
@@ -811,8 +811,8 @@ class GameScene: SKScene {
         flashLabel(label: return_home_button, colorA: .blue, colorB: .black, colorC: .purple, number_of_times: 0, repeatedly: true);
         
         line_controller = nil;
-        line_controller = LineController(grid_width: grid_width, grid_height: grid_height, grid: grid! as! [[Tile]], alpha: 0.25);
-        line_controller_b = LineController(grid_width: grid_width, grid_height: grid_height, grid: grid! as! [[Tile]], alpha: 0.25);
+        line_controller = LineController(grid_width: grid_width, grid_height: grid_height, grid: grid! as! [[Tile]], alpha: 0.25, smoke_on: false);
+        line_controller_b = LineController(grid_width: grid_width, grid_height: grid_height, grid: grid! as! [[Tile]], alpha: 0.25, smoke_on: false);
         
         animateGameWonLineA();
         animateGameWonLineB()
@@ -828,13 +828,6 @@ class GameScene: SKScene {
         line_controller_b?.generateLine(turn_count: 5, completion: {[weak self] in
             self?.animateGameWonLineB();
         })
-    }
-    
-    private func createLine(turn_count: Int) {
-        let line = LineController(grid_width: grid_width, grid_height: grid_height, grid: grid! as! [[Tile]], alpha: line_alpha);
-        line.generateLine(turn_count: turn_count, completion: {[weak self] in
-            self?.createLine(turn_count: turn_count);
-        });
     }
     
     private func returnHome() {

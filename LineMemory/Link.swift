@@ -31,6 +31,26 @@ class Link: SKSpriteNode {
         return direction;
     }
     
+    public func getDirectionPointing() -> direction {
+        if (direction == .up || direction == .left_up || direction == .right_up) {
+            return .up;
+        }
+        
+        if (direction == .left || direction == .down_left || direction == .up_left) {
+            return .left;
+        }
+        
+        if (direction == .right || direction == .down_right || direction == .up_right) {
+            return .right;
+        }
+        
+        if (direction == .down || direction == .left_down || direction == .right_down) {
+            return .down;
+        }
+        
+        return .none;
+    }
+    
     private func setDirection() {
         setDirection(direction: self.direction);
     }

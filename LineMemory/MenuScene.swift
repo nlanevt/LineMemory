@@ -63,8 +63,8 @@ class MenuScene: SKScene, SKPhysicsContactDelegate {
             }
         }
         
-        line_controller_A = LineController(grid_width: grid_width, grid_height: grid_height, grid: grid! as! [[Tile]], alpha: line_alpha);
-        line_controller_B = LineController(grid_width: grid_width, grid_height: grid_height, grid: grid! as! [[Tile]], alpha: line_alpha);
+        line_controller_A = LineController(grid_width: grid_width, grid_height: grid_height, grid: grid! as! [[Tile]], alpha: line_alpha, smoke_on: false);
+        line_controller_B = LineController(grid_width: grid_width, grid_height: grid_height, grid: grid! as! [[Tile]], alpha: line_alpha, smoke_on: false);
         
         animateLineA();
         animateLineB();
