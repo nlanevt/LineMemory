@@ -252,7 +252,7 @@ class LineController {
         if (code != line_code) {return};
         
         if (iterator >= ai_link_list.count) {
-            animateSmoke(link: ai_link_list.first as! Link)
+            //animateSmoke(link: ai_link_list.first as! Link)
             animateLineDissipation(iterator: 0, code: code, completion: completion);
             return;
         }

@@ -42,6 +42,16 @@ class MenuViewController: UIViewController, GKGameCenterControllerDelegate, GADI
        //print("Menu View Controller has been deallocated");
     }
     
+    override func loadView() {
+        super.loadView();
+        print("Menu View Controller Load View");
+        if (self.view.traitCollection.horizontalSizeClass == .regular && self.view.traitCollection.verticalSizeClass == .regular) {
+            NSLayoutConstraint.activate([
+                StartGameButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 400)
+                ])
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         menu_view_controller = self;

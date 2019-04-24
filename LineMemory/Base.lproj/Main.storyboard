@@ -91,7 +91,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4tL-wA-mBz">
-                                <rect key="frame" x="108" y="524" width="618" height="31"/>
+                                <rect key="frame" x="108" y="255" width="618" height="31"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="31" id="ABl-6s-gqt"/>
                                 </constraints>
@@ -104,7 +104,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Q2c-Rc-HEC">
-                                <rect key="frame" x="360.5" y="581" width="113" height="39"/>
+                                <rect key="frame" x="360.5" y="312" width="113" height="39"/>
                                 <fontDescription key="fontDescription" name="RixVideoGameB" family="RixVideoGame" pointSize="24"/>
                                 <state key="normal" title="Leaderboard">
                                     <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -118,7 +118,6 @@
                         <constraints>
                             <constraint firstItem="4tL-wA-mBz" firstAttribute="top" secondItem="mBb-ui-dFw" secondAttribute="top" constant="231" id="8He-Ig-02v">
                                 <variation key="heightClass=regular-widthClass=compact" constant="231"/>
-                                <variation key="heightClass=regular-widthClass=regular" constant="500"/>
                             </constraint>
                             <constraint firstItem="4tL-wA-mBz" firstAttribute="leading" secondItem="mBb-ui-dFw" secondAttribute="leading" constant="108" id="Xof-ts-Wbw"/>
                             <constraint firstItem="4tL-wA-mBz" firstAttribute="centerX" secondItem="kdj-Py-7Lg" secondAttribute="centerX" id="j8e-G5-USf"/>
