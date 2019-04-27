@@ -252,7 +252,6 @@ class LineController {
         if (code != line_code) {return};
         
         if (iterator >= ai_link_list.count) {
-            //animateSmoke(link: ai_link_list.first as! Link)
             animateLineDissipation(iterator: 0, code: code, completion: completion);
             return;
         }
@@ -502,33 +501,6 @@ class LineController {
     public func deallocateContent() {
         grid?.removeAll();
         grid = nil;
-    }
-    
-    private func animateSmoke(link: Link) {
-        if (!smoke_on) {return}
-        
-        var smoke_node:SKSpriteNode? = SKSpriteNode(texture: animation_frames_manager.LineSmoke[0], size: CGSize(width: 100, height: 32))
-        smoke_node?.zPosition = 2.0;
-        smoke_node?.position = CGPoint(x: 0.0, y: 0.0);
-        
-        if (link.getDirectionPointing() == .down) {
-            smoke_node?.zRotation = .pi;
-        }
-        else if (link.getDirectionPointing() == .left) {
-            smoke_node?.zRotation = .pi/2;
-        }
-        else if (link.getDirectionPointing() == .right) {
-            smoke_node?.zRotation = (3 * .pi) / 2;
-        }
-        else {
-            //Do nothing
-        }
-        link.parent?.addChild(smoke_node!);
-        //link.addChild(smoke_node!);
-        smoke_node?.run(SKAction.animate(with: animation_frames_manager.LineSmoke, timePerFrame: 0.1), completion: {[weak self] in
-            smoke_node?.removeFromParent();
-            smoke_node = nil;
-        })
     }
 }
 

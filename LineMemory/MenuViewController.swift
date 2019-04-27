@@ -327,7 +327,7 @@ class MenuViewController: UIViewController, GKGameCenterControllerDelegate, GADI
     
     private func createAndLoadInterstitial() -> GADInterstitial {
         request = GADRequest();
-        let interstitial = GADInterstitial(adUnitID: INTERSTITIAL_TEST_ID); // MARK
+        let interstitial = GADInterstitial(adUnitID: INTERSTITIAL_AD_ID); // MARK
         interstitial.delegate = self
         interstitial.load(request);
         return interstitial;

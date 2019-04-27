@@ -37,9 +37,7 @@ class AnimationFramesHelper {
     public var LinkCoverRightDissipation = [SKTexture]();
     public var LinkCoverRightUpDissipation = [SKTexture]();
     public var LinkCoverRightDownDissipation = [SKTexture]();
-    
-    public var LineSmoke = [SKTexture]();
-    
+        
     init() {
         RoundShrinkFrames = buildAnimation(textureAtlasName: "RoundShrink");
         
@@ -68,8 +66,6 @@ class AnimationFramesHelper {
         LinkCoverRightDissipation = LinkCoverLeft.reversed();
         LinkCoverRightUpDissipation = LinkCoverDownLeft.reversed();
         LinkCoverRightDownDissipation = LinkCoverUpLeft.reversed();
-        
-        LineSmoke = buildAnimation(textureAtlasName: "LineSmoke");
     }
     
     private func buildAnimation(textureAtlasName: String) -> [SKTexture]
