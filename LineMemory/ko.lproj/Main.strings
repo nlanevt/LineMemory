@@ -1,0 +1,12 @@
+
+/* Class = "UIButton"; normalTitle = "QUIT GAME"; ObjectID = "1ZC-ph-DX1"; */
+"1ZC-ph-DX1.normalTitle" = "그만하기";
+
+/* Class = "UIButton"; normalTitle = "Start Game"; ObjectID = "4tL-wA-mBz"; */
+"4tL-wA-mBz.normalTitle" = "게임시작";
+
+/* Class = "UIButton"; normalTitle = "Leaderboard"; ObjectID = "Q2c-Rc-HEC"; */
+"Q2c-Rc-HEC.normalTitle" = "전체순위";
+
+/* Class = "UIButton"; normalTitle = "CONTINUE"; ObjectID = "ZHm-X4-457"; */
+"ZHm-X4-457.normalTitle" = "계속하기";

@@ -1,0 +1,12 @@
+
+/* Class = "UIButton"; normalTitle = "QUIT GAME"; ObjectID = "1ZC-ph-DX1"; */
+"1ZC-ph-DX1.normalTitle" = "结束游戏";
+
+/* Class = "UIButton"; normalTitle = "Start Game"; ObjectID = "4tL-wA-mBz"; */
+"4tL-wA-mBz.normalTitle" = "游戏开始";
+
+/* Class = "UIButton"; normalTitle = "Leaderboard"; ObjectID = "Q2c-Rc-HEC"; */
+"Q2c-Rc-HEC.normalTitle" = "领先牌";
+
+/* Class = "UIButton"; normalTitle = "CONTINUE"; ObjectID = "ZHm-X4-457"; */
+"ZHm-X4-457.normalTitle" = "继续";
