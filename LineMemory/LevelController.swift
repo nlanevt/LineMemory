@@ -11,7 +11,6 @@ import SpriteKit
 import GameplayKit
 
 class LevelController {
-    private weak var game_scene: GameScene?
     private var level_counter:Int64 = 1;
     private var rounds_won_counter:Int = 0;
     private var rounds_default:Int = 8;
@@ -22,10 +21,9 @@ class LevelController {
     private var level_score:Int64 = 0;
     private var max_level = 256;
     private var did_beat_game = false;
+    private var total_score:Int64 = 0;
     
-    init(game_scene: GameScene, level: Int64) {
-        self.game_scene = game_scene;
-        level_counter = level > max_level ? 1 : level;
+    init() {
         rounds_won_counter = 0;
         level_score = 0;
         lives_counter = lives_default;
@@ -36,8 +34,18 @@ class LevelController {
         print("Level Controller has been deallocated");
     }
     
-    public func getCurrentLevel() -> Int64 {
+    /*
+     * Current Level
+     */
+    public func level() -> Int64 {
         return level_counter;
+    }
+    
+    /*
+     * Current Score
+     */
+    public func score() -> Int64 {
+        return total_score;
     }
     
     public func getLevelsBeaten() -> Int64 {
@@ -62,6 +70,11 @@ class LevelController {
     
     public func didBeatGame() -> Bool {
         return did_beat_game;
+    }
+    
+    public func setStartingValues(starting_level: Int64, starting_score: Int64) {
+        level_counter = starting_level > max_level ? 1 : starting_level;
+        total_score = starting_score < 0 ? 0 : starting_score;
     }
     
     public func getTurns() -> Int {
@@ -641,7 +654,7 @@ class LevelController {
     
     // Returns true if the level was increased
     // Returns false if the level wasn't increased
-    public func roundWon(by_amount: Int64) -> Bool {
+    public func roundWonAndIncreaseLevel(by_amount: Int64) -> Bool {
         rounds_won_counter = rounds_won_counter + 1;
         level_score = level_score + by_amount;
         if (rounds_won_counter == rounds_default) {
@@ -656,7 +669,7 @@ class LevelController {
     public func roundLost() -> Bool {
         lives_counter = lives_counter - 1;
         if (lives_counter <= 0) {
-            decreaseLevel();
+            undoLevel();
             lives_counter = getLivesPerLevel();
             return true;
         }
@@ -664,9 +677,16 @@ class LevelController {
         return false;
     }
     
+    public func increaseScoreBy(amount: Int64) {
+        total_score = total_score + amount;
+    }
+    
+    public func decreaseScoreBy(amount: Int64) {
+        total_score = (total_score - amount) >= 0 ? total_score - amount : 0;
+    }
+    
     public func getRoundsLeft() -> Int {
         let result = getLevelRounds() - rounds_won_counter;
-        //print("Rounds Left: \(result)");
         return result;
     }
     
@@ -706,15 +726,16 @@ class LevelController {
         }
     }
     
-    private func decreaseLevel() {
-        if (level_counter > 1) {
-            score_reduction = level_score + level_scores.popLast()!;
+    private func undoLevel() {
+       /* if (level_counter > 1) {
+           // score_reduction = level_score + level_scores.popLast()!;
             level_counter = level_counter - 1;
         }
         else {
             level_counter = 1;
             score_reduction = level_score;
-        }
+        }*/
+        score_reduction = level_score
         setRoundsAmount();
         rounds_won_counter = 0;
         level_score = 0;

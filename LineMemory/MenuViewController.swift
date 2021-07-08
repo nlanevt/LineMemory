@@ -93,6 +93,20 @@ class MenuViewController: UIViewController, GKGameCenterControllerDelegate, GADI
     
     @IBAction func StartGameButton(_ sender: Any) {
         let gameVC = self.storyboard?.instantiateViewController(withIdentifier: "GameVC") as! GameViewController;
+        gameVC.setStartingValues(starting_level: 1, starting_score: 0);
+        self.navigationController?.pushViewController(gameVC, animated: true)
+        self.configureNewInterstitial();
+        
+        UIView.animate(withDuration: 0.5, delay: 0.5, options: .curveEaseOut, animations: {
+            self.view.alpha = 0.0;
+        }, completion: {(a: Bool) in
+            self.deallocateMenuScene();
+        })
+    }
+    
+    @IBAction func ContinueButton(_ sender: Any) {
+        let gameVC = self.storyboard?.instantiateViewController(withIdentifier: "GameVC") as! GameViewController;
+        gameVC.setStartingValues(starting_level: self.getHighestLevel()+1, starting_score: self.getHighestScore());
         self.navigationController?.pushViewController(gameVC, animated: true)
         self.configureNewInterstitial();
         

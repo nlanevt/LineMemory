@@ -20,6 +20,9 @@ class GameViewController: UIViewController {
     private var gameScenePaused:Bool = false;
     private weak var game_view: SKView?;
     
+    private var starting_score:Int64 = 0;
+    private var starting_level:Int64 = 1;
+    
     deinit {
         //print("Game View Controller has been deallocated");
     }
@@ -49,10 +52,11 @@ class GameViewController: UIViewController {
         PauseView.isHidden = true;
         PauseView.alpha = 0.0;
         
-        game_scene = GameScene(fileNamed: "GameScene")
+        game_scene = GameScene(fileNamed: "GameScene");
         // Set the scale mode to scale to fit the window
         game_scene?.scaleMode = .aspectFit
         game_scene?.view_controller = self;
+        game_scene?.setStartingValues(starting_level: starting_level, starting_score: starting_score)
         
         game_view = (self.view as! SKView);
         game_view?.presentScene(game_scene)
@@ -170,5 +174,10 @@ class GameViewController: UIViewController {
     private func setUpStringLocalization() {
         QuitGameButton.titleLabel?.font = UIFont(name: String.localizedStringWithFormat(NSLocalizedString("fontNameA", comment: "")), size: CGFloat((String.localizedStringWithFormat(NSLocalizedString("fontSize24", comment: "")) as NSString).floatValue));
         ContinueButton.titleLabel?.font = UIFont(name: String.localizedStringWithFormat(NSLocalizedString("fontNameA", comment: "")), size: CGFloat((String.localizedStringWithFormat(NSLocalizedString("fontSize24", comment: "")) as NSString).floatValue));
+    }
+    
+    public func setStartingValues(starting_level: Int64, starting_score: Int64) {
+        self.starting_score = starting_score;
+        self.starting_level = starting_level;
     }
 }

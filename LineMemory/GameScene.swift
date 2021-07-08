@@ -29,7 +29,8 @@ enum direction {
 class GameScene: SKScene {
     
     public weak var view_controller: GameViewController!;
-    private var level_controller: LevelController!;
+    //private var lc: LevelController!;
+    private var lc:LevelController! = LevelController();
     private var line_controller: LineController!;
     private var line_controller_b: LineController!;
     
@@ -51,7 +52,6 @@ class GameScene: SKScene {
     private var ai_line_points = [CGPoint]();
     private var round_started = false;
     private var player_go = false;
-    private var score:Int64 = 0;
     private var player_lives = 5;
     private var is_destroying_line = false;
     
@@ -138,12 +138,11 @@ class GameScene: SKScene {
 
         // need to set score variable according to CORE Data database
         line_controller = LineController(grid_width: grid_width, grid_height: grid_height, grid: grid! as! [[Tile]], alpha: line_alpha, smoke_on: true);
-        level_controller = LevelController(game_scene: self, level: 1);
         
         setUpStringLocalization();
-        setLevelDisplay();
+        setLevelDisplay(); // Doesn't accomplish anything sents it gets reset after this method.
+        setScoreDisplay(); // Doesn't accomplish anything sents it gets reset after this method.
         setRoundsLeftDisplay()
-        setLivesDisplay();
         setHighScoreLabels();
         createRoundsAnimation();
         createLivesAnimation();
@@ -254,7 +253,7 @@ class GameScene: SKScene {
         ai_line_points.removeAll();
         
         // Create AI Line
-        let turns = level_controller.getTurns();
+        let turns = lc.getTurns();
         ai_line_points = line_controller.generateLine(turn_count: turns, completion: {
             [weak self] in
             self?.startTimer();
@@ -276,10 +275,10 @@ class GameScene: SKScene {
                 self?.startRound();
             });
             
-            // lower player lives
-            let level_decreases = level_controller.roundLost();
+            // lower player lives and return score to what it once was.
+            let level_decreases = lc.roundLost();
             
-            setLivesDisplay();
+            //setLivesDisplay();
             removeLifeAnimation();
             
             if (level_decreases) {
@@ -287,9 +286,9 @@ class GameScene: SKScene {
                 setLevelDisplay();
                 levelDecreaseAnimation();
                 createRoundsAnimation();
-                let reduction_amount = level_controller.getScoreReduction();
-                let starting_score = score;
-                score = score - reduction_amount;
+                let reduction_amount = lc.getScoreReduction();
+                let starting_score = lc.score();
+                lc.decreaseScoreBy(amount: reduction_amount);
                 self.animateSum(starting_value: starting_score, amount: -reduction_amount, label: player_score_label, completion: {});
                 createLivesAnimation();
             }
@@ -301,38 +300,38 @@ class GameScene: SKScene {
         
         // Set and animate the score.
         let amount = Int64(player_line_list.count)*5;
-        let starting_score = score;
-        score = score + amount;
+        let starting_score = lc.score();
+        lc.increaseScoreBy(amount: amount);
         animateScoreSign(score_amount: amount, position: score_sign_position ?? CGPoint(x: 0.0, y: 0.0));
         
         animateSum(starting_value: starting_score, amount: amount, label: player_score_label, completion: {});
-        if (score > menu_view_controller.getHighestScore()) {
-            self.animateSum(starting_value: score - amount, amount: amount, label: highest_score_label, completion: {});
-        }
+       /* if (lc.score() > menu_view_controller.getHighestScore()) {
+            self.animateSum(starting_value: lc.score() - amount, amount: amount, label: highest_score_label, completion: {});
+        }*/
         
         // Increase the level if enough rounds have been won.
-        // Calling RoundWon() also increases the difficulty within the level.
-        let level_increases = level_controller.roundWon(by_amount: amount);
+        // Calling roundWonAndIncreaseLevel() also increases the difficulty within the level.
+        let level_increases = lc.roundWonAndIncreaseLevel(by_amount: amount);
         
         setRoundsLeftDisplay();
         removeRoundAnimation();
         
         if (level_increases) {
-            setLivesDisplay();
             setLevelDisplay();
+            setScoreDisplay();
             levelIncreaseAnimation()
             createRoundsAnimation();
             createLivesAnimation();
+            setScoreData();
         }
-        
-        setScoreData();
         
         self.animatePlayerLineDissipation(iterator: 0, completion: {
             [weak self] in
-            if (Int(arc4random_uniform(UInt32(3))) > 1 && level_increases && !(self?.level_controller.didBeatGame())!) {
-                self?.view_controller.showPauseView();
-                menu_view_controller.showAd();
-            }
+            // Removed and replaced with Banner Ad
+            /*if (Int(arc4random_uniform(UInt32(3))) > 1 && level_increases && !(self?.lc.didBeatGame())!) {
+                self?.view_controller.showPauseView(); // TODO: Needs to be removed
+                menu_view_controller.showAd(); //TODO: Remove this and replace with a banner ad.
+            }*/
             self?.startRound();
         })
     }
@@ -340,28 +339,27 @@ class GameScene: SKScene {
     private func setScoreData() {
         let highest_score = menu_view_controller.getHighestScore();
         let highest_level = menu_view_controller.getHighestLevel();
-        let levels_beaten = level_controller.getLevelsBeaten();
-        let maximum_level = level_controller.getMaximumLevel();
-        let did_beat_game = level_controller.didBeatGame()
+        let amount = Int64(player_line_list.count)*5;
         
         /**/ //use for hiding the below
-        if (score <= highest_score && levels_beaten <= highest_level && !did_beat_game) {
+        if (lc.score() <= highest_score && lc.getMaximumLevel() <= highest_level && !lc.didBeatGame()) {
             return;
         }
         
-        if (score > highest_score) {
-            menu_view_controller.setNewHighScore(new_high_score: score);
+        if (lc.score() > highest_score) {
+            menu_view_controller.setNewHighScore(new_high_score: lc.score());
+            self.animateSum(starting_value: lc.score() - amount, amount: amount, label: highest_score_label, completion: {});
         }
         
-        if (levels_beaten > highest_level) {
+        if (lc.getLevelsBeaten() > highest_level) {
             flashLabel(label: highest_level_label, colorA: .white, colorB: .purple, colorC: .blue, number_of_times: 10, repeatedly: false);
-            menu_view_controller.setNewHighestLevel(new_highest_level: levels_beaten);
+            menu_view_controller.setNewHighestLevel(new_highest_level: lc.getLevelsBeaten());
         }
         
         // Game Won!!!
-        if (did_beat_game) {
+        if (lc.didBeatGame()) {
             game_won = true;
-            menu_view_controller.setNewHighestLevel(new_highest_level: Int64(maximum_level));
+            menu_view_controller.setNewHighestLevel(new_highest_level: Int64(lc.getMaximumLevel()));
             setHighScoreLabels();
             flashLabel(label: highest_level_label, colorA: .white, colorB: .purple, colorC: .blue, number_of_times: 10, repeatedly: false);
             menu_view_controller.playerBeatGame(did_player_beat_game: true); //MARK
@@ -374,22 +372,21 @@ class GameScene: SKScene {
         /**/ //Use for hiding the above
         
         // Game Won!!!
-        /*if (/*current_level >= maximum_level*/level_controller.didBeatGame()) {
+        /*if (/*current_level >= maximum_level*/lc.didBeatGame()) {
             game_won = true;
             self.showGameWon();
         }*/ //MARK use testing congratulations display.
         
         setHighScoreLabels();
     }
-    
-    //TODO: Not in use
-    private func setLivesDisplay() {
-        lives_label.text = "\(level_controller.getLivesLeft())";
-    }
-    
+
     // The overall aesthetic of this label will change.
     private func setLevelDisplay() {
-        level_label.text = "\(level_controller.getCurrentLevel())";
+        level_label.text = "\(lc.level())";
+    }
+    
+    private func setScoreDisplay() {
+        player_score_label.text = "\(lc.score())";
     }
     
     private func flashLabel(label: SKLabelNode, color: UIColor, number_of_times: Int) {
@@ -457,14 +454,14 @@ class GameScene: SKScene {
     // Will update this to use animations
     // TODO: Not in use
     private func setRoundsLeftDisplay() {
-        rounds_label.text = "\(level_controller.getRoundsLeft())";
+        rounds_label.text = "\(lc.getRoundsLeft())";
     }
     
     // Animate the timer nodes.
     // This animation is subject to change
     private func startTimer() {
         // For earlier levels, the timer is not as intense; as the levels increase, the timer intensifies.
-        let run_time = self.line_controller.getRunTime() * self.level_controller.getTimerMultiplier();
+        let run_time = self.line_controller.getRunTime() * self.lc.getTimerMultiplier();
         timer_blocker_left.run(SKAction.moveTo(x: -80.0, duration: run_time));
         timer_blocker_right.run(SKAction.moveTo(x: 80.0, duration: run_time), completion: {
            [weak self] in
@@ -734,7 +731,7 @@ class GameScene: SKScene {
         let start_position = CGPoint(x: -150.0, y: 240.0);
         let round_node_size = CGSize(width: 8, height: 21);
         let round_node_z:CGFloat = 1.0;
-        let rounds = level_controller.getRoundsLeft()
+        let rounds = lc.getRoundsLeft()
         var wait_time:TimeInterval = 0.0;
         for i in 0 ..< rounds {
             let round_node = SKSpriteNode(imageNamed: "Round");
@@ -768,7 +765,7 @@ class GameScene: SKScene {
         let start_position = CGPoint(x: 100.0, y: 242.0);
         let life_node_size = CGSize(width: 24, height: 24);
         let life_node_z:CGFloat = 1.0;
-        let lives = level_controller.getLivesLeft();
+        let lives = lc.getLivesLeft();
         var wait_time:TimeInterval = 0.0;
         for i in 0 ..< lives {
             let life_node = SKSpriteNode(imageNamed: "Life");
@@ -925,6 +922,12 @@ class GameScene: SKScene {
         self.removeAllChildren();
         line_controller = nil;
         line_controller_b = nil;
-        level_controller = nil;
+        lc = nil;
+    }
+    
+    public func setStartingValues(starting_level: Int64, starting_score: Int64) {
+        lc.setStartingValues(starting_level: starting_level, starting_score: starting_score);
+        setLevelDisplay();
+        setScoreDisplay();
     }
 }

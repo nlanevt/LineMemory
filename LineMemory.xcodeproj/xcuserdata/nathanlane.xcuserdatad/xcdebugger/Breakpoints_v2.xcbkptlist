@@ -1,20 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Bucket
+   uuid = "9A0CB656-3AEF-4A44-AC4E-060AA6C88BDE"
    type = "1"
    version = "2.0">
    <Breakpoints>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
+            uuid = "40472B6C-742C-44B2-8B8D-54C0BA495F9F"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LineMemory/GameScene.swift"
-            timestampString = "578040353.774544"
+            timestampString = "579728925.916567"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "486"
-            endingLineNumber = "486"
+            startingLineNumber = "483"
+            endingLineNumber = "483"
             landmarkName = "animateSum(starting_value:amount:label:completion:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -22,6 +24,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
+            uuid = "8CB798A9-A348-4242-97C6-A8CC896820B0"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
@@ -35,6 +38,7 @@
             landmarkType = "7">
             <Locations>
                <Location
+                  uuid = "8CB798A9-A348-4242-97C6-A8CC896820B0 - 7645ac2b948784c"
                   shouldBeEnabled = "No"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -50,6 +54,7 @@
                   offsetFromSymbolStart = "2892">
                </Location>
                <Location
+                  uuid = "8CB798A9-A348-4242-97C6-A8CC896820B0 - 555f044a3aa91ed9"
                   shouldBeEnabled = "No"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"

@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="B6C-jt-7ck">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="B6C-jt-7ck">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -27,7 +25,7 @@
                                 <rect key="frame" x="67" y="212" width="241" height="185"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZHm-X4-457">
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZHm-X4-457">
                                         <rect key="frame" x="79" y="113" width="84" height="39"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="RixVideoGameB" family="RixVideoGame" pointSize="24"/>
@@ -38,7 +36,7 @@
                                             <action selector="ContinueGameButton:" destination="BV1-FR-VrT" eventType="touchUpInside" id="v8g-W6-fHQ"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1ZC-ph-DX1">
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1ZC-ph-DX1">
                                         <rect key="frame" x="71" y="42" width="98" height="39"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="RixVideoGameB" family="RixVideoGame" pointSize="24"/>
@@ -54,8 +52,8 @@
                                 <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <viewLayoutGuide key="safeArea" id="4qk-I5-YsI"/>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                     <connections>
                         <outlet property="ContinueButton" destination="ZHm-X4-457" id="sfT-if-wqY"/>
@@ -90,30 +88,44 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4tL-wA-mBz">
-                                <rect key="frame" x="108" y="251" width="159" height="31"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4tL-wA-mBz">
+                                <rect key="frame" x="108" y="231" width="159" height="31"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="31" id="ABl-6s-gqt"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="RixVideoGameB" family="RixVideoGame" pointSize="24"/>
                                 <state key="normal" title="Start Game">
-                                    <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    <color key="titleColor" systemColor="darkTextColor"/>
                                 </state>
                                 <connections>
                                     <action selector="StartGameButton:" destination="Nt2-pi-vNL" eventType="touchUpInside" id="MRi-9y-ahi"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Q2c-Rc-HEC">
-                                <rect key="frame" x="131" y="308" width="113" height="39"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Q2c-Rc-HEC">
+                                <rect key="frame" x="131" y="288" width="113" height="39"/>
                                 <fontDescription key="fontDescription" name="RixVideoGameB" family="RixVideoGame" pointSize="24"/>
                                 <state key="normal" title="Leaderboard">
-                                    <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    <color key="titleColor" systemColor="darkTextColor"/>
                                 </state>
                                 <connections>
                                     <action selector="CheckLeaderboard:" destination="Nt2-pi-vNL" eventType="touchUpInside" id="HxI-uC-we9"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RYb-hW-GSU">
+                                <rect key="frame" x="108" y="346" width="159" height="31"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="31" id="sM5-lD-9oU"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="RixVideoGameB" family="RixVideoGame" pointSize="24"/>
+                                <state key="normal" title="Continue">
+                                    <color key="titleColor" systemColor="darkTextColor"/>
+                                </state>
+                                <connections>
+                                    <action selector="ContinueButton:" destination="Nt2-pi-vNL" eventType="touchUpInside" id="7WD-dP-zW2"/>
+                                </connections>
+                            </button>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="mBb-ui-dFw"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="4tL-wA-mBz" firstAttribute="top" secondItem="mBb-ui-dFw" secondAttribute="top" constant="231" id="8He-Ig-02v">
@@ -121,10 +133,12 @@
                             </constraint>
                             <constraint firstItem="4tL-wA-mBz" firstAttribute="leading" secondItem="mBb-ui-dFw" secondAttribute="leading" constant="108" id="Xof-ts-Wbw"/>
                             <constraint firstItem="4tL-wA-mBz" firstAttribute="centerX" secondItem="kdj-Py-7Lg" secondAttribute="centerX" id="j8e-G5-USf"/>
+                            <constraint firstItem="RYb-hW-GSU" firstAttribute="leading" secondItem="4tL-wA-mBz" secondAttribute="leading" id="mIR-2W-Og6"/>
                             <constraint firstItem="4tL-wA-mBz" firstAttribute="centerX" secondItem="Q2c-Rc-HEC" secondAttribute="centerX" id="oCM-zh-6ZF"/>
+                            <constraint firstItem="RYb-hW-GSU" firstAttribute="trailing" secondItem="4tL-wA-mBz" secondAttribute="trailing" id="qIP-hf-qdH"/>
                             <constraint firstItem="Q2c-Rc-HEC" firstAttribute="top" secondItem="4tL-wA-mBz" secondAttribute="bottom" constant="26" id="sTt-aN-D49"/>
+                            <constraint firstItem="RYb-hW-GSU" firstAttribute="top" secondItem="Q2c-Rc-HEC" secondAttribute="bottom" constant="19" id="v2C-Fr-aF4"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="mBb-ui-dFw"/>
                     </view>
                     <navigationItem key="navigationItem" id="Ib0-UT-4zS"/>
                     <connections>
@@ -137,4 +151,9 @@
             <point key="canvasLocation" x="-684" y="25.637181409295355"/>
         </scene>
     </scenes>
+    <resources>
+        <systemColor name="darkTextColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
 </document>
