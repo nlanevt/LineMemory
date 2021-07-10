@@ -327,11 +327,6 @@ class GameScene: SKScene {
         
         self.animatePlayerLineDissipation(iterator: 0, completion: {
             [weak self] in
-            // Removed and replaced with Banner Ad
-            /*if (Int(arc4random_uniform(UInt32(3))) > 1 && level_increases && !(self?.lc.didBeatGame())!) {
-                self?.view_controller.showPauseView(); // TODO: Needs to be removed
-                menu_view_controller.showAd(); //TODO: Remove this and replace with a banner ad.
-            }*/
             self?.startRound();
         })
     }

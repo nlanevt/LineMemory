@@ -70,7 +70,7 @@ class GameViewController: UIViewController {
 
     @IBAction func QuitGameButton(_ sender: Any) {
         returnToMenu();
-        menu_view_controller.showAd();
+        //menu_view_controller.showAd();
     }
     
     @IBAction func ContinueGameButton(_ sender: Any) {

@@ -6,26 +6,48 @@
 	objectVersion = 50;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		FEA3B3A570634836C0457F3D7CEF1699 /* Google-Mobile-Ads-SDK */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = F67A7AE46A4499AD980CC96708B2606E /* Build configuration list for PBXAggregateTarget "Google-Mobile-Ads-SDK" */;
+			buildPhases = (
+			);
+			dependencies = (
+			);
+			name = "Google-Mobile-Ads-SDK";
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
-		C799331C1B74F12FA9D75B623036E868 /* Pods-LineMemory-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F4C94EFF40C17DBBC632389662239B /* Pods-LineMemory-dummy.m */; };
+		E963C33C451527C0FCEC117D23D4B002 /* Pods-LineMemory-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 13DC0EC8E391F72B7DBEABB786B33254 /* Pods-LineMemory-dummy.m */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		98C82B07DAC81B3E432C399546627897 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FEA3B3A570634836C0457F3D7CEF1699;
+			remoteInfo = "Google-Mobile-Ads-SDK";
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
-		0C4DC34960EE8EBFC05168EE52DD33A8 /* Pods-LineMemory-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-LineMemory-acknowledgements.markdown"; sourceTree = "<group>"; };
-		1B766384F63D059C9DB60B7D4E5FB48B /* Pods-LineMemory-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-LineMemory-acknowledgements.plist"; sourceTree = "<group>"; };
-		2ABF311C147556145AEB89EF65CED633 /* Pods-LineMemory-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-LineMemory-frameworks.sh"; sourceTree = "<group>"; };
-		339D204CB98825BEC69EC15BC9103D52 /* Pods-LineMemory.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-LineMemory.release.xcconfig"; sourceTree = "<group>"; };
-		34B3EF078E22922CA6B3A3242417BB13 /* libGoogleMobileAds.a */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = archive.ar; name = libGoogleMobileAds.a; path = Libraries/libGoogleMobileAds.a; sourceTree = "<group>"; };
-		80F161AF769108EF84F4F429F4E4B11E /* Pods-LineMemory.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-LineMemory.debug.xcconfig"; sourceTree = "<group>"; };
-		84F4C94EFF40C17DBBC632389662239B /* Pods-LineMemory-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-LineMemory-dummy.m"; sourceTree = "<group>"; };
-		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		980FEEABC090C1B244284ABC766494DD /* Pods-LineMemory-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-LineMemory-resources.sh"; sourceTree = "<group>"; };
-		9E929E7C43365FD21388212A99EBBE68 /* GoogleMobileAds.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleMobileAds.framework; path = Frameworks/frameworks/GoogleMobileAds.framework; sourceTree = "<group>"; };
-		A87839030C5C1043BEFF4179E4B50EAC /* libPods-LineMemory.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libPods-LineMemory.a"; path = "libPods-LineMemory.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		0BAC6C3727CAC776CC051152B95BA686 /* libGoogleMobileAds.a */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = archive.ar; name = libGoogleMobileAds.a; path = Libraries/libGoogleMobileAds.a; sourceTree = "<group>"; };
+		13DC0EC8E391F72B7DBEABB786B33254 /* Pods-LineMemory-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-LineMemory-dummy.m"; sourceTree = "<group>"; };
+		319DC05A26306553BE8E168199BCF624 /* Google-Mobile-Ads-SDK.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Google-Mobile-Ads-SDK.debug.xcconfig"; sourceTree = "<group>"; };
+		4D392DCDEBA22E36DB29CD34D63CA4E4 /* libPods-LineMemory.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libPods-LineMemory.a"; path = "libPods-LineMemory.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8CDACF2A5795AD883256DCFD450B2AF0 /* GoogleMobileAds.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleMobileAds.framework; path = Frameworks/frameworks/GoogleMobileAds.framework; sourceTree = "<group>"; };
+		99A36A1C6E0C73219C18DE7D5FDA2F7F /* Pods-LineMemory.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-LineMemory.release.xcconfig"; sourceTree = "<group>"; };
+		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		B308675C3C0DD90985214A469EEE703E /* Pods-LineMemory-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-LineMemory-acknowledgements.markdown"; sourceTree = "<group>"; };
+		C9F0DBEEAC472C64722133C964E073AA /* Pods-LineMemory-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-LineMemory-acknowledgements.plist"; sourceTree = "<group>"; };
+		DB1CED47CF6076DCABF090F35FE24F10 /* Google-Mobile-Ads-SDK.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Google-Mobile-Ads-SDK.release.xcconfig"; sourceTree = "<group>"; };
+		F0B5F221EDF5ADDE3993FD7939628F37 /* Pods-LineMemory.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-LineMemory.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		60C2716E198E718B14CC6DFD69476BA9 /* Frameworks */ = {
+		34AD3508C6E1AEA8A0A02E1E2B736347 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -35,77 +57,86 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0BEE72D7DCA36245B0B446C4D3A0ED53 /* Targets Support Files */ = {
+		200A1AC1A65D8AFEBB8AACBFB0213C9A /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				CD8D81948DCED8EA9DC038DBE7779D6B /* Pods-LineMemory */,
-			);
-			name = "Targets Support Files";
-			sourceTree = "<group>";
-		};
-		0F8D2E47FE03D3B91B51069F7C273AF4 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		2424D774302766147B8C3E847112EB9A /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				A87839030C5C1043BEFF4179E4B50EAC /* libPods-LineMemory.a */,
+				4D392DCDEBA22E36DB29CD34D63CA4E4 /* libPods-LineMemory.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		7DB346D0F39D3F0E887471402A8071AB = {
+		362B65F3D1B3363DEBBF199B20FACFEC /* Google-Mobile-Ads-SDK */ = {
 			isa = PBXGroup;
 			children = (
-				93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */,
-				0F8D2E47FE03D3B91B51069F7C273AF4 /* Frameworks */,
-				820FBBDA65C5B1A6A4C379A893C27235 /* Pods */,
-				2424D774302766147B8C3E847112EB9A /* Products */,
-				0BEE72D7DCA36245B0B446C4D3A0ED53 /* Targets Support Files */,
-			);
-			sourceTree = "<group>";
-		};
-		820FBBDA65C5B1A6A4C379A893C27235 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				B2D755A60549F10C3C21F9AFC87AA432 /* Google-Mobile-Ads-SDK */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
-		B2D755A60549F10C3C21F9AFC87AA432 /* Google-Mobile-Ads-SDK */ = {
-			isa = PBXGroup;
-			children = (
-				E729DC941541568B32695DC1C327B163 /* Frameworks */,
+				4DC99B21A0AFF292FBB437F63DF51878 /* Frameworks */,
+				A70E3FCE3368C9B840075843D908ABC6 /* Support Files */,
 			);
 			name = "Google-Mobile-Ads-SDK";
 			path = "Google-Mobile-Ads-SDK";
 			sourceTree = "<group>";
 		};
-		CD8D81948DCED8EA9DC038DBE7779D6B /* Pods-LineMemory */ = {
+		4DC99B21A0AFF292FBB437F63DF51878 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				0C4DC34960EE8EBFC05168EE52DD33A8 /* Pods-LineMemory-acknowledgements.markdown */,
-				1B766384F63D059C9DB60B7D4E5FB48B /* Pods-LineMemory-acknowledgements.plist */,
-				84F4C94EFF40C17DBBC632389662239B /* Pods-LineMemory-dummy.m */,
-				2ABF311C147556145AEB89EF65CED633 /* Pods-LineMemory-frameworks.sh */,
-				980FEEABC090C1B244284ABC766494DD /* Pods-LineMemory-resources.sh */,
-				80F161AF769108EF84F4F429F4E4B11E /* Pods-LineMemory.debug.xcconfig */,
-				339D204CB98825BEC69EC15BC9103D52 /* Pods-LineMemory.release.xcconfig */,
+				8CDACF2A5795AD883256DCFD450B2AF0 /* GoogleMobileAds.framework */,
+				0BAC6C3727CAC776CC051152B95BA686 /* libGoogleMobileAds.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		6B211663DCEEBAED89B50D8384CA363D /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				362B65F3D1B3363DEBBF199B20FACFEC /* Google-Mobile-Ads-SDK */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		8F895606EAA373124DB2D92E71A1786E /* Targets Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				C979DA27AC90ACD1AA74A038C6D5EDC7 /* Pods-LineMemory */,
+			);
+			name = "Targets Support Files";
+			sourceTree = "<group>";
+		};
+		A70E3FCE3368C9B840075843D908ABC6 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				319DC05A26306553BE8E168199BCF624 /* Google-Mobile-Ads-SDK.debug.xcconfig */,
+				DB1CED47CF6076DCABF090F35FE24F10 /* Google-Mobile-Ads-SDK.release.xcconfig */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/Google-Mobile-Ads-SDK";
+			sourceTree = "<group>";
+		};
+		C979DA27AC90ACD1AA74A038C6D5EDC7 /* Pods-LineMemory */ = {
+			isa = PBXGroup;
+			children = (
+				B308675C3C0DD90985214A469EEE703E /* Pods-LineMemory-acknowledgements.markdown */,
+				C9F0DBEEAC472C64722133C964E073AA /* Pods-LineMemory-acknowledgements.plist */,
+				13DC0EC8E391F72B7DBEABB786B33254 /* Pods-LineMemory-dummy.m */,
+				F0B5F221EDF5ADDE3993FD7939628F37 /* Pods-LineMemory.debug.xcconfig */,
+				99A36A1C6E0C73219C18DE7D5FDA2F7F /* Pods-LineMemory.release.xcconfig */,
 			);
 			name = "Pods-LineMemory";
 			path = "Target Support Files/Pods-LineMemory";
 			sourceTree = "<group>";
 		};
-		E729DC941541568B32695DC1C327B163 /* Frameworks */ = {
+		CF1408CF629C7361332E53B88F7BD30C = {
 			isa = PBXGroup;
 			children = (
-				9E929E7C43365FD21388212A99EBBE68 /* GoogleMobileAds.framework */,
-				34B3EF078E22922CA6B3A3242417BB13 /* libGoogleMobileAds.a */,
+				9D940727FF8FB9C785EB98E56350EF41 /* Podfile */,
+				D89477F20FB1DE18A04690586D7808C4 /* Frameworks */,
+				6B211663DCEEBAED89B50D8384CA363D /* Pods */,
+				200A1AC1A65D8AFEBB8AACBFB0213C9A /* Products */,
+				8F895606EAA373124DB2D92E71A1786E /* Targets Support Files */,
+			);
+			sourceTree = "<group>";
+		};
+		D89477F20FB1DE18A04690586D7808C4 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -113,7 +144,7 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		A8907DC17E1411A7EDA8E9C4854458CA /* Headers */ = {
+		47867BECC104F0DF69FFA1F4E7291097 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -123,68 +154,79 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		4CC349D7C963E28FC487DC347C234B60 /* Pods-LineMemory */ = {
+		A3773E7898C6B7F206143E2DFEB4B475 /* Pods-LineMemory */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 6745A5A351927B4A305A444371E34D3C /* Build configuration list for PBXNativeTarget "Pods-LineMemory" */;
+			buildConfigurationList = EFB3FD2DAD27BA4063A1CDDD5C4478A5 /* Build configuration list for PBXNativeTarget "Pods-LineMemory" */;
 			buildPhases = (
-				A8907DC17E1411A7EDA8E9C4854458CA /* Headers */,
-				E8FA2C1A382E43AE3590B2DB4C6E0CF8 /* Sources */,
-				60C2716E198E718B14CC6DFD69476BA9 /* Frameworks */,
+				47867BECC104F0DF69FFA1F4E7291097 /* Headers */,
+				AACB0512C00B2ADEB925F96D4CC12828 /* Sources */,
+				34AD3508C6E1AEA8A0A02E1E2B736347 /* Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				B376D90F96A607D17FE0A8320646CEFB /* PBXTargetDependency */,
 			);
 			name = "Pods-LineMemory";
 			productName = "Pods-LineMemory";
-			productReference = A87839030C5C1043BEFF4179E4B50EAC /* libPods-LineMemory.a */;
+			productReference = 4D392DCDEBA22E36DB29CD34D63CA4E4 /* libPods-LineMemory.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		D41D8CD98F00B204E9800998ECF8427E /* Project object */ = {
+		BFDFE7DC352907FC980B868725387E98 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0930;
-				LastUpgradeCheck = 0930;
+				LastSwiftUpdateCheck = 1240;
+				LastUpgradeCheck = 1240;
 			};
-			buildConfigurationList = 2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */;
-			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			buildConfigurationList = 4821239608C13582E20E6DA73FD5F1F9 /* Build configuration list for PBXProject "Pods" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
-			mainGroup = 7DB346D0F39D3F0E887471402A8071AB;
-			productRefGroup = 2424D774302766147B8C3E847112EB9A /* Products */;
+			mainGroup = CF1408CF629C7361332E53B88F7BD30C;
+			productRefGroup = 200A1AC1A65D8AFEBB8AACBFB0213C9A /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				4CC349D7C963E28FC487DC347C234B60 /* Pods-LineMemory */,
+				FEA3B3A570634836C0457F3D7CEF1699 /* Google-Mobile-Ads-SDK */,
+				A3773E7898C6B7F206143E2DFEB4B475 /* Pods-LineMemory */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
-		E8FA2C1A382E43AE3590B2DB4C6E0CF8 /* Sources */ = {
+		AACB0512C00B2ADEB925F96D4CC12828 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C799331C1B74F12FA9D75B623036E868 /* Pods-LineMemory-dummy.m in Sources */,
+				E963C33C451527C0FCEC117D23D4B002 /* Pods-LineMemory-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		B376D90F96A607D17FE0A8320646CEFB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Google-Mobile-Ads-SDK";
+			target = FEA3B3A570634836C0457F3D7CEF1699 /* Google-Mobile-Ads-SDK */;
+			targetProxy = 98C82B07DAC81B3E432C399546627897 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
-		1C6D94397869DF9382DD49BFA21119AC /* Debug */ = {
+		0C9967662CBDA78E1DBD47A3703AD909 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 80F161AF769108EF84F4F429F4E4B11E /* Pods-LineMemory.debug.xcconfig */;
+			baseConfigurationReference = F0B5F221EDF5ADDE3993FD7939628F37 /* Pods-LineMemory.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				CLANG_ENABLE_OBJC_WEAK = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
@@ -200,33 +242,27 @@
 			};
 			name = Debug;
 		};
-		6362D29185AB43B78649023D44F8074C /* Release */ = {
+		5D2A62B4CC86820956C8221B40742834 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 339D204CB98825BEC69EC15BC9103D52 /* Pods-LineMemory.release.xcconfig */;
+			baseConfigurationReference = 319DC05A26306553BE8E168199BCF624 /* Google-Mobile-Ads-SDK.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				MACH_O_TYPE = staticlib;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
 			};
-			name = Release;
+			name = Debug;
 		};
-		C92782E717C52E3633C9A5F211E7987A /* Debug */ = {
+		7EE7A78859F657F6BEFC651185B43192 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -249,14 +285,114 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGNING_ALLOWED = NO;
-				CODE_SIGNING_REQUIRED = NO;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"POD_CONFIGURATION_RELEASE=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRIP_INSTALLED_PRODUCT = NO;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				SYMROOT = "${SRCROOT}/../build";
+			};
+			name = Release;
+		};
+		A19168CE5B13DB5B613C5C3B72A06610 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 99A36A1C6E0C73219C18DE7D5FDA2F7F /* Pods-LineMemory.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				MACH_O_TYPE = staticlib;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		C936E23781AED5619EAFC2AC9E367D3A /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = DB1CED47CF6076DCABF090F35FE24F10 /* Google-Mobile-Ads-SDK.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		D299434AB35E7FD6F7921C8EF24742FF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -283,91 +419,43 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_INSTALLED_PRODUCT = NO;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 				SYMROOT = "${SRCROOT}/../build";
 			};
 			name = Debug;
 		};
-		EA8C7AF90938697605468604B2A17B9F /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_COMMA = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
-				CLANG_WARN_STRICT_PROTOTYPES = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGNING_ALLOWED = NO;
-				CODE_SIGNING_REQUIRED = NO;
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"POD_CONFIGURATION_RELEASE=1",
-					"$(inherited)",
-				);
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				MTL_FAST_MATH = YES;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				STRIP_INSTALLED_PRODUCT = NO;
-				SYMROOT = "${SRCROOT}/../build";
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */ = {
+		4821239608C13582E20E6DA73FD5F1F9 /* Build configuration list for PBXProject "Pods" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				C92782E717C52E3633C9A5F211E7987A /* Debug */,
-				EA8C7AF90938697605468604B2A17B9F /* Release */,
+				D299434AB35E7FD6F7921C8EF24742FF /* Debug */,
+				7EE7A78859F657F6BEFC651185B43192 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		6745A5A351927B4A305A444371E34D3C /* Build configuration list for PBXNativeTarget "Pods-LineMemory" */ = {
+		EFB3FD2DAD27BA4063A1CDDD5C4478A5 /* Build configuration list for PBXNativeTarget "Pods-LineMemory" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				1C6D94397869DF9382DD49BFA21119AC /* Debug */,
-				6362D29185AB43B78649023D44F8074C /* Release */,
+				0C9967662CBDA78E1DBD47A3703AD909 /* Debug */,
+				A19168CE5B13DB5B613C5C3B72A06610 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F67A7AE46A4499AD980CC96708B2606E /* Build configuration list for PBXAggregateTarget "Google-Mobile-Ads-SDK" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5D2A62B4CC86820956C8221B40742834 /* Debug */,
+				C936E23781AED5619EAFC2AC9E367D3A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+	rootObject = BFDFE7DC352907FC980B868725387E98 /* Project object */;
 }
