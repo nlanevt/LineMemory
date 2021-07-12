@@ -305,9 +305,6 @@ class GameScene: SKScene {
         animateScoreSign(score_amount: amount, position: score_sign_position ?? CGPoint(x: 0.0, y: 0.0));
         
         animateSum(starting_value: starting_score, amount: amount, label: player_score_label, completion: {});
-       /* if (lc.score() > menu_view_controller.getHighestScore()) {
-            self.animateSum(starting_value: lc.score() - amount, amount: amount, label: highest_score_label, completion: {});
-        }*/
         
         // Increase the level if enough rounds have been won.
         // Calling roundWonAndIncreaseLevel() also increases the difficulty within the level.
@@ -352,6 +349,7 @@ class GameScene: SKScene {
         }
         
         // Game Won!!!
+        // This block should never be called. The Game should never get beaten. 
         if (lc.didBeatGame()) {
             game_won = true;
             menu_view_controller.setNewHighestLevel(new_highest_level: Int64(lc.getMaximumLevel()));

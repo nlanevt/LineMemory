@@ -21,7 +21,7 @@ var BANNER_AD_ID = "ca-app-pub-2893925630884266/3544334359";
 var BANNER_TEST_ID = "ca-app-pub-3940256099942544/2934735716";
 var GOOGLE_AD_APP_ID = "ca-app-pub-2893925630884266~9063264087";
 
-class MenuViewController: UIViewController, GKGameCenterControllerDelegate, GADInterstitialDelegate {
+class MenuViewController: UIViewController, GKGameCenterControllerDelegate, GADBannerViewDelegate {
     private weak var menu_scene: MenuScene!
     private var highest_score:Int64 = 0;
     private var highest_level:Int64 = 0;
@@ -372,14 +372,14 @@ class MenuViewController: UIViewController, GKGameCenterControllerDelegate, GADI
           ])
     }
     
-    private func createAndLoadBanner() -> GADBannerView {
-        //instantiate the banner with desired ad size.
-        banner = GADBannerView(adSize: kGADAdSizeBanner)
+    private func createAndLoadBanner() {
+        //instantiate the banner with random ad size.
+        banner = GADBannerView(adSize: Int(arc4random_uniform(UInt32(2))) > 0 ? kGADAdSizeMediumRectangle : kGADAdSizeLargeBanner)
+        banner.delegate = self;
         addBannerViewToView(banner);
         banner.adUnitID = BANNER_TEST_ID;
         banner.rootViewController = self;
         banner.load(GADRequest())
-        return banner;
     }
     
     /*public func configureNewInterstitial() {

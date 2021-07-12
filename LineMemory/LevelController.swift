@@ -20,6 +20,7 @@ class LevelController {
     private var score_reduction:Int64 = 0;
     private var level_score:Int64 = 0;
     private var max_level = 256;
+    private var max_turns = 64;
     private var did_beat_game = false;
     private var total_score:Int64 = 0;
     
@@ -68,6 +69,9 @@ class LevelController {
         return max_level;
     }
     
+    /*
+     * Should always return false because the game cannot be beaten
+     */
     public func didBeatGame() -> Bool {
         return did_beat_game;
     }
@@ -77,6 +81,9 @@ class LevelController {
         total_score = starting_score < 0 ? 0 : starting_score;
     }
     
+    /*
+     * Game cannot be "beaten". The game continues beyond level 256, starting at 64 turns and incraesing randomly from there.
+     */
     public func getTurns() -> Int {
         switch level_counter {
         case 1:
@@ -601,10 +608,10 @@ class LevelController {
             return getRandomNumber(int_a: 62, int_b: 63)
             //return 1;
         case 256:
-            return 64;
+            return max_turns;
             //return 1; // MARK: For testing final level
         default:
-            return 0;
+            return getRandomNumber(int_a: max_turns, int_b: max_turns+1);
         }
     }
     
@@ -695,9 +702,9 @@ class LevelController {
     }
     
     private func increaseLevel(score: Int64) {
-        if (level_counter >= 256) {
-            did_beat_game = true;
-            return;
+        if (level_counter >= max_level) {
+            //did_beat_game = true; // Formerly where it was determined the game was over. 
+            max_turns = max_turns + 1;
         }
         level_counter = level_counter + 1;
         level_score = 0;

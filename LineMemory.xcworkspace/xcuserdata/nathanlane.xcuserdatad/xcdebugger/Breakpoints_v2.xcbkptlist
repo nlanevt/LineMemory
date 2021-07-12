@@ -30,8 +30,8 @@
             filePath = "LineMemory/GameScene.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "923"
-            endingLineNumber = "923"
+            startingLineNumber = "921"
+            endingLineNumber = "921"
             landmarkName = "setStartingValues(starting_level:starting_score:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -46,8 +46,8 @@
             filePath = "LineMemory/GameScene.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "380"
-            endingLineNumber = "380"
+            startingLineNumber = "378"
+            endingLineNumber = "378"
             landmarkName = "setLevelDisplay()"
             landmarkType = "7">
          </BreakpointContent>
