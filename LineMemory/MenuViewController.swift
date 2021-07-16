@@ -40,6 +40,7 @@ class MenuViewController: UIViewController, GKGameCenterControllerDelegate, GADB
     
     @IBOutlet weak var StartGameButton: UIButton!
     @IBOutlet weak var LeaderboardButton: UIButton!
+    @IBOutlet weak var ContinueButton: UIButton!
     
     deinit {
        //print("Menu View Controller has been deallocated");
@@ -57,6 +58,7 @@ class MenuViewController: UIViewController, GKGameCenterControllerDelegate, GADB
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setUpStringLocalization();
         menu_view_controller = self;
         loadScores();
         authenticateLocalPlayer();
@@ -81,7 +83,7 @@ class MenuViewController: UIViewController, GKGameCenterControllerDelegate, GADB
             object: nil)
         
         //resetScoreDataAndLeaderboard(); //Use to reset leaderboard and core data.
-        setUpStringLocalization();
+        
         presentMenuScene();
         
         print("Menu View Controller has been loaded");
@@ -436,8 +438,12 @@ class MenuViewController: UIViewController, GKGameCenterControllerDelegate, GADB
     }
     
     private func setUpStringLocalization() {
+        ContinueButton.setTitle(NSLocalizedString("Continue Game", comment: "N/A"), for: .normal);
+        StartGameButton.setTitle(NSLocalizedString("Start Game", comment: "N/A"), for: .normal);
+        LeaderboardButton.setTitle(NSLocalizedString("Leaderboard", comment: "N/A"), for: .normal);
         StartGameButton.titleLabel?.font = UIFont(name: String.localizedStringWithFormat(NSLocalizedString("fontNameA", comment: "")), size: CGFloat((String.localizedStringWithFormat(NSLocalizedString("fontSize24", comment: "")) as NSString).floatValue));
         LeaderboardButton.titleLabel?.font = UIFont(name: String.localizedStringWithFormat(NSLocalizedString("fontNameA", comment: "")), size: CGFloat((String.localizedStringWithFormat(NSLocalizedString("fontSize24", comment: "")) as NSString).floatValue));
+        ContinueButton.titleLabel?.font = UIFont(name: String.localizedStringWithFormat(NSLocalizedString("fontNameA", comment: "")), size: CGFloat((String.localizedStringWithFormat(NSLocalizedString("fontSize24", comment: "")) as NSString).floatValue));
     }
     
     public func deallocateMenuScene() {

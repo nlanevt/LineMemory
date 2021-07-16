@@ -117,7 +117,7 @@
                                     <constraint firstAttribute="height" constant="31" id="sM5-lD-9oU"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="RixVideoGameB" family="RixVideoGame" pointSize="24"/>
-                                <state key="normal" title="Continue">
+                                <state key="normal" title="Continue Game">
                                     <color key="titleColor" systemColor="darkTextColor"/>
                                 </state>
                                 <connections>
@@ -142,6 +142,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="Ib0-UT-4zS"/>
                     <connections>
+                        <outlet property="ContinueButton" destination="RYb-hW-GSU" id="eb5-Uz-OdE"/>
                         <outlet property="LeaderboardButton" destination="Q2c-Rc-HEC" id="UH8-q5-kss"/>
                         <outlet property="StartGameButton" destination="4tL-wA-mBz" id="0hL-VJ-lmG"/>
                     </connections>
