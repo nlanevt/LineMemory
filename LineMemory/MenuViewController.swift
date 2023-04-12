@@ -376,7 +376,7 @@ class MenuViewController: UIViewController, GKGameCenterControllerDelegate, GADB
     
     private func createAndLoadBanner() {
         //instantiate the banner with random ad size.
-        banner = GADBannerView(adSize: Int(arc4random_uniform(UInt32(2))) > 0 ? kGADAdSizeMediumRectangle : kGADAdSizeLargeBanner)
+        banner = GADBannerView(adSize: Int(arc4random_uniform(UInt32(2))) > 0 ? GADAdSizeMediumRectangle : GADAdSizeLargeBanner)
         banner.delegate = self;
         addBannerViewToView(banner);
         banner.adUnitID = BANNER_AD_ID;
